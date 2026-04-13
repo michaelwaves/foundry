@@ -42,3 +42,7 @@ uv sync --extra sae
 ```sh
 python -m sae.train  activations_path=/mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_na_tutorial/activations/activations.h5 architecture=matryoshka_batch_top_k hook_name=block12 use_wandb=true save_checkpoints=true
 ```
+## eval
+```sh
+python -m sae.eval checkpoint_path=/mnt/nw/home/m.yu/repos/foundry/outputs/matryoshka_batch_top_k/block12/2026-04-13_06-11-59/final.pt num_features=12 top_residues=5
+```

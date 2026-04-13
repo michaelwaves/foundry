@@ -48,6 +48,7 @@ dependencies = [
     "ipykernel>=6.31.0",
     "assertpy",
     "toolz",
+    "pymol-open-source>=3.2.0a0",
 ]
 
 

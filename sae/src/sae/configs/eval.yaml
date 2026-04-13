@@ -1,0 +1,15 @@
+checkpoint_path: /mnt/nw/home/m.yu/repos/foundry/outputs/matryoshka_batch_top_k/block12/2026-04-13_06-11-59/final.pt
+activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_na_tutorial/activations/activations.h5
+metadata_dir: /mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_na_tutorial/activations
+hook_name: block12
+
+device: cuda:0
+eval_batch_size: 4096
+
+num_features: 12
+min_fires: 10
+top_residues: 5
+
+hydra:
+  run:
+    dir: outputs/eval/${now:%Y-%m-%d_%H-%M-%S}
