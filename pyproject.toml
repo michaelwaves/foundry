@@ -60,9 +60,13 @@ rf3 = [
     "cuequivariance_ops_torch_cu12>=0.6.1; sys_platform == 'linux'",
     "cuequivariance_torch>=0.6.1; sys_platform == 'linux'",
 ]
+sae = [
+    "rc-foundry-sae",
+]
 all = [
     "rc-foundry[rfd3]",
     "rc-foundry[rf3]",
+    "rc-foundry[sae]",
 ]
 dev = [
     # Linters & formatters
@@ -107,6 +111,12 @@ tag-pattern = "^v(?P<version>.*)$"
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.uv.sources]
+rc-foundry-sae = { workspace = true }
+
+[tool.uv.workspace]
+members = ["sae"]
 
 [tool.hatch.build.targets.wheel]
 packages = [

@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import time
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from os import PathLike
 from pathlib import Path
@@ -51,7 +52,13 @@ class RFD3InferenceConfig:
     skip_existing: bool = True
     json_keys_subset: Optional[List[str]] = None
     specification: Optional[dict] = field(default_factory=dict)
-    inference_sampler: SampleDiffusionConfig | dict = field(default_factory=dict)
+    inference_sampler: SampleDiffusionConfig | dict = field(
+        default_factory=dict)
+
+    # Optional activation collection (requires the `sae` extra installed).
+    # Shape: {"save_dir": str, "hooks": [{"name", "module_path", "hook_type",
+    # "collect_every_n_steps"}, ...]}
+    activation_collection: Optional[dict] = None
 
     # Saving args
     cleanup_guideposts: bool = True
@@ -133,7 +140,8 @@ class RFD3Output:
             )
 
         if verbose:
-            ranked_logger.info(f"Outputs for {self.example_id} written to {base_path}.")
+            ranked_logger.info(
+                f"Outputs for {self.example_id} written to {base_path}.")
 
 
 class RFD3InferenceEngine(BaseInferenceEngine):
@@ -160,6 +168,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         dump_trajectories: bool,
         align_trajectory_structures: bool,
         low_memory_mode: bool,
+        activation_collection: dict | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -187,6 +196,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         self.dump_prediction_metadata_json = dump_prediction_metadata_json
         self.dump_trajectories = dump_trajectories
         self.align_trajectory_structures = align_trajectory_structures
+        self.activation_collection = activation_collection
         if not cleanup_guideposts:
             ranked_logger.warning(
                 "Guideposts will not be cleaned up. This is intended for debugging purposes."
@@ -230,7 +240,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         out_dir = Path(out_dir) if out_dir else None
         if out_dir:
             out_dir.mkdir(parents=True, exist_ok=True)
-            ranked_logger.info(f"Outputs will be written to {out_dir.resolve()}.")
+            ranked_logger.info(
+                f"Outputs will be written to {out_dir.resolve()}.")
         self.out_dir = out_dir
 
     def _run_multi(self, specs) -> None | Dict[str, List[RFD3Output]]:
@@ -257,30 +268,65 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         # ==============================================================================
         # Evaluate, using `validation_step`
         # ==============================================================================
-        outputs = {}
-        for batch_idx, batch in enumerate(loader):
-            pipeline_output = batch[0]
-            example_id = pipeline_output["example_id"]
+        with self._maybe_activation_buffer() as activation_buffer:
+            outputs = {}
+            for batch in loader:
+                pipeline_output = batch[0]
+                example_id = pipeline_output["example_id"]
 
-            # Run model
-            output_list = self._model_forward(pipeline_output)
-            if self.out_dir:
-                for output in output_list:
-                    output.dump(out_dir=self.out_dir)
-            else:
-                outputs[example_id] = output_list
+                if activation_buffer is not None:
+                    activation_buffer.on_design_start(example_id, pipeline_output)
+
+                output_list = self._model_forward(pipeline_output)
+
+                if activation_buffer is not None:
+                    activation_buffer.on_design_end()
+
+                if self.out_dir:
+                    for output in output_list:
+                        output.dump(out_dir=self.out_dir)
+                else:
+                    outputs[example_id] = output_list
         return outputs
+
+    @contextmanager
+    def _maybe_activation_buffer(self):
+        if self.activation_collection is None:
+            yield None
+            return
+        from sae import ActivationBuffer, HookConfig, HookType
+
+        save_dir = Path(self.activation_collection["save_dir"])
+        save_dir.mkdir(parents=True, exist_ok=True)
+        with ActivationBuffer(self._get_shadow_model(), str(save_dir)) as buf:
+            for spec in self.activation_collection["hooks"]:
+                buf.register(
+                    HookConfig(
+                        name=spec["name"],
+                        module_path=spec["module_path"],
+                        hook_type=HookType(spec["hook_type"]),
+                        collect_every_n_steps=spec.get("collect_every_n_steps", 1),
+                    )
+                )
+            yield buf
+
+    def _get_shadow_model(self):
+        model = self.trainer.state["model"]
+        unwrapped = getattr(model, "_forward_module", model)
+        return unwrapped.shadow
 
     def _model_forward(self, pipeline_output) -> List[RFD3Output]:
         # Wraps around the trainer validation step to create atom arrays for saving.
         t0 = time.time()
         with torch.no_grad():
             pipeline_output = self.trainer.fabric.to_device(pipeline_output)
+            breakpoint()
             output_val = self.trainer.validation_step(
                 batch=pipeline_output,
                 batch_idx=0,
                 compute_metrics=False,
             )
+            breakpoint()
         t_end = time.time()
 
         # Add additional information to prediction metadata
@@ -297,7 +343,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             if self.dump_prediction_metadata_json:
                 ckpt = Path(self.ckpt_path)
                 if ckpt.is_symlink():
-                    ckpt = ckpt.resolve(strict=True)  # follow symlink to target
+                    # follow symlink to target
+                    ckpt = ckpt.resolve(strict=True)
                 output_val["prediction_metadata"][idx]["ckpt_path"] = str(ckpt)
                 output_val["prediction_metadata"][idx]["seed"] = self.seed
 
@@ -306,7 +353,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                 X_denoised_L_traj_i = _reshape_trajectory(
                     X_noisy_L_traj[idx], self.align_trajectory_structures
                 )
-                X_noisy_L_traj_i = _reshape_trajectory(X_denoised_L_traj[idx], False)
+                X_noisy_L_traj_i = _reshape_trajectory(
+                    X_denoised_L_traj[idx], False)
                 denoised_trajectory_stack = (
                     build_stack_from_atom_array_and_batched_coords(
                         X_denoised_L_traj_i, pipeline_output["atom_array"]
@@ -331,7 +379,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                 )
             )
 
-        ranked_logger.info(f"Finished inference batch in {t_end - t0:.2f} seconds.")
+        ranked_logger.info(
+            f"Finished inference batch in {t_end - t0:.2f} seconds.")
         return outputs
 
     ###############################################
@@ -350,7 +399,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             and all([isinstance(i, DesignInputSpecification) for i in inputs])
         )
         is_atom_array_like = isinstance(inputs, (AtomArray, list)) or (
-            isinstance(inputs, list) and all([isinstance(i, AtomArray) for i in inputs])
+            isinstance(inputs, list) and all(
+                [isinstance(i, AtomArray) for i in inputs])
         )
         if inputs is None:
             # Create empty specification dictionary
@@ -412,7 +462,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             # ... Create n_batches for example
             for batch_id in range((n_batches) if exists(n_batches) else 1):
                 # ... Example ID
-                example_id = f"{prefix}_{batch_id}" if exists(n_batches) else prefix
+                example_id = f"{prefix}_{batch_id}" if exists(
+                    n_batches) else prefix
                 if (
                     self.skip_existing
                     and exists(self.out_dir)
@@ -498,7 +549,8 @@ def process_input(
         if exists(input) and (input.endswith(".json") or input.endswith(".yaml")):
             # ... Load JSON or YAML file
             with open(input, "r") as f:
-                data = json.load(f) if input.endswith(".json") else yaml.safe_load(f)
+                data = json.load(f) if input.endswith(
+                    ".json") else yaml.safe_load(f)
 
             # ... Apply any global args for this input file
             if "global_args" in data:
@@ -552,7 +604,8 @@ def _reshape_trajectory(traj, align_structures: bool):
     traj = [traj[i] for i in range(len(traj))]  # make list of arrays
     max_frames = 100
     if len(traj) > max_frames:
-        selected_indices = torch.linspace(0, len(traj) - 1, max_frames).long().tolist()
+        selected_indices = torch.linspace(
+            0, len(traj) - 1, max_frames).long().tolist()
         traj = [traj[i] for i in selected_indices]
     if align_structures:
         # ... align the trajectories on the last prediction

@@ -225,6 +225,7 @@ logs/
 *.ckpt
 **/distillation/
 **/benchmarks/
+**/hbplus/
 
 # macOS
 .DS_Store
