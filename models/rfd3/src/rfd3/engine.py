@@ -220,7 +220,10 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         out_dir: str | PathLike | None = None,
     ):
         self._set_out_dir(out_dir)
-        inputs = self._canonicalize_inputs(inputs)
+        inputs, run_config = self._canonicalize_inputs(inputs)
+        n_batches = run_config.get("n_batches", n_batches)
+        if "activation_collection" in run_config:
+            self.activation_collection = run_config["activation_collection"]
         design_specifications = self._multiply_specifications(
             inputs=inputs,
             n_batches=n_batches,
@@ -275,7 +278,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                 example_id = pipeline_output["example_id"]
 
                 if activation_buffer is not None:
-                    activation_buffer.on_design_start(example_id, pipeline_output)
+                    activation_buffer.on_design_start(
+                        example_id, pipeline_output)
 
                 output_list = self._model_forward(pipeline_output)
 
@@ -305,7 +309,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                         name=spec["name"],
                         module_path=spec["module_path"],
                         hook_type=HookType(spec["hook_type"]),
-                        collect_every_n_steps=spec.get("collect_every_n_steps", 1),
+                        collect_every_n_steps=spec.get(
+                            "collect_every_n_steps", 1),
                     )
                 )
             yield buf
@@ -320,13 +325,11 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         t0 = time.time()
         with torch.no_grad():
             pipeline_output = self.trainer.fabric.to_device(pipeline_output)
-            breakpoint()
             output_val = self.trainer.validation_step(
                 batch=pipeline_output,
                 batch_idx=0,
                 compute_metrics=False,
             )
-            breakpoint()
         t_end = time.time()
 
         # Add additional information to prediction metadata
@@ -389,7 +392,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
 
     def _canonicalize_inputs(
         self, inputs
-    ) -> Dict[str, dict | DesignInputSpecification]:
+    ) -> tuple[Dict[str, dict | DesignInputSpecification], dict]:
         is_json_like = (isinstance(inputs, (str, PathLike, Path))) or (
             isinstance(inputs, list)
             and all([isinstance(i, (str, PathLike, Path)) for i in inputs])
@@ -402,12 +405,13 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             isinstance(inputs, list) and all(
                 [isinstance(i, AtomArray) for i in inputs])
         )
+        run_config: dict = {}
         if inputs is None:
             # Create empty specification dictionary
-            return {"": {**self.specification_overrides}}
+            return {"": {**self.specification_overrides}}, run_config
         elif is_json_like:
             # List of file paths
-            inputs = process_input(
+            inputs, run_config = process_input(
                 inputs,
                 json_keys_subset=self.json_keys_subset,
                 global_prefix=self.global_prefix,
@@ -426,7 +430,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                 f"Invalid input type: {type(inputs)}. Expected JSON/YAML file paths, AtomArray, or DesignInputSpecification.\nInput: {inputs}"
             )
 
-        return inputs
+        return inputs, run_config
 
     def _multiply_specifications(
         self, inputs: Dict[str, dict | DesignInputSpecification], n_batches=None
@@ -504,20 +508,20 @@ def process_input(
     global_prefix: str | None = None,
     specification_overrides: dict | None = None,
     validate: bool = True,
-) -> Dict[str, dict]:
+) -> tuple[Dict[str, dict], dict]:
     """
     inputs: Any -> list[str | None] (see normalize_inputs)
     json_keys_subset: extract only subset of JSON keys. None will keep all keys
     prefix: If provided, prefix all example ids with said prefix
 
-    returns: Dictionaries of specifcation args pre-batching:
+    Top-level `run_config` key in the JSON/YAML (if present) is pulled out and
+    returned separately. It carries engine-level overrides like
+    `n_batches` and `activation_collection`.
+
+    returns: (specs, run_config) where specs is the per-example dict:
         {
-            'jsonfile_jsonkey1': {
-                **args_from_key1
-            },
-            'jsonfile_jsonkey2': {
-                **args_from_key2
-            }
+            'jsonfile_jsonkey1': {**args_from_key1},
+            'jsonfile_jsonkey2': {**args_from_key2},
         }
     """
     specification_overrides = dict(specification_overrides or {})
@@ -545,12 +549,17 @@ def process_input(
 
     # ... Determine prefix of sample to create
     all_specs = {}
+    run_config: dict = {}
     for input in inputs:
         if exists(input) and (input.endswith(".json") or input.endswith(".yaml")):
             # ... Load JSON or YAML file
             with open(input, "r") as f:
                 data = json.load(f) if input.endswith(
                     ".json") else yaml.safe_load(f)
+
+            # ... Pull out engine-level run config (n_batches, activation_collection, ...)
+            if "run_config" in data:
+                run_config.update(data.pop("run_config"))
 
             # ... Apply any global args for this input file
             if "global_args" in data:
@@ -597,7 +606,7 @@ def process_input(
             )
             DesignInputSpecification.safe_init(**example_spec)
 
-    return all_specs
+    return all_specs, run_config
 
 
 def _reshape_trajectory(traj, align_structures: bool):
