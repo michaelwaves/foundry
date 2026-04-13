@@ -11,6 +11,9 @@ dependencies = [
     "torch>=2.2.0,<3",
     "h5py>=3.10",
     "numpy",
+    "einops",
+    "hydra-core>=1.3",
+    "wandb",
 ]
 
 [build-system]

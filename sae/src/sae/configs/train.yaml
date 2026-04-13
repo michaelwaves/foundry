@@ -1,0 +1,25 @@
+defaults:
+  - _self_
+  - trainer: matryoshka_batch_top_k
+
+activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_na_tutorial/activations/activations.h5
+hook_name: block12
+architecture: matryoshka_batch_top_k
+
+lm_name: rfd3
+layer: 12
+device: cuda:0
+seed: 0
+
+steps: 20000
+batch_size: 4096
+shuffle: true
+log_every: 100
+
+save_checkpoints: true
+use_wandb: false
+wandb_project: rfd3_sae
+
+hydra:
+  run:
+    dir: outputs/${architecture}/${hook_name}/${now:%Y-%m-%d_%H-%M-%S}

@@ -1,0 +1,7 @@
+dict_size: 12288
+lr: 0.001
+l1_penalty: 0.1
+warmup_steps: 1000
+sparsity_warmup_steps: 2000
+decay_start: null
+wandb_name: StandardTrainer

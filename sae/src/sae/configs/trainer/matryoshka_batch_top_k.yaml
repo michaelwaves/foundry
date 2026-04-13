@@ -1,0 +1,11 @@
+dict_size: 12288
+k: 80
+group_fractions: [0.0625, 0.125, 0.1875, 0.25, 0.375]
+group_weights: null
+lr: null
+auxk_alpha: 0.03125
+warmup_steps: 1000
+decay_start: null
+threshold_beta: 0.999
+threshold_start_step: 1000
+wandb_name: MatryoshkaBatchTopK
