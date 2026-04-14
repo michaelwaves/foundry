@@ -14,7 +14,8 @@ def run_training(cfg: DictConfig) -> None:
     if cfg.get("activations_path") is None:
         raise ValueError("cfg.activations_path is required")
 
-    save_dir = Path(hydra.core.hydra_config.HydraConfig.get().runtime.output_dir)
+    save_dir = Path(
+        hydra.core.hydra_config.HydraConfig.get().runtime.output_dir)
     save_dir.mkdir(parents=True, exist_ok=True)
 
     loader, activation_dim = build_activation_loader(
@@ -25,7 +26,8 @@ def run_training(cfg: DictConfig) -> None:
             shuffle=cfg.shuffle,
         )
     )
-    print(f"loaded {len(loader.dataset)} tokens, activation_dim={activation_dim}")
+    print(
+        f"loaded {len(loader.dataset)} tokens, activation_dim={activation_dim}")
 
     trainer = _build_trainer(cfg, activation_dim)
     _save_config(save_dir, cfg, trainer)
@@ -54,15 +56,13 @@ def _train(trainer, loader, steps, log_every, save_dir, save_steps, run):
 
 def _build_trainer(cfg: DictConfig, activation_dim: int):
     if cfg.architecture not in TRAINERS:
-        raise ValueError(f"unknown architecture {cfg.architecture}; pick from {list(TRAINERS)}")
+        raise ValueError(
+            f"unknown architecture {cfg.architecture}; pick from {list(TRAINERS)}")
     trainer_cls = TRAINERS[cfg.architecture]
     kwargs = OmegaConf.to_container(cfg.trainer, resolve=True)
     kwargs.update(dict(
         activation_dim=activation_dim,
         steps=cfg.steps,
-        layer=cfg.layer,
-        lm_name=cfg.lm_name,
-        submodule_name=cfg.hook_name,
         device=cfg.device,
         seed=cfg.seed,
     ))
@@ -71,7 +71,8 @@ def _build_trainer(cfg: DictConfig, activation_dim: int):
 
 def _save_config(save_dir: Path, cfg: DictConfig, trainer) -> None:
     with open(save_dir / "config.json", "w") as f:
-        json.dump({"run": OmegaConf.to_container(cfg, resolve=True), "trainer": trainer.config}, f, indent=2)
+        json.dump({"run": OmegaConf.to_container(cfg, resolve=True),
+                  "trainer": trainer.config}, f, indent=2)
 
 
 def _save_checkpoint(trainer, path: Path) -> None:
@@ -86,14 +87,17 @@ def _init_wandb(cfg: DictConfig, trainer):
     return wandb.init(
         project=cfg.wandb_project,
         name=f"{cfg.architecture}_{cfg.hook_name}",
-        config={"run": OmegaConf.to_container(cfg, resolve=True), "trainer": trainer.config},
+        config={"run": OmegaConf.to_container(
+            cfg, resolve=True), "trainer": trainer.config},
     )
 
 
 def _log(step: int, total_steps: int, loss_value: float, trainer, run) -> None:
-    stats = {"step": step, "loss": loss_value, "lr": trainer.scheduler.get_last_lr()[0]}
+    stats = {"step": step, "loss": loss_value,
+             "lr": trainer.scheduler.get_last_lr()[0]}
     stats.update(trainer.get_logging_parameters())
-    print(f"[{step}/{total_steps}] " + " ".join(f"{k}={v:.4g}" if isinstance(v, float) else f"{k}={v}" for k, v in stats.items()))
+    print(f"[{step}/{total_steps}] " + " ".join(f"{k}={v:.4g}" if isinstance(v,
+          float) else f"{k}={v}" for k, v in stats.items()))
     if run is not None:
         run.log(stats, step=step)
 

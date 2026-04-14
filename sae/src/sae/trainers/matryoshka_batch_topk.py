@@ -31,8 +31,6 @@ class MatryoshkaBatchTopKTrainer(SAETrainer):
         activation_dim: int,
         dict_size: int,
         k: int,
-        layer: int,
-        lm_name: str,
         group_fractions: list[float],
         group_weights: Optional[list[float]] = None,
         lr: Optional[float] = None,
@@ -44,7 +42,6 @@ class MatryoshkaBatchTopKTrainer(SAETrainer):
         seed: Optional[int] = None,
         device: Optional[str] = None,
         wandb_name: str = "MatryoshkaBatchTopK",
-        submodule_name: Optional[str] = None,
     ):
         super().__init__(seed)
         if seed is not None:
@@ -57,31 +54,38 @@ class MatryoshkaBatchTopKTrainer(SAETrainer):
             group_weights = [1.0 / len(group_sizes)] * len(group_sizes)
         assert len(group_sizes) == len(group_weights)
 
-        self.steps, self.layer, self.lm_name, self.submodule_name = steps, layer, lm_name, submodule_name
+        self.steps = steps
         self.wandb_name, self.k, self.auxk_alpha = wandb_name, k, auxk_alpha
         self.warmup_steps, self.decay_start = warmup_steps, decay_start
         self.threshold_beta, self.threshold_start_step = threshold_beta, threshold_start_step
         self.group_fractions, self.group_sizes, self.group_weights = group_fractions, group_sizes, group_weights
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = device or (
+            "cuda" if torch.cuda.is_available() else "cpu")
 
-        self.ae = MatryoshkaBatchTopKSAE(activation_dim, dict_size, k, group_sizes).to(self.device)
+        self.ae = MatryoshkaBatchTopKSAE(
+            activation_dim, dict_size, k, group_sizes).to(self.device)
 
         self.lr = lr if lr is not None else 2e-4 / (dict_size / 2**14) ** 0.5
         self.top_k_aux = activation_dim // 2
         self.dead_feature_threshold = 10_000_000
-        self.num_tokens_since_fired = torch.zeros(dict_size, dtype=torch.long, device=self.device)
+        self.num_tokens_since_fired = torch.zeros(
+            dict_size, dtype=torch.long, device=self.device)
 
-        self.optimizer = torch.optim.Adam(self.ae.parameters(), lr=self.lr, betas=(0.9, 0.999))
+        self.optimizer = torch.optim.Adam(
+            self.ae.parameters(), lr=self.lr, betas=(0.9, 0.999))
         self.scheduler = torch.optim.lr_scheduler.LambdaLR(
-            self.optimizer, lr_lambda=get_lr_schedule(steps, warmup_steps, decay_start)
+            self.optimizer, lr_lambda=get_lr_schedule(
+                steps, warmup_steps, decay_start)
         )
-        self.logging_parameters = ["effective_l0", "dead_features", "pre_norm_auxk_loss"]
+        self.logging_parameters = ["effective_l0",
+                                   "dead_features", "pre_norm_auxk_loss"]
         self.effective_l0 = -1
         self.dead_features = -1
         self.pre_norm_auxk_loss = -1
 
     def loss(self, x: torch.Tensor, step: int, logging: bool = False):
-        features, active_mask, post_relu = self.ae.encode(x, return_active=True, use_threshold=False)
+        features, active_mask, post_relu = self.ae.encode(
+            x, return_active=True, use_threshold=False)
         if step > self.threshold_start_step:
             update_threshold(self.ae.threshold, features, self.threshold_beta)
 
@@ -135,8 +139,8 @@ class MatryoshkaBatchTopKTrainer(SAETrainer):
     def config(self) -> dict:
         fields = (
             "lr auxk_alpha warmup_steps decay_start threshold_beta threshold_start_step "
-            "group_fractions group_weights group_sizes steps seed device layer lm_name "
-            "wandb_name submodule_name"
+            "group_fractions group_weights group_sizes steps seed device "
+            "wandb_name"
         ).split()
         return {
             "trainer_class": "MatryoshkaBatchTopKTrainer",
