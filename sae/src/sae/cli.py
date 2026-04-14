@@ -17,7 +17,8 @@ _EXTRA_ARGS = {"allow_extra_args": True, "ignore_unknown_options": True}
 @app.command(context_settings=_EXTRA_ARGS)
 def train(ctx: typer.Context) -> None:
     """Train a sparse autoencoder."""
-    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF",
+                          "expandable_segments:True")
     cfg = _build_config("train", ctx.args)
     from sae.train import run_training
 
@@ -39,11 +40,9 @@ def _build_config(config_name: str, raw_args: list[str]) -> DictConfig:
         cfg = compose(
             config_name=config_name,
             overrides=overrides,
-            return_hydra_config=True,
         )
     if inputs_path is not None:
         cfg = OmegaConf.merge(cfg, _load_overrides_file(inputs_path))
-    HydraConfig.instance().set_config(cfg)
     return cfg
 
 

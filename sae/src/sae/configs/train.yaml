@@ -18,6 +18,12 @@ save_checkpoints: true
 use_wandb: false
 wandb_project: rfd3_sae
 
+out_dir: /mnt/nw/home/m.yu/repos/foundry/outputs/train/${architecture}/${hook_name}/${now:%Y-%m-%d_%H-%M-%S}
+
 hydra:
-  run:
-    dir: /mnt/nw/home/m.yu/repos/foundry/outputs/train/${architecture}/${hook_name}/${now:%Y-%m-%d_%H-%M-%S}
+    run:
+      dir: ${out_dir}
+    output_subdir: null     # don't nest a .hydra/ folder inside out_dir
+    job:                                                                                                                           
+      chdir: false
+                     

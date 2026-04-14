@@ -10,6 +10,12 @@ num_features: 12
 min_fires: 10
 top_residues: 5
 
+out_dir: /mnt/nw/home/m.yu/repos/foundry/outputs/eval/${hook_name}/${now:%Y-%m-%d_%H-%M-%S}                     
+
 hydra:
-  run:
-    dir: /mnt/nw/home/m.yu/repos/foundry/outputs/eval/${now:%Y-%m-%d_%H-%M-%S}
+    run:
+      dir: ${out_dir}
+    output_subdir: null     # don't nest a .hydra/ folder inside out_dir
+    job:                                                                                                                           
+      chdir: false
+                     

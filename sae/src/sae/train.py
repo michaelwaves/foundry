@@ -14,8 +14,7 @@ def run_training(cfg: DictConfig) -> None:
     if cfg.get("activations_path") is None:
         raise ValueError("cfg.activations_path is required")
 
-    save_dir = Path(
-        hydra.core.hydra_config.HydraConfig.get().runtime.output_dir)
+    save_dir = Path(cfg.out_dir)
     save_dir.mkdir(parents=True, exist_ok=True)
 
     loader, activation_dim = build_activation_loader(
