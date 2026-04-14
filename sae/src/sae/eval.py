@@ -1,10 +1,8 @@
 import json
 from dataclasses import asdict
 from pathlib import Path
-
-import hydra
 import torch
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 
 from sae.dataset import ActivationLoaderConfig, build_activation_loader
 from sae.evaluation import (
@@ -26,7 +24,7 @@ DICT_CLASSES = {
 
 
 def run_eval(cfg: DictConfig) -> None:
-    output_dir = Path(hydra.core.hydra_config.HydraConfig.get().runtime.output_dir)
+    output_dir = Path(cfg.out_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     sae = _load_sae(cfg.checkpoint_path, cfg.device)
@@ -35,14 +33,18 @@ def run_eval(cfg: DictConfig) -> None:
     _save_json(output_dir / "metrics.json", asdict(metrics))
     print(f"metrics: {asdict(metrics)}")
 
-    designs = list(iter_design_activations(cfg.activations_path, cfg.hook_name, cfg.metadata_dir))
+    designs = list(iter_design_activations(
+        cfg.activations_path, cfg.hook_name, cfg.metadata_dir))
     stats = build_feature_stats(sae, designs, batch_size=cfg.eval_batch_size)
-    feature_ids = pick_interesting_features(stats, num_features=cfg.num_features, min_fires=cfg.min_fires)
-    _save_json(output_dir / "interesting_features.json", _feature_report(stats, feature_ids, designs))
+    feature_ids = pick_interesting_features(
+        stats, num_features=cfg.num_features, min_fires=cfg.min_fires)
+    _save_json(output_dir / "interesting_features.json",
+               _feature_report(stats, feature_ids, designs))
 
     script_dir = output_dir / "pymol_scripts"
     for feature_id in feature_ids:
-        hits_per_design = top_firing_tokens(stats, feature_id, top_k=cfg.top_residues)
+        hits_per_design = top_firing_tokens(
+            stats, feature_id, top_k=cfg.top_residues)
         for design in designs:
             token_hits = hits_per_design.get(design.design_id, [])
             if not token_hits:
@@ -60,11 +62,13 @@ def run_eval(cfg: DictConfig) -> None:
 
 
 def _load_sae(checkpoint_path: str, device: str) -> torch.nn.Module:
-    checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    checkpoint = torch.load(
+        checkpoint_path, map_location="cpu", weights_only=False)
     config = checkpoint["config"]
     cls = DICT_CLASSES[config["dict_class"]]
     if cls is MatryoshkaBatchTopKSAE:
-        sae = cls(config["activation_dim"], config["dict_size"], k=config["k"], group_sizes=config["group_sizes"])
+        sae = cls(config["activation_dim"], config["dict_size"],
+                  k=config["k"], group_sizes=config["group_sizes"])
     else:
         sae = cls(config["activation_dim"], config["dict_size"])
     sae.load_state_dict(checkpoint["ae"])
