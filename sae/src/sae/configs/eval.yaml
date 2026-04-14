@@ -12,4 +12,4 @@ top_residues: 5
 
 hydra:
   run:
-    dir: outputs/eval/${now:%Y-%m-%d_%H-%M-%S}
+    dir: /mnt/nw/home/m.yu/repos/foundry/outputs/eval/${now:%Y-%m-%d_%H-%M-%S}

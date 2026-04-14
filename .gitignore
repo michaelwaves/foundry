@@ -226,7 +226,7 @@ logs/
 **/distillation/
 **/benchmarks/
 **/hbplus/
-**/activations
+**/activations*
 
 # macOS
 .DS_Store

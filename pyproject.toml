@@ -49,6 +49,7 @@ dependencies = [
     "assertpy",
     "toolz",
     "pymol-open-source>=3.2.0a0",
+    "pyqt5>=5.15.11",
 ]
 
 
