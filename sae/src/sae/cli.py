@@ -5,13 +5,21 @@ from pathlib import Path
 import typer
 import yaml
 from hydra import compose, initialize_config_dir
-from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
 
 app = typer.Typer(add_completion=False)
 
 _CONFIG_DIR = str(Path(__file__).parent / "configs")
 _EXTRA_ARGS = {"allow_extra_args": True, "ignore_unknown_options": True}
+
+
+@app.command(context_settings=_EXTRA_ARGS)
+def collect(ctx: typer.Context) -> None:
+    """Collect activations by running a model's inference with hooks."""
+    model, overrides = _split_model_override(ctx.args)
+    from sae.collectors import dispatch
+
+    dispatch(model, overrides)
 
 
 @app.command(context_settings=_EXTRA_ARGS)
@@ -44,6 +52,19 @@ def _build_config(config_name: str, raw_args: list[str]) -> DictConfig:
     if inputs_path is not None:
         cfg = OmegaConf.merge(cfg, _load_overrides_file(inputs_path))
     return cfg
+
+
+def _split_model_override(args: list[str]) -> tuple[str, list[str]]:
+    model: str | None = None
+    overrides: list[str] = []
+    for arg in args:
+        if arg.startswith("model="):
+            model = arg.split("=", 1)[1]
+        else:
+            overrides.append(arg)
+    if model is None:
+        raise ValueError("saffron collect requires model=<name> (e.g. model=rfd3)")
+    return model, overrides
 
 
 def _split_inputs_override(args: list[str]) -> tuple[list[str], str | None]:
