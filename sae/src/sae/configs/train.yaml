@@ -6,8 +6,6 @@ activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_na_tutorial/act
 hook_name: block6
 architecture: matryoshka_batch_top_k
 
-lm_name: rfd3
-layer: 6
 device: cuda:0
 seed: 0
 
