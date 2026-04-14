@@ -74,7 +74,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
             AlphaFold 3 Supplement, Section 3.7.1.
         """
         # Create a linearly spaced tensor of timesteps between min_t and max_t
-        t = torch.linspace(self.min_t, self.max_t, self.num_timesteps, device=device)
+        t = torch.linspace(self.min_t, self.max_t,
+                           self.num_timesteps, device=device)
 
         # Construct the noise schedule, using the formula provided in the reference
         t_hat = (
@@ -90,7 +91,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
             # For now, partial t is a global parameter
             partial_t = float(partial_t.mean())
             noise_schedule = t_hat
-            ranked_logger.info("Using partial diffusion with t={}".format(partial_t))
+            ranked_logger.info(
+                "Using partial diffusion with t={}".format(partial_t))
 
             # Debug the noise schedule filtering
             original_schedule_len = len(noise_schedule)
@@ -109,7 +111,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
                 ranked_logger.info(
                     f"Original range: [{original_min:.3f}, {original_max:.3f}]"
                 )
-                ranked_logger.info(f"Filtered range: [{new_min:.3f}, {new_max:.3f}]")
+                ranked_logger.info(
+                    f"Filtered range: [{new_min:.3f}, {new_max:.3f}]")
             else:
                 ranked_logger.warning(
                     f"No noise schedule steps found with t <= {partial_t}!"
@@ -121,7 +124,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
                 noise_schedule_original = self._construct_inference_noise_schedule(
                     device=device
                 )
-                noise_schedule = noise_schedule_original[-1:]  # Just use the final step
+                # Just use the final step
+                noise_schedule = noise_schedule_original[-1:]
                 ranked_logger.info(
                     f"Using fallback: final step with t={noise_schedule[0].item():.6f}"
                 )
@@ -138,8 +142,10 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
         coord_atom_lvl_to_be_noised: torch.Tensor,
         is_motif_atom_with_fixed_coord,
     ) -> torch.Tensor:
-        noise = c0 * torch.normal(mean=0.0, std=1.0, size=(D, L, 3), device=c0.device)
-        noise[..., is_motif_atom_with_fixed_coord, :] = 0  # Zero out noise going in
+        noise = c0 * torch.normal(mean=0.0, std=1.0,
+                                  size=(D, L, 3), device=c0.device)
+        # Zero out noise going in
+        noise[..., is_motif_atom_with_fixed_coord, :] = 0
         X_L = noise + coord_atom_lvl_to_be_noised
         return X_L
 
@@ -187,7 +193,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
         sequence_entropy_traj = []
         t_hats = []
 
-        threshold_step = (len(noise_schedule) - 1) * self.fraction_of_steps_to_fix_motif
+        threshold_step = (len(noise_schedule) - 1) * \
+            self.fraction_of_steps_to_fix_motif
 
         for step_num, (c_t_minus_1, c_t) in enumerate(
             zip(noise_schedule, noise_schedule[1:])
@@ -204,7 +211,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
                     is_motif_atom_with_fixed_coord,
                     center_option=self.center_option,
                     # If centering_affects_motif is True, the model's predictions from (step_num-1) might affect the motif
-                    centering_affects_motif=(max(step_num - 1, 0)) >= threshold_step,
+                    centering_affects_motif=(
+                        max(step_num - 1, 0)) >= threshold_step,
                     # If keeping the motif position wrt the origin fixed, we can't do translational augmentation
                     # We want to keep this position fixed in the interval where the model is not allowed to change it
                     s_trans=self.s_trans if step_num >= threshold_step else 0.0,
@@ -298,13 +306,15 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
                     delta_L_ref = torch.cat(
                         [
                             delta_L_ref,
-                            torch.zeros_like(delta_L[:, delta_L_ref.shape[1] :, :]),
+                            torch.zeros_like(
+                                delta_L[:, delta_L_ref.shape[1]:, :]),
                         ],
                         dim=1,
                     )
 
                 # apply CFG
-                delta_L = delta_L + (self.cfg_scale - 1) * (delta_L - delta_L_ref)
+                delta_L = delta_L + (self.cfg_scale - 1) * \
+                    (delta_L - delta_L_ref)
 
             if exists(outs.get("sequence_logits_I")):
                 # Compute confidence
@@ -321,7 +331,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
 
             # Append the results to the trajectory (for visualization of the diffusion process)
             X_noisy_L_scaled = (
-                self.sigma_data * X_noisy_L / torch.sqrt(t_hat**2 + self.sigma_data**2)
+                self.sigma_data * X_noisy_L /
+                torch.sqrt(t_hat**2 + self.sigma_data**2)
             )  # Save noisy traj as scaled inputs
             X_noisy_L_traj.append(X_noisy_L_scaled)
             X_denoised_L_traj.append(X_denoised_L)
@@ -347,7 +358,8 @@ class SampleDiffusionWithMotif(SampleDiffusionConfig):
             X_L=X_L,  # (D, L, 3)
             X_noisy_L_traj=X_noisy_L_traj,  # list[Tensor[D, L, 3]]
             X_denoised_L_traj=X_denoised_L_traj,  # list[Tensor[D, L, 3]]
-            t_hats=t_hats,  # list[Tensor[D]], where D is shared across all diffusion batches
+            # list[Tensor[D]], where D is shared across all diffusion batches
+            t_hats=t_hats,
             sequence_logits_I=outs.get("sequence_logits_I"),  # (D, I, 32)
             sequence_indices_I=outs.get("sequence_indices_I"),  # (D, I, 32)
             sequence_entropy_traj=sequence_entropy_traj,  # list[Tensor[D, I]]
@@ -527,7 +539,8 @@ class SampleDiffusionWithSymmetry(SampleDiffusionWithMotif):
 
             # Append the results to the trajectory (for visualization of the diffusion process)
             X_noisy_L_scaled = (
-                self.sigma_data * X_noisy_L / torch.sqrt(t_hat**2 + self.sigma_data**2)
+                self.sigma_data * X_noisy_L /
+                torch.sqrt(t_hat**2 + self.sigma_data**2)
             )  # Save noisy traj as scaled inputs
             X_noisy_L_traj.append(X_noisy_L_scaled)
             X_denoised_L_traj.append(X_denoised_L)
@@ -556,7 +569,8 @@ class SampleDiffusionWithSymmetry(SampleDiffusionWithMotif):
             X_L=X_L,  # (D, L, 3)
             X_noisy_L_traj=X_noisy_L_traj,  # list[Tensor[D, L, 3]]
             X_denoised_L_traj=X_denoised_L_traj,  # list[Tensor[D, L, 3]]
-            t_hats=t_hats,  # list[Tensor[D]], where D is shared across all diffusion batches
+            # list[Tensor[D]], where D is shared across all diffusion batches
+            t_hats=t_hats,
             sequence_logits_I=outs.get("sequence_logits_I"),  # (D, I, 32)
             sequence_indices_I=outs.get("sequence_indices_I"),  # (D, I, 32)
             sequence_entropy_traj=sequence_entropy_traj,  # list[Tensor[D, I]]
@@ -608,8 +622,10 @@ class ConditionalDiffusionSampler:
 
 def centre_random_augment_around_motif(
     X_L: torch.Tensor,  # (D, L, 3) noisy diffused coordinates
-    coord_atom_lvl_to_be_noised: torch.Tensor,  # (D, L, 3) original coordinates
-    is_motif_atom_with_fixed_coord: torch.Tensor,  # (D, L) indices in original coordinates to be kept constant
+    # (D, L, 3) original coordinates
+    coord_atom_lvl_to_be_noised: torch.Tensor,
+    # (D, L) indices in original coordinates to be kept constant
+    is_motif_atom_with_fixed_coord: torch.Tensor,
     s_trans: float = 1.0,
     center_option: str = "all",
     centering_affects_motif: bool = True,
@@ -621,7 +637,8 @@ def centre_random_augment_around_motif(
         # ... Align original coordinates to the prediction
         coords_with_gt_aligned = weighted_rigid_align(
             X_L[..., is_motif_atom_with_fixed_coord, :],
-            coord_atom_lvl_to_be_noised[..., is_motif_atom_with_fixed_coord, :],
+            coord_atom_lvl_to_be_noised[...,
+                                        is_motif_atom_with_fixed_coord, :],
         )
 
         # ... Insert original coordinates into X_L
@@ -654,7 +671,8 @@ def centre_random_augment_around_motif(
     # ... Random augmentation
     R = uniform_random_rotation((D,)).to(X_L.device)
     noise = (
-        torch.normal(mean=0, std=1, size=(D, 1, 3), device=X_L.device) * s_trans
+        torch.normal(mean=0, std=1, size=(D, 1, 3),
+                     device=X_L.device) * s_trans
     )  # (D, 1, 3)
     X_L = rot_vec_mul(R[:, None], X_L) + noise
 

@@ -41,7 +41,8 @@ class RFD3(nn.Module):
         super().__init__()
         # Check for chunked P_LL mode via environment variable
         use_chunked_pll = os.environ.get("RFD3_LOW_MEMORY_MODE", None) == "1"
-        ranked_logger.info(f"RFD3 initialized with chunked_pll={use_chunked_pll}")
+        ranked_logger.info(
+            f"RFD3 initialized with chunked_pll={use_chunked_pll}")
 
         # Simple constant-feature initializer
         self.token_initializer = TokenInitializer(
@@ -65,7 +66,8 @@ class RFD3(nn.Module):
         self.cfg_features = inference_sampler.pop("cfg_features", [])
 
         # ... initialize the inference sampler, which performs a full diffusion rollout during inference
-        self.inference_sampler = ConditionalDiffusionSampler(**inference_sampler)
+        self.inference_sampler = ConditionalDiffusionSampler(
+            **inference_sampler)
 
     def forward(
         self,
@@ -75,7 +77,6 @@ class RFD3(nn.Module):
         **_,
     ) -> dict:
         initializer_outputs = self.token_initializer(input["f"])
-
         if self.training:
             # Single denoising step
             return self.diffusion_module(

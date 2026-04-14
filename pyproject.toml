@@ -50,6 +50,7 @@ dependencies = [
     "toolz",
     "pymol-open-source>=3.2.0a0",
     "pyqt5>=5.15.11",
+    "h5py>=3.16.0",
 ]
 
 
@@ -92,6 +93,7 @@ dev = [
 rf3 = "rf3.cli:app"
 rfd3 = "rfd3.cli:app"
 mpnn = "mpnn.inference:main"
+saffron = "sae.cli:app"
 foundry = "foundry_cli.download_checkpoints:app"
 
 # Build settings ----------------------------------------------------------------------

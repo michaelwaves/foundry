@@ -25,8 +25,7 @@ DICT_CLASSES = {
 }
 
 
-@hydra.main(version_base=None, config_path="configs", config_name="eval")
-def main(cfg: DictConfig) -> None:
+def run_eval(cfg: DictConfig) -> None:
     output_dir = Path(hydra.core.hydra_config.HydraConfig.get().runtime.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -102,4 +101,6 @@ def _save_json(path: Path, payload) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    from sae.cli import app
+
+    app()

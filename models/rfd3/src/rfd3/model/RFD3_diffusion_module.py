@@ -67,7 +67,8 @@ class RFD3DiffusionModule(nn.Module):
 
         # Auxiliary
         self.process_r = linearNoBias(3, c_atom)
-        self.to_r_update = nn.Sequential(RMSNorm((c_atom,)), linearNoBias(c_atom, 3))
+        self.to_r_update = nn.Sequential(
+            RMSNorm((c_atom,)), linearNoBias(c_atom, 3))
         self.sequence_head = LinearSequenceHead(c_token=c_token)
 
         self.n_recycle = n_recycle
@@ -86,14 +87,19 @@ class RFD3DiffusionModule(nn.Module):
         )
         self.process_n = nn.ModuleList(
             [
-                nn.Sequential(RMSNorm(c_t_embed), linearNoBias(c_t_embed, c_atom)),
-                nn.Sequential(RMSNorm(c_t_embed), linearNoBias(c_t_embed, c_s)),
+                nn.Sequential(RMSNorm(c_t_embed),
+                              linearNoBias(c_t_embed, c_atom)),
+                nn.Sequential(RMSNorm(c_t_embed),
+                              linearNoBias(c_t_embed, c_s)),
             ]
         )
-        self.downcast_c = Downcast(c_atom=c_atom, c_token=c_s, c_s=None, **downcast)
-        self.downcast_q = Downcast(c_atom=c_atom, c_token=c_token, c_s=c_s, **downcast)
+        self.downcast_c = Downcast(
+            c_atom=c_atom, c_token=c_s, c_s=None, **downcast)
+        self.downcast_q = Downcast(
+            c_atom=c_atom, c_token=c_token, c_s=c_s, **downcast)
         self.process_a = LinearEmbedWithPool(c_token)
-        self.process_c = nn.Sequential(RMSNorm(c_atom), linearNoBias(c_atom, c_atom))
+        self.process_c = nn.Sequential(
+            RMSNorm(c_atom), linearNoBias(c_atom, c_atom))
 
         # UNet-like architecture for processing across tokens and atoms
         self.encoder = LocalAtomTransformer(
@@ -161,7 +167,8 @@ class RFD3DiffusionModule(nn.Module):
     def process_time_(self, t_L, i):
         C_L = self.process_n[i](
             self.fourier_embedding[i](
-                1 / 4 * torch.log(torch.clamp(t_L, min=1e-20) / self.sigma_data)
+                1 / 4 *
+                torch.log(torch.clamp(t_L, min=1e-20) / self.sigma_data)
             )
         )
         # Mask out zero-time features;

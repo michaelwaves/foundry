@@ -1,4 +1,4 @@
-# RFD3 Architecture
+    # RFD3 Architecture
 
 ## What `rfd3 design` runs
 

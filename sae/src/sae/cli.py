@@ -1,0 +1,74 @@
+import json
+import os
+from pathlib import Path
+
+import typer
+import yaml
+from hydra import compose, initialize_config_dir
+from hydra.core.hydra_config import HydraConfig
+from omegaconf import DictConfig, OmegaConf
+
+app = typer.Typer(add_completion=False)
+
+_CONFIG_DIR = str(Path(__file__).parent / "configs")
+_EXTRA_ARGS = {"allow_extra_args": True, "ignore_unknown_options": True}
+
+
+@app.command(context_settings=_EXTRA_ARGS)
+def train(ctx: typer.Context) -> None:
+    """Train a sparse autoencoder."""
+    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+    cfg = _build_config("train", ctx.args)
+    from sae.train import run_training
+
+    run_training(cfg)
+
+
+@app.command(name="eval", context_settings=_EXTRA_ARGS)
+def eval_(ctx: typer.Context) -> None:
+    """Evaluate a trained sparse autoencoder."""
+    cfg = _build_config("eval", ctx.args)
+    from sae.eval import run_eval
+
+    run_eval(cfg)
+
+
+def _build_config(config_name: str, raw_args: list[str]) -> DictConfig:
+    overrides, inputs_path = _split_inputs_override(raw_args)
+    with initialize_config_dir(config_dir=_CONFIG_DIR, version_base="1.3"):
+        cfg = compose(
+            config_name=config_name,
+            overrides=overrides,
+            return_hydra_config=True,
+        )
+    if inputs_path is not None:
+        cfg = OmegaConf.merge(cfg, _load_overrides_file(inputs_path))
+    HydraConfig.instance().set_config(cfg)
+    return cfg
+
+
+def _split_inputs_override(args: list[str]) -> tuple[list[str], str | None]:
+    overrides: list[str] = []
+    inputs_path: str | None = None
+    for arg in args:
+        if arg.startswith("inputs="):
+            inputs_path = arg.split("=", 1)[1]
+        else:
+            overrides.append(arg)
+    return overrides, inputs_path
+
+
+def _load_overrides_file(path: str) -> DictConfig:
+    file_path = Path(path)
+    suffix = file_path.suffix.lower()
+    if suffix == ".json":
+        data = json.loads(file_path.read_text())
+    elif suffix in {".yaml", ".yml"}:
+        data = yaml.safe_load(file_path.read_text())
+    else:
+        raise ValueError(f"unsupported inputs file extension: {suffix}")
+    return OmegaConf.create(data)
+
+
+if __name__ == "__main__":
+    app()

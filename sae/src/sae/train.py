@@ -1,5 +1,4 @@
 import json
-import os
 from itertools import cycle
 from pathlib import Path
 
@@ -11,8 +10,7 @@ from sae.dataset import ActivationLoaderConfig, build_activation_loader
 from sae.trainers import TRAINERS
 
 
-@hydra.main(version_base=None, config_path="configs", config_name="train")
-def main(cfg: DictConfig) -> None:
+def run_training(cfg: DictConfig) -> None:
     if cfg.get("activations_path") is None:
         raise ValueError("cfg.activations_path is required")
 
@@ -109,5 +107,6 @@ def _get_save_steps(cfg: DictConfig) -> set[int] | None:
 
 
 if __name__ == "__main__":
-    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
-    main()
+    from sae.cli import app
+
+    app()
