@@ -52,44 +52,36 @@ def pick_interesting_features(
     num_features: int = 12,
     min_fires: int = 10,
 ) -> list[int]:
-    """Features that fire strongly but sparsely, and are spatially concentrated."""
+    """Features that fire strongly but sparsely across designs."""
     fire_rate = stats.fire_count / max(stats.token_count, 1)
     sparsity_score = 1.0 / (fire_rate.clamp(min=1e-6))
     strength_score = stats.max_activation
-
-    concentration = _mean_concentration_across_designs(stats)
     alive = (stats.fire_count >= min_fires).float()
 
-    score = (strength_score * sparsity_score.log1p() * concentration * alive).cpu()
+    score = (strength_score * sparsity_score.log1p() * alive).cpu()
     return torch.topk(score, k=min(num_features, int(alive.sum().item()))).indices.tolist()
 
 
 def top_firing_tokens(
-    stats: FeatureStats, feature_id: int, top_k: int = 5
+    stats: FeatureStats,
+    feature_id: int,
+    top_k: int = 5,
+    min_activation_fraction: float = 0.05,
 ) -> dict[str, list[tuple[int, float]]]:
-    """For each design, return top-k (token_index, mean_activation) for the feature."""
+    """For each design, return (token_index, mean_activation) pairs where the feature
+    actually fires, up to top_k. Empty list when the feature is silent on that design."""
+    feature_max = float(stats.max_activation[feature_id].item())
+    threshold = max(min_activation_fraction * feature_max, 1e-6)
     output: dict[str, list[tuple[int, float]]] = {}
     for design_id, per_token in stats.per_design.items():
         column = per_token[:, feature_id]
         k = min(top_k, column.shape[0])
         values, indices = column.topk(k)
-        output[design_id] = list(zip(indices.tolist(), values.tolist()))
+        hits = [(int(i), float(v)) for i, v in zip(indices.tolist(), values.tolist()) if v > threshold]
+        output[design_id] = hits
     return output
 
 
 def _encode_in_chunks(sae, flat: torch.Tensor, batch_size: int) -> torch.Tensor:
     chunks = [sae.encode(flat[i : i + batch_size]) for i in range(0, flat.shape[0], batch_size)]
     return torch.cat(chunks, dim=0)
-
-
-def _mean_concentration_across_designs(stats: FeatureStats) -> torch.Tensor:
-    """For each feature, 1 - normalized entropy of its per-token activation distribution."""
-    per_feature = []
-    for per_token in stats.per_design.values():
-        weights = per_token.clamp(min=0).cpu()
-        totals = weights.sum(dim=0, keepdim=True).clamp(min=1e-12)
-        probabilities = weights / totals
-        entropy = -(probabilities * probabilities.clamp(min=1e-12).log()).sum(dim=0)
-        max_entropy = torch.log(torch.tensor(per_token.shape[0], dtype=torch.float32))
-        per_feature.append(1.0 - entropy / max_entropy)
-    return torch.stack(per_feature, dim=0).mean(dim=0).to(stats.max_activation.device)

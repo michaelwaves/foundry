@@ -196,6 +196,7 @@ class RFD3DiffusionModule(nn.Module):
         Diffusion forward pass with recycling.
         Computes denoised positions given encoded features and noisy coordinates.
         """
+        breakpoint()
         # ... Collect inputs
         tok_idx = f["atom_to_token_map"]
         L = len(tok_idx)
@@ -225,6 +226,7 @@ class RFD3DiffusionModule(nn.Module):
 
         # ... Add batch-wise features to inputs
         Q_L = Q_L_init.unsqueeze(0) + self.process_r(R_noisy_L)
+        breakpoint()
         C_L = C_L.unsqueeze(0) + self.process_time_(t_L, i=0)
         S_I = S_I.unsqueeze(0) + self.process_time_(t_I, i=1)
         C_L = C_L + self.process_c(C_L)
@@ -245,7 +247,7 @@ class RFD3DiffusionModule(nn.Module):
             # Standard mode: use full P_LL
             Q_L = self.encoder(Q_L, C_L, P_LL, indices=f["attn_indices"])
         A_I = self.downcast_q(Q_L, A_I=A_I, S_I=S_I, tok_idx=tok_idx)
-
+        breakpoint()
         # ... Run forward with recycling
         recycled_features = self.forward_with_recycle(
             n_recycle,
@@ -331,7 +333,7 @@ class RFD3DiffusionModule(nn.Module):
             C_L=C_L,
             P_LL=P_LL,
         )
-
+        breakpoint()
         # ... Diffusion transformer
         A_I = self.diffusion_transformer(
             A_I,
@@ -347,6 +349,7 @@ class RFD3DiffusionModule(nn.Module):
         )
         # ... Decoder readout
         # Check if using chunked P_LL mode
+        breakpoint()
 
         if chunked_pairwise_embedder is not None:
             # Chunked mode: pass embedder and no P_LL
@@ -382,7 +385,7 @@ class RFD3DiffusionModule(nn.Module):
 
         sequence_logits_I, sequence_indices_I = self.sequence_head(A_I=A_I)
         D_II_self = self.bucketize_fn(X_out_L[..., f["is_ca"], :].detach())
-
+        breakpoint()
         return {
             "X_L": X_out_L,
             "D_II_self": D_II_self,

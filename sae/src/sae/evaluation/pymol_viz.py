@@ -47,23 +47,27 @@ def _build_script(pdb_path: str, residues: list[ResidueHit], image_path: Path) -
         "bg_color white",
         "hide everything",
         "show cartoon, structure",
+        "show sticks, hetatm",
         "color gray70, structure",
     ]
     max_activation = max((r.activation for r in residues), default=1.0) or 1.0
+    hit_selections: list[str] = []
     for index, hit in enumerate(residues):
-        intensity = max(0.15, hit.activation / max_activation)
+        intensity = hit.activation / max_activation
         color = f"feature_color_{index}"
         red, green, blue = _heat_rgb(intensity)
         selection = f"feature_{index}"
+        hit_selections.append(selection)
         lines += [
             f"set_color {color}, [{red:.3f}, {green:.3f}, {blue:.3f}]",
             f"select {selection}, chain {hit.chain_id} and resi {hit.res_id}",
             f"color {color}, {selection}",
             f"show sticks, {selection}",
         ]
+    zoom_target = " or ".join(hit_selections) if hit_selections else "structure"
     lines += [
         "orient",
-        "zoom structure, 3",
+        f"zoom ({zoom_target}), 8",
         "ray 1200, 900",
         f"png {image_path}, dpi=150",
     ]
