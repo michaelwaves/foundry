@@ -1,13 +1,14 @@
 from pathlib import Path
 
 from hydra import compose, initialize_config_dir
+from sae.cli import _build_config
 
 
 def collect(overrides: list[str]) -> None:
     """Run rfd3 inference with activation hooks attached."""
-    with initialize_config_dir(config_dir=_config_dir(), version_base="1.3"):
-        cfg = compose(config_name="inference", overrides=_with_default_engine(overrides))
-
+    overrides = _with_default_engine(overrides)
+    breakpoint()
+    cfg = _build_config(_config_dir(), "inference", overrides)
     from foundry.utils.logging import suppress_warnings
     from rfd3.run_inference import run_inference
 

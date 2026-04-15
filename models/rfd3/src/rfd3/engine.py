@@ -300,9 +300,9 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             return
         from sae import ActivationBuffer, HookConfig, HookType
 
-        out_dir = Path(self.activation_collection["out_dir"])
-        out_dir.mkdir(parents=True, exist_ok=True)
-        with ActivationBuffer(self._get_shadow_model(), str(out_dir)) as buf:
+        activations_dir = self.out_dir / "activations"
+        activations_dir.mkdir(parents=True, exist_ok=True)
+        with ActivationBuffer(self._get_shadow_model(), str(activations_dir)) as buf:
             for spec in self.activation_collection["hooks"]:
                 buf.register(
                     HookConfig(

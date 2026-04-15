@@ -2,7 +2,6 @@
     "run_config": {
         "n_batches": 8,
         "activation_collection": {
-            "out_dir": "./activations_new",
             "hooks": [
                 {
                     "name": "block6",

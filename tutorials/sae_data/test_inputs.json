@@ -2,7 +2,6 @@
     "run_config": {
         "n_batches": 4,
         "activation_collection": {
-            "out_dir": "./test_activations",
             "hooks": [
                 {
                     "name": "block6",
@@ -23,7 +22,11 @@
         "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/5o4d.pdb",
         "contig": "A1-23,/0,120-130",
         "length": "143-153",
-        "ori_token": [-5, -10, 8],
+        "ori_token": [
+            -5,
+            -10,
+            8
+        ],
         "is_non_loopy": true
     },
     "ppi_pdl1": {
@@ -43,7 +46,11 @@
         "ligand": "l:g",
         "unindex": "A514,A531,A579-581",
         "length": "100-200",
-        "ori_token": [0, 1, 0],
+        "ori_token": [
+            0,
+            1,
+            0
+        ],
         "select_fixed_atoms": {
             "A514": "NE2,CE1,ND1,CD2,CG,CB",
             "A531": "OD1,CG,OD2,CB",
@@ -58,7 +65,9 @@
         "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/IAI.pdb",
         "ligand": "IAI",
         "length": "180-180",
-        "select_fixed_atoms": {"IAI": ""},
+        "select_fixed_atoms": {
+            "IAI": ""
+        },
         "select_exposed": {
             "IAI": "C22,C23,C25,C24,C21,C20,N13,C15,C16,N14,C19,C11,N12,C18,C17"
         },

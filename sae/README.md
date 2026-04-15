@@ -12,10 +12,11 @@ uv sync --extra sae
 
  ## run
 
-  rfd3 design inputs=rfd3_na_tutorial.json out_dir=outputs/1 'activation_collection={out_dir: ./activations, hooks: [{name: s_trunk, module_path:
-  token_initializer.process_s_trunk, hook_type: static}, {name: block12, module_path:
-  diffusion_module.diffusion_transformer.blocks.12.transition_block, hook_type: dynamic,
-  collect_every_n_steps: 20}]}'
+  saffron collect model=rfd3 inputs=rfd3_na_tutorial.json out_dir=outputs/1
+
+  PDBs are written to `${out_dir}/` and captured activations to `${out_dir}/activations/`.
+  The inputs JSON carries `run_config.activation_collection.hooks` (no `out_dir` inside —
+  it's derived from the top-level `out_dir`).
 
  How the hooks work in the forward pass
 

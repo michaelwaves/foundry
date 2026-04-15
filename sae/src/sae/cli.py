@@ -27,7 +27,7 @@ def train(ctx: typer.Context) -> None:
     """Train a sparse autoencoder."""
     os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF",
                           "expandable_segments:True")
-    cfg = _build_config("train", ctx.args)
+    cfg = _build_config(_CONFIG_DIR, "train", ctx.args)
     from sae.train import run_training
 
     run_training(cfg)
@@ -36,15 +36,16 @@ def train(ctx: typer.Context) -> None:
 @app.command(name="eval", context_settings=_EXTRA_ARGS)
 def eval_(ctx: typer.Context) -> None:
     """Evaluate a trained sparse autoencoder."""
-    cfg = _build_config("eval", ctx.args)
+    cfg = _build_config(_CONFIG_DIR, "eval", ctx.args)
     from sae.eval import run_eval
 
     run_eval(cfg)
 
 
-def _build_config(config_name: str, raw_args: list[str]) -> DictConfig:
+def _build_config(config_dir: str, config_name: str, raw_args: list[str]) -> DictConfig:
     overrides, inputs_path = _split_inputs_override(raw_args)
-    with initialize_config_dir(config_dir=_CONFIG_DIR, version_base="1.3"):
+    breakpoint()
+    with initialize_config_dir(config_dir=config_dir, version_base="1.3"):
         cfg = compose(
             config_name=config_name,
             overrides=overrides,
@@ -63,7 +64,8 @@ def _split_model_override(args: list[str]) -> tuple[str, list[str]]:
         else:
             overrides.append(arg)
     if model is None:
-        raise ValueError("saffron collect requires model=<name> (e.g. model=rfd3)")
+        raise ValueError(
+            "saffron collect requires model=<name> (e.g. model=rfd3)")
     return model, overrides
 
 
