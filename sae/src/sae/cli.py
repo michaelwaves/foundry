@@ -44,7 +44,6 @@ def eval_(ctx: typer.Context) -> None:
 
 def _build_config(config_dir: str, config_name: str, raw_args: list[str]) -> DictConfig:
     overrides, inputs_path = _split_inputs_override(raw_args)
-    breakpoint()
     with initialize_config_dir(config_dir=config_dir, version_base="1.3"):
         cfg = compose(
             config_name=config_name,

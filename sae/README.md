@@ -31,8 +31,9 @@ uv sync --extra sae
   _FabricModule).
 
   - models/rfd3/src/rfd3/engine.py:
-    - RFD3InferenceConfig.activation_collection: dict | None = None (schema: {out_dir, hooks:
-  [{name, module_path, hook_type, collect_every_n_steps}]})
+    - RFD3InferenceConfig.activation_collection: dict | None = None (schema: {hooks:
+  [{name, module_path, hook_type, collect_every_n_steps}]}); activations dir is
+  `${out_dir}/activations/` and is created automatically.
     - _run_multi wraps the batch loop in _maybe_activation_buffer(), calling
   on_design_start/on_design_end around each _model_forward.
     - _get_shadow_model() resolves the EMA shadow through the Fabric wrapper. sae is imported
