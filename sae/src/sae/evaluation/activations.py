@@ -13,10 +13,11 @@ class DesignActivations:
     """All activations for one design, stacked with provenance retained."""
 
     design_id: str
-    activations: torch.Tensor  # (n_samples, n_steps, n_tokens, activation_dim) or flattened
+    activations: torch.Tensor  # (n_samples, n_steps, n_tokens, activation_dim)
     atom_array: object
     feats: dict
-    pdb_path: str
+    input_pdb_path: str
+    generated_pdb_paths: list[str]  # one per sample (model_0..model_{n_samples-1})
     n_samples: int
     n_steps: int
     n_tokens: int
@@ -45,13 +46,15 @@ def _load_design(hook_group, design_id: str, metadata_dir: str) -> DesignActivat
     stacked = np.stack(step_arrays, axis=1)  # (n_samples, n_steps, n_tokens, dim)
 
     metadata = _load_metadata(metadata_dir, design_id)
+    n_samples = stacked.shape[0]
     return DesignActivations(
         design_id=design_id,
         activations=torch.from_numpy(stacked),
         atom_array=metadata["atom_array"],
         feats=metadata["feats"],
-        pdb_path=metadata["specification"]["input"],
-        n_samples=stacked.shape[0],
+        input_pdb_path=metadata["specification"]["input"],
+        generated_pdb_paths=_find_generated_pdbs(metadata_dir, design_id, n_samples),
+        n_samples=n_samples,
         n_steps=stacked.shape[1],
         n_tokens=stacked.shape[2],
     )
@@ -61,3 +64,20 @@ def _load_metadata(metadata_dir: str, design_id: str) -> dict:
     path = Path(metadata_dir) / f"{design_id}_metadata.pkl"
     with open(path, "rb") as f:
         return pickle.load(f)
+
+
+def _find_generated_pdbs(metadata_dir: str, design_id: str, n_samples: int) -> list[str]:
+    """Generated structures from RFD3 are dumped as <design_id>_model_<k>.cif.gz,
+    where k is the diffusion batch index — same axis as activation sample dim.
+    Train layout colocates them with metadata; test layout puts them in the parent."""
+    search_roots = [Path(metadata_dir), Path(metadata_dir).parent]
+    paths = []
+    for k in range(n_samples):
+        filename = f"{design_id}_model_{k}.cif.gz"
+        match = next((root / filename for root in search_roots if (root / filename).exists()), None)
+        if match is None:
+            raise FileNotFoundError(
+                f"missing generated structure {filename} in {[str(r) for r in search_roots]}"
+            )
+        paths.append(str(match))
+    return paths

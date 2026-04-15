@@ -16,6 +16,7 @@ class ResidueHit:
 def render_feature_on_structure(
     design_id: str,
     feature_id: int,
+    sample_idx: int,
     pdb_path: str,
     token_hits: list[tuple[int, float]],
     atom_array,
@@ -23,8 +24,9 @@ def render_feature_on_structure(
 ) -> Path:
     """Write a .pml script highlighting residues where the feature fires; render PNG if pymol found."""
     residues = _tokens_to_residues(token_hits, atom_array)
-    script_path = output_dir / f"{design_id}_feature_{feature_id}.pml"
-    image_path = output_dir / f"{design_id}_feature_{feature_id}.png"
+    stem = f"{design_id}_model_{sample_idx}_feature_{feature_id}"
+    script_path = output_dir / f"{stem}.pml"
+    image_path = output_dir / f"{stem}.png"
     write_pymol_script(pdb_path, residues, script_path, image_path)
     _try_render(script_path)
     return script_path

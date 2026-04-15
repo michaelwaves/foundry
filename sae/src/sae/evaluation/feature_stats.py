@@ -14,7 +14,7 @@ class FeatureStats:
     max_activation: torch.Tensor  # (F,)
     fire_count: torch.Tensor       # (F,)
     token_count: int = 0
-    per_design: dict = field(default_factory=dict)  # {design_id: (n_tokens, F) mean activation}
+    per_design: dict = field(default_factory=dict)  # {design_id: (n_samples, n_tokens, F) mean over steps}
 
 
 @torch.no_grad()
@@ -32,7 +32,6 @@ def build_feature_stats(
     )
 
     for design in designs:
-        per_token_sum = torch.zeros(design.n_tokens, sae.dict_size, device=device)
         flat = design.flat_tokens().to(device=device, dtype=torch.float32)
         features = _encode_in_chunks(sae, flat, batch_size)
 
@@ -41,8 +40,8 @@ def build_feature_stats(
         stats.token_count += features.shape[0]
 
         reshaped = features.reshape(design.n_samples, design.n_steps, design.n_tokens, -1)
-        per_token_sum = reshaped.mean(dim=(0, 1))  # (n_tokens, F)
-        stats.per_design[design.design_id] = per_token_sum.cpu()
+        per_sample_token = reshaped.mean(dim=1)  # (n_samples, n_tokens, F)
+        stats.per_design[design.design_id] = per_sample_token.cpu()
 
     return stats
 
@@ -67,17 +66,26 @@ def top_firing_tokens(
     feature_id: int,
     top_k: int = 5,
     min_activation_fraction: float = 0.05,
-) -> dict[str, list[tuple[int, float]]]:
-    """For each design, return (token_index, mean_activation) pairs where the feature
-    actually fires, up to top_k. Empty list when the feature is silent on that design."""
+) -> dict[str, list[tuple[int, int, float]]]:
+    """For each design, return (sample_idx, token_index, mean_activation) tuples where
+    the feature actually fires, up to top_k across all (sample, token) positions.
+    Empty list when the feature is silent on that design."""
     feature_max = float(stats.max_activation[feature_id].item())
     threshold = max(min_activation_fraction * feature_max, 1e-6)
-    output: dict[str, list[tuple[int, float]]] = {}
-    for design_id, per_token in stats.per_design.items():
-        column = per_token[:, feature_id]
-        k = min(top_k, column.shape[0])
-        values, indices = column.topk(k)
-        hits = [(int(i), float(v)) for i, v in zip(indices.tolist(), values.tolist()) if v > threshold]
+    output: dict[str, list[tuple[int, int, float]]] = {}
+    for design_id, per_sample_token in stats.per_design.items():
+        slab = per_sample_token[:, :, feature_id]  # (n_samples, n_tokens)
+        n_samples, n_tokens = slab.shape
+        flat = slab.reshape(-1)
+        k = min(top_k, flat.shape[0])
+        values, indices = flat.topk(k)
+        hits = []
+        for idx, v in zip(indices.tolist(), values.tolist()):
+            if v <= threshold:
+                continue
+            sample_idx = idx // n_tokens
+            token_idx = idx % n_tokens
+            hits.append((int(sample_idx), int(token_idx), float(v)))
         output[design_id] = hits
     return output
 

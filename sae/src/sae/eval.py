@@ -46,13 +46,17 @@ def run_eval(cfg: DictConfig) -> None:
         hits_per_design = top_firing_tokens(
             stats, feature_id, top_k=cfg.top_residues)
         for design in designs:
-            token_hits = hits_per_design.get(design.design_id, [])
-            if not token_hits:
+            sample_hits = hits_per_design.get(design.design_id, [])
+            if not sample_hits:
                 continue
+            best_sample = max(sample_hits, key=lambda h: h[2])[0]
+            token_hits = [(token_idx, activation)
+                          for s, token_idx, activation in sample_hits if s == best_sample]
             render_feature_on_structure(
                 design_id=design.design_id,
                 feature_id=feature_id,
-                pdb_path=design.pdb_path,
+                sample_idx=best_sample,
+                pdb_path=design.generated_pdb_paths[best_sample],
                 token_hits=token_hits,
                 atom_array=design.atom_array,
                 output_dir=script_dir,
@@ -91,10 +95,14 @@ def _feature_report(stats, feature_ids, designs) -> dict:
     report: dict = {}
     for feature_id in feature_ids:
         hits = top_firing_tokens(stats, feature_id, top_k=5)
+        serializable = {
+            design_id: [{"sample": s, "token": t, "activation": a} for s, t, a in design_hits]
+            for design_id, design_hits in hits.items()
+        }
         report[str(feature_id)] = {
             "max_activation": float(stats.max_activation[feature_id].item()),
             "fire_rate": float(stats.fire_count[feature_id].item() / max(stats.token_count, 1)),
-            "top_tokens": hits,
+            "top_tokens": serializable,
         }
     return report
 
