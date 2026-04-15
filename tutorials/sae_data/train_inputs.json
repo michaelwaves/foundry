@@ -1,0 +1,104 @@
+{
+    "run_config": {
+        "n_batches": 8,
+        "activation_collection": {
+            "save_dir": "./train_activations",
+            "hooks": [
+                {
+                    "name": "block6",
+                    "module_path": "diffusion_module.diffusion_transformer.blocks.6.transition_block",
+                    "hook_type": "dynamic",
+                    "collect_every_n_steps": 20
+                },
+                {
+                    "name": "block12",
+                    "module_path": "diffusion_module.diffusion_transformer.blocks.12.transition_block",
+                    "hook_type": "dynamic",
+                    "collect_every_n_steps": 20
+                },
+                {
+                    "name": "block17",
+                    "module_path": "diffusion_module.diffusion_transformer.blocks.17.transition_block",
+                    "hook_type": "dynamic",
+                    "collect_every_n_steps": 20
+                }
+            ]
+        }
+    },
+    "na_dsDNA_complex": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_na_tutorial/2r5z.pdb",
+        "contig": "C5-18,/0,D24-37,/0,40-50,A146-154,80-90",
+        "length": "157-177",
+        "unindex": "/0,/0,B251-B255",
+        "select_fixed_atoms": {
+            "C9-14": "ALL",
+            "D28-33": "ALL",
+            "C5-8,C15-18": "",
+            "D24-27,D34-37": ""
+        },
+        "ori_token": [
+            24,
+            35,
+            20
+        ],
+        "is_non_loopy": true
+    },
+    "na_dsDNA_basic": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/1bna.pdb",
+        "contig": "A1-10,/0,B15-24,/0,120-130",
+        "length": "140-150",
+        "ori_token": [
+            24,
+            20,
+            10
+        ],
+        "is_non_loopy": true
+    },
+    "na_RNA_basic": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/1q75.pdb",
+        "contig": "A1-15,/0,120-130",
+        "length": "135-145",
+        "ori_token": [
+            15,
+            2,
+            -4
+        ],
+        "is_non_loopy": true
+    },
+    "ppi_insulinr": {
+        "dialect": 2,
+        "infer_ori_strategy": "hotspots",
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/4zxb_cropped.pdb",
+        "contig": "40-120,/0,E6-155",
+        "select_hotspots": {
+            "E64": "CD2,CZ",
+            "E88": "CG,CZ",
+            "E96": "CD1,CZ"
+        },
+        "is_non_loopy": true
+    },
+    "enzyme_1mg5": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/intermediate_enzyme/1mg5_motif.pdb",
+        "ligand": "NAI,ACT",
+        "unindex": "A108,A139,A152,A156",
+        "length": "180-200",
+        "select_fixed_atoms": {
+            "A108": "ND2,CG",
+            "A139": "OG,CB,CA",
+            "A152": "OH,CZ",
+            "A156": "NZ,CE,CD"
+        },
+        "allow_ligand_on_existing_chain": true
+    },
+    "sm_IAI_buried": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/IAI.pdb",
+        "length": "180-180",
+        "ligand": "IAI",
+        "select_fixed_atoms": {
+            "IAI": ""
+        },
+        "select_buried": {
+            "IAI": "C22,C23,C25,C24,C21,C20,N13,C15,C16,N14,C19,C11,N12,C18,C17,N9,O8,C4,C1,N3,C10,N5,C7,C2,C6,N27,O26,C33,C29,C32,O31,C30,N28"
+        }
+    }
+}

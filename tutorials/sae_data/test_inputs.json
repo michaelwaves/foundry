@@ -1,0 +1,69 @@
+{
+    "run_config": {
+        "n_batches": 4,
+        "activation_collection": {
+            "save_dir": "./test_activations",
+            "hooks": [
+                {
+                    "name": "block6",
+                    "module_path": "diffusion_module.diffusion_transformer.blocks.6.transition_block",
+                    "hook_type": "dynamic",
+                    "collect_every_n_steps": 20
+                },
+                {
+                    "name": "block17",
+                    "module_path": "diffusion_module.diffusion_transformer.blocks.17.transition_block",
+                    "hook_type": "dynamic",
+                    "collect_every_n_steps": 20
+                }
+            ]
+        }
+    },
+    "na_ssDNA_basic": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/5o4d.pdb",
+        "contig": "A1-23,/0,120-130",
+        "length": "143-153",
+        "ori_token": [-5, -10, 8],
+        "is_non_loopy": true
+    },
+    "ppi_pdl1": {
+        "dialect": 2,
+        "infer_ori_strategy": "hotspots",
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/5o45_cropped.pdb",
+        "contig": "50-120,/0,A17-131",
+        "select_hotspots": {
+            "A56": "CG,OH",
+            "A115": "CG,SD",
+            "A123": "CD2,OH"
+        },
+        "is_non_loopy": true
+    },
+    "enzyme_1euv": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/rfd3_enzyme_tutorial/1euv_lig.pdb",
+        "ligand": "l:g",
+        "unindex": "A514,A531,A579-581",
+        "length": "100-200",
+        "ori_token": [0, 1, 0],
+        "select_fixed_atoms": {
+            "A514": "NE2,CE1,ND1,CD2,CG,CB",
+            "A531": "OD1,CG,OD2,CB",
+            "A574": "NE2,CD,OE1,CG",
+            "A579": "C,O,CA,N",
+            "A580": "SG,CB,CA,N,C,O",
+            "A581": "C,O,CA,N"
+        },
+        "select_unfixed_sequence": "A579,A581"
+    },
+    "sm_IAI_partial": {
+        "input": "/mnt/nw/home/m.yu/repos/foundry/models/rfd3/docs/input_pdbs/IAI.pdb",
+        "ligand": "IAI",
+        "length": "180-180",
+        "select_fixed_atoms": {"IAI": ""},
+        "select_exposed": {
+            "IAI": "C22,C23,C25,C24,C21,C20,N13,C15,C16,N14,C19,C11,N12,C18,C17"
+        },
+        "select_buried": {
+            "IAI": "N9,O8,C4,C1,N3,C10,N5,C7,C2,C6,N27,O26,C33,C29,C32,O31,C30,N28"
+        }
+    }
+}
