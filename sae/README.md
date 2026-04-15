@@ -12,7 +12,7 @@ uv sync --extra sae
 
  ## run
 
-  rfd3 design inputs=rfd3_na_tutorial.json out_dir=outputs/1 'activation_collection={save_dir: ./activations, hooks: [{name: s_trunk, module_path:
+  rfd3 design inputs=rfd3_na_tutorial.json out_dir=outputs/1 'activation_collection={out_dir: ./activations, hooks: [{name: s_trunk, module_path:
   token_initializer.process_s_trunk, hook_type: static}, {name: block12, module_path:
   diffusion_module.diffusion_transformer.blocks.12.transition_block, hook_type: dynamic,
   collect_every_n_steps: 20}]}'
@@ -30,7 +30,7 @@ uv sync --extra sae
   _FabricModule).
 
   - models/rfd3/src/rfd3/engine.py:
-    - RFD3InferenceConfig.activation_collection: dict | None = None (schema: {save_dir, hooks:
+    - RFD3InferenceConfig.activation_collection: dict | None = None (schema: {out_dir, hooks:
   [{name, module_path, hook_type, collect_every_n_steps}]})
     - _run_multi wraps the batch loop in _maybe_activation_buffer(), calling
   on_design_start/on_design_end around each _model_forward.

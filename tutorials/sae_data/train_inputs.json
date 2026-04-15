@@ -2,7 +2,7 @@
     "run_config": {
         "n_batches": 8,
         "activation_collection": {
-            "save_dir": "./train_activations",
+            "out_dir": "./train_activations",
             "hooks": [
                 {
                     "name": "block6",

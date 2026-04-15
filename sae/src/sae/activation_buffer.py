@@ -25,18 +25,18 @@ class HookConfig:
 class ActivationBuffer:
     def __init__(
         self, model: nn.Module,  # e.g. RFD3 class
-        save_dir: str,
+        out_dir: str,
         flush_every_n_collected: int = 10  # flush to disk every 10 tensors collected
     ):
         self.model = model
         self.flush_every_n_collected = flush_every_n_collected
-        self.save_dir = save_dir
+        self.out_dir = out_dir
 
         self._hooks = []
         self._buffers = {}        # {name: [tensors]}
         self._step_counts = {}    # {name: int} — raw call counter
         self._configs = {}        # {name: HookConfig}
-        self._file = h5py.File(f"{save_dir}/activations.h5", 'a')
+        self._file = h5py.File(f"{out_dir}/activations.h5", 'a')
 
     def register(self, cfg: HookConfig):
         module = self.model.get_submodule(cfg.module_path)
@@ -100,7 +100,7 @@ class ActivationBuffer:
             'ground_truth': {k: v.cpu().numpy() if isinstance(v, torch.Tensor) else v
                              for k, v in pipeline_output['ground_truth'].items()},
         }
-        with open(f"{self.save_dir}/{example_id}_metadata.pkl", 'wb') as f:
+        with open(f"{self.out_dir}/{example_id}_metadata.pkl", 'wb') as f:
             pickle.dump(metadata, f)
 
     def on_design_start(self, example_id: str, pipeline_output: dict):

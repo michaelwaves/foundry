@@ -56,7 +56,7 @@ class RFD3InferenceConfig:
         default_factory=dict)
 
     # Optional activation collection (requires the `sae` extra installed).
-    # Shape: {"save_dir": str, "hooks": [{"name", "module_path", "hook_type",
+    # Shape: {"out_dir": str, "hooks": [{"name", "module_path", "hook_type",
     # "collect_every_n_steps"}, ...]}
     activation_collection: Optional[dict] = None
 
@@ -300,9 +300,9 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             return
         from sae import ActivationBuffer, HookConfig, HookType
 
-        save_dir = Path(self.activation_collection["save_dir"])
-        save_dir.mkdir(parents=True, exist_ok=True)
-        with ActivationBuffer(self._get_shadow_model(), str(save_dir)) as buf:
+        out_dir = Path(self.activation_collection["out_dir"])
+        out_dir.mkdir(parents=True, exist_ok=True)
+        with ActivationBuffer(self._get_shadow_model(), str(out_dir)) as buf:
             for spec in self.activation_collection["hooks"]:
                 buf.register(
                     HookConfig(
