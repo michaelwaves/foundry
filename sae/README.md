@@ -48,3 +48,7 @@ python -m sae.train  activations_path=/mnt/nw/home/m.yu/repos/foundry/tutorials/
 ```sh
 python -m sae.eval checkpoint_path=/mnt/nw/home/m.yu/repos/foundry/outputs/matryoshka_batch_top_k/block12/2026-04-13_06-11-59/final.pt num_features=12 top_residues=5
 ```
+
+## 
+
+ saffron eval checkpoint_path=outputs/sae/2026-04-15_21-35-26/train/block6/final.pt hook_name=block6  activations_path=tutorials/sae_data/test_activations/activations/activations.h5 metadata_dir=tutorials/sae_data/test_activations/activations out_dir=sae_eval_test_block6  
