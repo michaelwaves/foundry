@@ -65,6 +65,7 @@ rf3 = [
 ]
 sae = [
     "rc-foundry-sae",
+    "tmtools>=0.3.0",
 ]
 all = [
     "rc-foundry[rfd3]",
