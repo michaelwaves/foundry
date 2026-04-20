@@ -94,7 +94,8 @@ class AADesignTrainer(FabricTrainer):
 
     def _assemble_network_inputs(self, example: dict) -> dict:
         """Assemble and validate the network inputs."""
-        assert_same_shape(example["coord_atom_lvl_to_be_noised"], example["noise"])
+        assert_same_shape(
+            example["coord_atom_lvl_to_be_noised"], example["noise"])
         network_input = {
             "X_noisy_L": example["coord_atom_lvl_to_be_noised"] + example["noise"],
             "t": example["t"],
@@ -151,7 +152,8 @@ class AADesignTrainer(FabricTrainer):
 
         # Recycling
         # (Number of recycles for the current batch; shared across all GPUs within a distributed batch)
-        n_cycle = self.recycle_schedule[self.state["current_epoch"], batch_idx].item()
+        n_cycle = self.recycle_schedule[self.state["current_epoch"], batch_idx].item(
+        )
 
         with self.fabric.no_backward_sync(model, enabled=is_accumulating):
             # (We assume batch size of 1 for structure predictions)
@@ -160,7 +162,8 @@ class AADesignTrainer(FabricTrainer):
             network_input = self._assemble_network_inputs(example)
 
             # Forward pass (without rollout)
-            network_output = model.forward(input=network_input, n_cycle=n_cycle)
+            network_output = model.forward(
+                input=network_input, n_cycle=n_cycle)
             assert_no_nans(
                 network_output,
                 msg=f"network_output for example_id: {example['example_id']}",
@@ -214,7 +217,6 @@ class AADesignTrainer(FabricTrainer):
             network_input,
             msg=f"network_input for example_id: {example['example_id']}",
         )
-
         # ... forward pass (with rollout)
         # (Note that forward() passes to the EMA/shadow model if the model is not training)
         network_output = model.forward(
@@ -246,7 +248,8 @@ class AADesignTrainer(FabricTrainer):
                 extra_info=metrics_extra_info,
                 # (Uses the permuted ground truth after symmetry resolution)
                 ground_truth_atom_array_stack=build_stack_from_atom_array_and_batched_coords(
-                    metrics_extra_info["X_gt_L"], example.get("atom_array", None)
+                    metrics_extra_info["X_gt_L"], example.get(
+                        "atom_array", None)
                 ),
                 predicted_atom_array_stack=predicted_atom_array_stack,
                 prediction_metadata=prediction_metadata,
@@ -256,7 +259,8 @@ class AADesignTrainer(FabricTrainer):
                 # Remap outputs to minimize error with ground truth
                 # TODO: Remap before computing metrics, so that we can avoid pass `extra_info` to metrics (we instead just pass the remapped prediction)
                 mapping = metrics_extra_info["X_gt_index_to_X"]  # [D, L]
-                network_output["X_L"] = _remap_outputs(network_output["X_L"], mapping)
+                network_output["X_L"] = _remap_outputs(
+                    network_output["X_L"], mapping)
 
             # Avoid gradients in stored values to prevent memory leaks
             if metrics_output is not None:
@@ -297,7 +301,8 @@ class AADesignTrainer(FabricTrainer):
                 "is_original_unindexed_token"
             ],  # [I,]
             # Sequence information:
-            "seq_token_lvl": example["ground_truth"]["sequence_gt_I"],  # [I, 32]
+            # [I, 32]
+            "seq_token_lvl": example["ground_truth"]["sequence_gt_I"],
             "sequence_valid_mask": example["ground_truth"][
                 "sequence_valid_mask"
             ],  # [I,]
@@ -369,7 +374,8 @@ class AADesignTrainer(FabricTrainer):
         for i, atom_array in enumerate(arrays):
             # ... Create essential outputs for metadata dictionary
             if "example" in example["specification"]:
-                metadata_dict[i] |= {"task": example["specification"]["example"]}
+                metadata_dict[i] |= {
+                    "task": example["specification"]["example"]}
 
             # ... Add original specification to metadata
             if self.output_full_json:
@@ -448,7 +454,8 @@ class AADesignTrainer(FabricTrainer):
                 # Try calcualte a CA RMSD to input:
                 aa_in = example["atom_array"]
                 xyz_ca_input = aa_in.coord[np.isin(aa_in.atom_name, "CA")]
-                xyz_ca_output = atom_array.coord[np.isin(atom_array.atom_name, "CA")]
+                xyz_ca_output = atom_array.coord[np.isin(
+                    atom_array.atom_name, "CA")]
 
                 # Align ca and calculate RMSD:
                 if xyz_ca_input.shape == xyz_ca_output.shape:

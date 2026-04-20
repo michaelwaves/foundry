@@ -280,7 +280,6 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                 if activation_buffer is not None:
                     activation_buffer.on_design_start(
                         example_id, pipeline_output)
-
                 output_list = self._model_forward(pipeline_output)
 
                 if activation_buffer is not None:

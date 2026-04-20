@@ -1,19 +1,22 @@
 from pymol import cmd
 
-TYPE = "alpha"
+TYPE = "beta"
 
-cmd.fetch("1pgb")
+cmd.fetch("4zxb")
 cmd.hide("everything")
 
 if TYPE == "alpha":
     # cmd.fab("EAAAKEAAAKEAAAKEAAAKEAAAKEAAAKEAAAKEAAAK", "helix", ss=1)
-    cmd.select("helix", "resi 23-36")
-    cmd.show("line", "helix and backbone")
+    cmd.select("helix", "resi 695-709")
+    print(cmd.get_fastastr("resi 695-709"))
+    cmd.show("line", "helix and chain E")
     cmd.orient("helix")
     cmd.zoom("helix")
 else:
-    cmd.select("sheet_s1", "resi 12-20+1-9+50-56+42-46")
-    cmd.show("line", "sheet_s1 and backbone")
+    # cmd.select("sheet_s1", "resi 12-20+1-9+50-56+42-46")
+    cmd.select("sheet_s1", 'resi 857-862+842-851+880-890+901-905')
+    cmd.show("cartoon", "sheet_s1 and chain E")
+    print(cmd.get_fastastr('resi 857-862+842-851+880-890+901-905'))
     # cmd.color("salmon",    "resi 12-20")
     # cmd.color("skyblue",   "resi 1-9")
     # cmd.color("palegreen", "resi 50-56")
@@ -26,6 +29,6 @@ cmd.bg_color("white")
 cmd.ray(1600, 1200)   # high-quality render
 
 if TYPE == "alpha":
-    cmd.png("alpha_sticks.png", dpi=300)
+    cmd.png("alpha_line_4zxb.png", dpi=300)
 else:
-    cmd.png("beta_sticks.png", dpi=300)
+    cmd.png("beta_4zxb.png", dpi=300)

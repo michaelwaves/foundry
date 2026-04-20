@@ -63,7 +63,8 @@ class TokenInitializer(nn.Module):
         self.atom_1d_embedder_2 = OneDFeatureEmbedder(atom_1d_features, c_atom)
         self.token_1d_embedder = OneDFeatureEmbedder(token_1d_features, c_s)
 
-        self.downcast_atom = Downcast(c_atom=c_s, c_token=c_s, c_s=None, **downcast)
+        self.downcast_atom = Downcast(
+            c_atom=c_s, c_token=c_s, c_s=None, **downcast)
         self.transition_post_token = Transition(c=c_s, n=2)
         self.transition_post_atom = Transition(c=c_s, n=2)
         self.process_s_init = nn.Sequential(
@@ -93,7 +94,8 @@ class TokenInitializer(nn.Module):
                 Transition(c=c_z, n=2),
             ]
         )
-        self.ref_pos_embedder_tok = PositionPairDistEmbedder(c_z, embed_frame=False)
+        self.ref_pos_embedder_tok = PositionPairDistEmbedder(
+            c_z, embed_frame=False)
 
         # Pairformer without triangle updates
         self.transformer_stack = nn.ModuleList(
@@ -105,18 +107,21 @@ class TokenInitializer(nn.Module):
 
         #############################################################################
         # Token track processing
-        self.process_s_trunk = nn.Sequential(RMSNorm(c_s), linearNoBias(c_s, c_atom))
+        self.process_s_trunk = nn.Sequential(
+            RMSNorm(c_s), linearNoBias(c_s, c_atom))
         self.process_single_l = nn.Sequential(
             nn.ReLU(), linearNoBias(c_atom, c_atompair)
         )
         self.process_single_m = nn.Sequential(
             nn.ReLU(), linearNoBias(c_atom, c_atompair)
         )
-        self.process_z = nn.Sequential(RMSNorm(c_z), linearNoBias(c_z, c_atompair))
+        self.process_z = nn.Sequential(
+            RMSNorm(c_z), linearNoBias(c_z, c_atompair))
 
         # ALWAYS create these MLPs - they will be shared between chunked and standard modes
         self.motif_pos_embedder = SinusoidalDistEmbed(c_atompair=c_atompair)
-        self.ref_pos_embedder = PositionPairDistEmbedder(c_atompair, embed_frame=False)
+        self.ref_pos_embedder = PositionPairDistEmbedder(
+            c_atompair, embed_frame=False)
         self.pair_mlp = nn.Sequential(
             nn.ReLU(),
             linearNoBias(c_atompair, c_atompair),
@@ -177,7 +182,6 @@ class TokenInitializer(nn.Module):
             # Embed token features
             S_I = self.token_1d_embedder(f, I)
             S_I = S_I + self.transition_post_token(S_I)
-
             # Embed atom features and downcast to token features
             S_I = self.downcast_atom(
                 Q_L=self.atom_1d_embedder_1(f, L), A_I=S_I, tok_idx=tok_idx
@@ -218,18 +222,18 @@ class TokenInitializer(nn.Module):
             Z_init_II = self.process_z_init(Z_init_II)
             for b in range(2):
                 Z_init_II = Z_init_II + self.transition_1[b](Z_init_II)
-
             return {"S_init_I": S_I, "Z_init_II": Z_init_II}
 
         @activation_checkpointing
         def init_atoms(S_init_I, Z_init_II):
             Q_L_init = self.atom_1d_embedder_2(f, L)
             C_L = Q_L_init + self.process_s_trunk(S_init_I)[..., tok_idx, :]
-
+            breakpoint()
             if self.use_chunked_pll:
                 # Precompute static MLP projections once so forward_chunked can
                 # skip those MLP calls at every subsequent diffusion step.
-                self.chunked_pairwise_embedder.cache_static_projections(C_L, Z_init_II)
+                self.chunked_pairwise_embedder.cache_static_projections(
+                    C_L, Z_init_II)
                 return {
                     "Q_L_init": Q_L_init,
                     "C_L": C_L,
@@ -251,7 +255,8 @@ class TokenInitializer(nn.Module):
 
                 # Embed ref pos
                 atoms_in_same_token = (
-                    f["ref_space_uid"].unsqueeze(-1) == f["ref_space_uid"].unsqueeze(-2)
+                    f["ref_space_uid"].unsqueeze(
+                        -1) == f["ref_space_uid"].unsqueeze(-2)
                 ).unsqueeze(-1)
                 # Only consider ref_pos for atoms given seq (otherwise ref_pos is 0, doesn't make sense to compute)
                 atoms_has_seq = (
@@ -269,7 +274,8 @@ class TokenInitializer(nn.Module):
                 )
                 P_LL = (
                     P_LL
-                    + self.process_z(Z_init_II)[..., tok_idx, :, :][..., tok_idx, :]
+                    + self.process_z(Z_init_II)[...,
+                                                tok_idx, :, :][..., tok_idx, :]
                 )
                 P_LL = P_LL + self.pair_mlp(P_LL)
                 P_LL = P_LL.contiguous()
@@ -281,7 +287,8 @@ class TokenInitializer(nn.Module):
                     I=int(tok_idx.max().item()) + 1,
                     dtype=P_LL.dtype,
                 ).squeeze(0)
-                Z_init_II = Z_init_II + self.project_pll(pooled_atom_level_features)
+                Z_init_II = Z_init_II + \
+                    self.project_pll(pooled_atom_level_features)
 
                 # Mix atom conditioning features via sequence-local attention
                 if exists(self.atom_transformer):
