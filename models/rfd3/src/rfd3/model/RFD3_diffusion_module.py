@@ -207,6 +207,8 @@ class RFD3DiffusionModule(nn.Module):
             n_attn_seq_neighbours=self.n_attn_seq_neighbours,
         )
 
+        breakpoint()
+
         # ... Expand t tensors
         t_L = t.unsqueeze(-1).expand(-1, L) * (
             ~f["is_motif_atom_with_fixed_coord"]

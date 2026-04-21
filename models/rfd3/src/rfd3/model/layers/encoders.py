@@ -228,7 +228,6 @@ class TokenInitializer(nn.Module):
         def init_atoms(S_init_I, Z_init_II):
             Q_L_init = self.atom_1d_embedder_2(f, L)
             C_L = Q_L_init + self.process_s_trunk(S_init_I)[..., tok_idx, :]
-            breakpoint()
             if self.use_chunked_pll:
                 # Precompute static MLP projections once so forward_chunked can
                 # skip those MLP calls at every subsequent diffusion step.
@@ -252,7 +251,6 @@ class TokenInitializer(nn.Module):
                 P_LL = self.motif_pos_embedder(
                     f["motif_pos"], valid_mask
                 )  # (L, L, c_atompair)
-
                 # Embed ref pos
                 atoms_in_same_token = (
                     f["ref_space_uid"].unsqueeze(
@@ -267,7 +265,6 @@ class TokenInitializer(nn.Module):
                 P_LL = P_LL + self.ref_pos_embedder(f["ref_pos"], valid_mask)
 
                 ##################################################################################
-
                 P_LL = P_LL + (
                     self.process_single_l(C_L).unsqueeze(-2)
                     + self.process_single_m(C_L).unsqueeze(-3)
@@ -295,7 +292,6 @@ class TokenInitializer(nn.Module):
                     C_L = self.atom_transformer(
                         C_L.unsqueeze(0), None, P_LL, indices=None, f=f, X_L=None
                     ).squeeze(0)
-
                 return {
                     "Q_L_init": Q_L_init,
                     "C_L": C_L,
