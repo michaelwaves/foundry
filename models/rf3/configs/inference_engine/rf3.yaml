@@ -31,3 +31,7 @@ metrics_cfg:
     _target_: rf3.metrics.predicted_error.ComputeIPTM
   count_clashing_chains:
     _target_: rf3.metrics.clashing_chains.CountClashingChains
+
+# SAE activation collection (saffron-collect). Populated at runtime by the rf3
+# collector from the embedded run_config in the inputs JSON, or via `hooks=...`.
+activation_collection: null

@@ -1,1802 +1,1834 @@
-[
-  {
-    "name": "train_pos_3156",
-    "components": [
-      {
-        "seq": "GSIPACGESCFKGKCYTPGCSCSKYPLCAKN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3446",
-    "components": [
-      {
-        "seq": "CAPPGSSCNHTDNKCCISACCFGACVLPCQVP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_332",
-    "components": [
-      {
-        "seq": "GCCSYPPCGATNPDC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2122",
-    "components": [
-      {
-        "seq": "EIILHALGTRCCSWDVCDHPSCTCC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4189",
-    "components": [
-      {
-        "seq": "CPWDPWC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3981",
-    "components": [
-      {
-        "seq": "GWCGDPGATCGKLRLYCCAGFCDCYTKTCKDKSSA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3318",
-    "components": [
-      {
-        "seq": "VACVYRTCDKDCTSRKYRSGKCINNACKCYPY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2485",
-    "components": [
-      {
-        "seq": "KEGYPDGQNGKKIPCAINDNISKTEQA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3905",
-    "components": [
-      {
-        "seq": "MCMPCFTTDPNMAKKCRDCCGGNGKCFGPQCLCNR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2934",
-    "components": [
-      {
-        "seq": "GTHPCQETCVTSTRCSTQGCHCNWPICFKN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1790",
-    "components": [
-      {
-        "seq": "DSHAKRHHGYKRKFHEKHHSHRGY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4135",
-    "components": [
-      {
-        "seq": "YQCGQGG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1141",
-    "components": [
-      {
-        "seq": "GLEEDLEIAEMVNELEEIG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2309",
-    "components": [
-      {
-        "seq": "QKLCERPSGTWSGVCGNNNACKNQCIN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1145",
-    "components": [
-      {
-        "seq": "TLQSLWMTRGCCPGNVLCC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_777",
-    "components": [
-      {
-        "seq": "GCCSDPRCRYRCGAAGG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2053",
-    "components": [
-      {
-        "seq": "CQGRGASCRKTMYNCCSGSCNRGRC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4363",
-    "components": [
-      {
-        "seq": "NLINFMEMIRYTIP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1204",
-    "components": [
-      {
-        "seq": "NCCNGGCSSAWCAADAACC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2541",
-    "components": [
-      {
-        "seq": "RCLPAGKTCVRGPMRVPCCGSCSQNKCT",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_810",
-    "components": [
-      {
-        "seq": "DICLSTPDVKSKTCPPG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_605",
-    "components": [
-      {
-        "seq": "GCCSHPACNFNNPHIC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2705",
-    "components": [
-      {
-        "seq": "CKSPGTPCSRGMRDCCTSCLLYSNKCRRY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3868",
-    "components": [
-      {
-        "seq": "SDSKIGDGCFGLPLDHIGSVSGLGCNRPVQNRPKK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_825",
-    "components": [
-      {
-        "seq": "GCCSHPACRVHYPHVCY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2899",
-    "components": [
-      {
-        "seq": "NIVDVPCRDDYYRDSSGNGVYDQLGGCGAA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3557",
-    "components": [
-      {
-        "seq": "SLGSFMKGVGKGLATVGKIVADQFGKLLEAGQG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2591",
-    "components": [
-      {
-        "seq": "ECTRSGGACNSHTQCCDDFCSTATSTCI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1676",
-    "components": [
-      {
-        "seq": "FWGTLAKWALKAIPAAMGMKQNK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3908",
-    "components": [
-      {
-        "seq": "GFGSLFKFLAKKVAKTVAKQAAKQGAKYVANKHME",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3627",
-    "components": [
-      {
-        "seq": "YAAVVNRASALMAQAVLRDCCSNPPCAHNIHCA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4271",
-    "components": [
-      {
-        "seq": "CCKVLCESCTPCC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2134",
-    "components": [
-      {
-        "seq": "CKQAGESCDIFSQNCCVGTCAFICIE",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_511",
-    "components": [
-      {
-        "seq": "ACCSNPACRVNNPHVC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_116",
-    "components": [
-      {
-        "seq": "GCCSHPACRIHPEC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_765",
-    "components": [
-      {
-        "seq": "GGCCSRPPCILKHPEIC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3268",
-    "components": [
-      {
-        "seq": "AAKVKYSNTREECCPNPPCFATHSEICGGRR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_10",
-    "components": [
-      {
-        "seq": "GCPWDPWC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4044",
-    "components": [
-      {
-        "seq": "GLLSGTSVRGSI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2730",
-    "components": [
-      {
-        "seq": "YCQKFLWTCDTERKCCEDMVCELWCKYKE",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1999",
-    "components": [
-      {
-        "seq": "INPKSVQSLL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2665",
-    "components": [
-      {
-        "seq": "ECTPPSGYCTWPSECCEVECGQHYCDWW",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_516",
-    "components": [
-      {
-        "seq": "NCCRQICC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1566",
-    "components": [
-      {
-        "seq": "FLRSLLRGAKAIYRGARAGWRG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1817",
-    "components": [
-      {
-        "seq": "GLNALKKVFQGIHEAIKLINNHVQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1955",
-    "components": [
-      {
-        "seq": "GDCGCSGASSCTCASGQCTCSGCGK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1168",
-    "components": [
-      {
-        "seq": "ARDECCSNPACRVNNPHVC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3670",
-    "components": [
-      {
-        "seq": "KPSEDCGKTCETAENCPDDCSSCLSVEGTYRCA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_748",
-    "components": [
-      {
-        "seq": "CCSRHCWVCIPCCPNGS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_660",
-    "components": [
-      {
-        "seq": "FLIGMTQGLICLITRKC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2622",
-    "components": [
-      {
-        "seq": "AAKVKYSKTPEECCPNPPCFATHSEICG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4162",
-    "components": [
-      {
-        "seq": "KLVKKLLKKYITF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4009",
-    "components": [
-      {
-        "seq": "GCLEFWWKCNPNDDKCCRPKLKCSKLFKLCNFSSG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_894",
-    "components": [
-      {
-        "seq": "FLPKLFAKITKKNMAHIR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2470",
-    "components": [
-      {
-        "seq": "CKSPGSSCSPTSYNCCRSCNPYTKRCY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2385",
-    "components": [
-      {
-        "seq": "CTSPDGACNTPPQCCSKYCISISTTCN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1023",
-    "components": [
-      {
-        "seq": "RDPCCYHPTCNMSNPAIC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2726",
-    "components": [
-      {
-        "seq": "KQCTSNMCSADCSPGCCIIDKLEWCTCDC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1665",
-    "components": [
-      {
-        "seq": "PAWLVDCPCVGDDISRLLTRGEK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2357",
-    "components": [
-      {
-        "seq": "WDAYDCIQFCMRPEMRHTYAQCLSICT",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3646",
-    "components": [
-      {
-        "seq": "ECREKGQGCTNTALCCPAVECEGQSQGGLCVDN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_751",
-    "components": [
-      {
-        "seq": "CCSVSICQPPPVCECCA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3154",
-    "components": [
-      {
-        "seq": "KRFQNFFRELEKKFREFFRVYRITIGATIRF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2598",
-    "components": [
-      {
-        "seq": "ECTPPEGACNHPSHCCEDFCDRGRNRCM",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1984",
-    "components": [
-      {
-        "seq": "GLLSVLGSVVKHVIPHVVPVIAEHL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2379",
-    "components": [
-      {
-        "seq": "CTPPGGYCYHPDPCCSQYCNFPRKHCL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1507",
-    "components": [
-      {
-        "seq": "MTVRECCSQPPCRWKHPELCS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1552",
-    "components": [
-      {
-        "seq": "GVVDILKGAAKDIAGHLASKVM",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1530",
-    "components": [
-      {
-        "seq": "FFHHIFRPIVHVGKTIHRLVTG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_271",
-    "components": [
-      {
-        "seq": "CCPIQGCILGCTPCC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2131",
-    "components": [
-      {
-        "seq": "KGKGAKCSRLMYDCTGSCRSGKCGS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3904",
-    "components": [
-      {
-        "seq": "MTLAQFAMIFWHDLAAPILAGIITAAIVSWWRNRK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_566",
-    "components": [
-      {
-        "seq": "GCCSHPACSGNNAYFC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_736",
-    "components": [
-      {
-        "seq": "AKEKEVTFQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1067",
-    "components": [
-      {
-        "seq": "RILRGVSRRIMRRILTGRR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1226",
-    "components": [
-      {
-        "seq": "FLAKKVAKKLVSHVAQKQLE",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_317",
-    "components": [
-      {
-        "seq": "NGCCRNPACESHRCG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_658",
-    "components": [
-      {
-        "seq": "LGRVDIHVWDAVYIRGR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3206",
-    "components": [
-      {
-        "seq": "AANDKAPVQIVLTVQECCADSACSLTNPLIC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4298",
-    "components": [
-      {
-        "seq": "CCSKYCWRCIPCC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2258",
-    "components": [
-      {
-        "seq": "VIVGDCCDNYCTDERLKGYCASLLGL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4275",
-    "components": [
-      {
-        "seq": "CCGNPPCAHVNCR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1930",
-    "components": [
-      {
-        "seq": "RICLNQQSSEPQTTEICPDGEDTCY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1763",
-    "components": [
-      {
-        "seq": "GPNPGFSPFR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3436",
-    "components": [
-      {
-        "seq": "DCTPCGPNLCCEPGKTCGTSTHHDHYGEPACV",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2255",
-    "components": [
-      {
-        "seq": "GCTPPGGACGYHGHCCDFCDTFGNLC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3692",
-    "components": [
-      {
-        "seq": "LNKRSCLPLDWFCGFNIIGAFLCCSGYCLVVCM",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_4036",
-    "components": [
-      {
-        "seq": "ILGKIWKIKKLF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2928",
-    "components": [
-      {
-        "seq": "MSTFQALMLMLAIGSFIIALLTYIEKIDLP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_675",
-    "components": [
-      {
-        "seq": "AAPRGGKGFFCKLFKDC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2657",
-    "components": [
-      {
-        "seq": "SDSGTTLVRRRLCGSELVTYLGELCLGN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_945",
-    "components": [
-      {
-        "seq": "TLQKLLNKTLLPNSATVL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_3985",
-    "components": [
-      {
-        "seq": "GWCGDPGATCGKLRLYCCSGFCDCATKTCKDKSSA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2747",
-    "components": [
-      {
-        "seq": "SIGSAFKKAAHVGKHVGKAALGAAARRRK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1560",
-    "components": [
-      {
-        "seq": "FFGSTIGALANFLPSLISKIRN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1991",
-    "components": [
-      {
-        "seq": "APAHRSSTFPKWVTKTERGRQPLRS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_133",
-    "components": [
-      {
-        "seq": "ECCNPACGRHYSCGK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_2221",
-    "components": [
-      {
-        "seq": "QCLPPLHWCNMVDDECCHFCVLLACV",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_960",
-    "components": [
-      {
-        "seq": "GRRND",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_pos_1807",
-    "components": [
-      {
-        "seq": "FLPMLAGLAANFLPKIVCKITKKC",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3048",
-    "components": [
-      {
-        "seq": "NAVAFDTGFCHVERVMRNLFVRKLYLWPRF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1397",
-    "components": [
-      {
-        "seq": "MGIIAGIIKFIKGLIEKFTGK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2725",
-    "components": [
-      {
-        "seq": "APQDLSGKMFIFPQETSTANVLTARSQDF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3491",
-    "components": [
-      {
-        "seq": "LENRIAALTVRDDARLELAADFCGLFLMTDKQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_510",
-    "components": [
-      {
-        "seq": "GLFDIIKKVASVVGGL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_825",
-    "components": [
-      {
-        "seq": "NEVDIVGALNADLTQFL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1199",
-    "components": [
-      {
-        "seq": "AFQKIKVANPVVELDGDEM",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1793",
-    "components": [
-      {
-        "seq": "NPELRCGLKD",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_371",
-    "components": [
-      {
-        "seq": "VVSLSIPR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_4377",
-    "components": [
-      {
-        "seq": "GYPRKTVDVFTFTN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_607",
-    "components": [
-      {
-        "seq": "FNCPGSDPTTDSGPSY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_219",
-    "components": [
-      {
-        "seq": "SPSLDDERNDNFVRL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1020",
-    "components": [
-      {
-        "seq": "PKGTRVFGAIAHELRELS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1545",
-    "components": [
-      {
-        "seq": "CPAIQRCCQQLRNIQPPCRCCQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_981",
-    "components": [
-      {
-        "seq": "SGNPKLNWAGAEVFSGLS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3205",
-    "components": [
-      {
-        "seq": "GRGGSSNYVRL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_750",
-    "components": [
-      {
-        "seq": "VRTVRELGFPGLVTGVL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3033",
-    "components": [
-      {
-        "seq": "GLPCGESCVFIPCITTVVGCSCKNKVCYNN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_951",
-    "components": [
-      {
-        "seq": "GMTSWPGAFTTIDGKALK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_299",
-    "components": [
-      {
-        "seq": "PRNFLQEDLLKLKSI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_178",
-    "components": [
-      {
-        "seq": "YLPT",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1595",
-    "components": [
-      {
-        "seq": "MQYISLNTTIITTTETTGYGAG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1516",
-    "components": [
-      {
-        "seq": "VPPHIY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1015",
-    "components": [
-      {
-        "seq": "FEDGKKVRFFKSNKETIK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3926",
-    "components": [
-      {
-        "seq": "EHLFLLFPALNEGLLSTTRAALVNAEACFEYTQKL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1726",
-    "components": [
-      {
-        "seq": "ANTVKVTLIKSTNGRLANHKAVK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_501",
-    "components": [
-      {
-        "seq": "RWRDRFVFCAEAIYKS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_187",
-    "components": [
-      {
-        "seq": "SKVENIVDELKTLTL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3487",
-    "components": [
-      {
-        "seq": "EAAGLLAFPRT",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_832",
-    "components": [
-      {
-        "seq": "FGGFTGARKSARKLANQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2130",
-    "components": [
-      {
-        "seq": "AGDISVDWGAILFKGLTLKGIYGRE",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_574",
-    "components": [
-      {
-        "seq": "SDPAGGEFLAEGGGVR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1810",
-    "components": [
-      {
-        "seq": "KQFTKCELSQVLKDMDGYGGIALP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_590",
-    "components": [
-      {
-        "seq": "KLLARYIPLIQGIDPS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2467",
-    "components": [
-      {
-        "seq": "TAGAGIAYVPLMWVINEINRGELEILL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2870",
-    "components": [
-      {
-        "seq": "MDIINIAWAALMVIFTFSLSLVVWGRSGL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3573",
-    "components": [
-      {
-        "seq": "ETLSSARFRCKPNSEWRTQIPLFPQEVEACVLS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1478",
-    "components": [
-      {
-        "seq": "GKFLHSAGKFGKAFLGEVMIG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_4126",
-    "components": [
-      {
-        "seq": "ARLRPGTFYALPQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3827",
-    "components": [
-      {
-        "seq": "MGSMILDITGNSMSAIVKVVSNIIRPLVLKNFII",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_323",
-    "components": [
-      {
-        "seq": "VNSTYIGYAPIDDPK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_827",
-    "components": [
-      {
-        "seq": "GVGDLIRKAVAAIKNIV",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3206",
-    "components": [
-      {
-        "seq": "MSLIIGYIILLACAFGLAAGLYFGLSAIKLI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1634",
-    "components": [
-      {
-        "seq": "MKTKAAVLFETHKPFEIVELEL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2132",
-    "components": [
-      {
-        "seq": "DTNKVSLAILQKQLSEMANGGPHQN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2938",
-    "components": [
-      {
-        "seq": "GLKDMIKNLAKEAAVKLAGAVINKFSPQPQ",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3853",
-    "components": [
-      {
-        "seq": "MEALVYTFLLISTLGIIFFAIFFRDPPRISTKKMK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1388",
-    "components": [
-      {
-        "seq": "MALNLQDKQAIVAEVSEVAK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1667",
-    "components": [
-      {
-        "seq": "SENTGAIGKVFPRGNHWAVGHLM",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_476",
-    "components": [
-      {
-        "seq": "DQGFNSWG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1297",
-    "components": [
-      {
-        "seq": "TDMLAVSVSSTDAIGHKYGT",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1327",
-    "components": [
-      {
-        "seq": "YGGSQGNLIFGKGTKLSVKP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2805",
-    "components": [
-      {
-        "seq": "HEPCGESCVFIPCITTVVGCSCKNKVCYN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_4338",
-    "components": [
-      {
-        "seq": "FLPIIAKLLGGLL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2054",
-    "components": [
-      {
-        "seq": "KLQELRMWSMLKKWILMFILDFPTR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_961",
-    "components": [
-      {
-        "seq": "DIKNNPEYSSFFGVMGAS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3624",
-    "components": [
-      {
-        "seq": "MLFTLAWASLAAVFSFSIAMVVWGRNGDGSLNF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1433",
-    "components": [
-      {
-        "seq": "GMASKAGQVLGKLAKVAIGAA",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_109",
-    "components": [
-      {
-        "seq": "MEDEIQDI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3864",
-    "components": [
-      {
-        "seq": "MEALVYTFLLVSTLGIIFFAIFFREPPKVPTKNTK",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3358",
-    "components": [
-      {
-        "seq": "MSALSYFFAAYCIGWVISHSILVFKKLSEVST",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_4167",
-    "components": [
-      {
-        "seq": "QNARIAVVYFAGY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2552",
-    "components": [
-      {
-        "seq": "FKGEILEHDPMASERRAVEGDNQGSSSN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2926",
-    "components": [
-      {
-        "seq": "ERRCPRILKQCKRDSDCPGECICMAHGFCG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3184",
-    "components": [
-      {
-        "seq": "GSIPCGESCVYIPCISAVLGCSCKNKVCYRN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2056",
-    "components": [
-      {
-        "seq": "VTIGPVCELPKEVGGPCRGHIIPRY",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1257",
-    "components": [
-      {
-        "seq": "SQPSMRLRF",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_102",
-    "components": [
-      {
-        "seq": "NYMKPKLLYSNGGH",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3752",
-    "components": [
-      {
-        "seq": "SKEVMKSLSINFSKPLEVKQEMGLQDAVMQDFYN",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_648",
-    "components": [
-      {
-        "seq": "FIAGLNGLR",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2752",
-    "components": [
-      {
-        "seq": "MEIDVLGWVALLVVFTWSIAMVVWGRNGL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_375",
-    "components": [
-      {
-        "seq": "FSREEIKRFIESLGGH",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2301",
-    "components": [
-      {
-        "seq": "VLAGSIIVRQRGTKFHAGANVGCGRDH",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1105",
-    "components": [
-      {
-        "seq": "ITCGQVTGSLAPIPFLRTG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1968",
-    "components": [
-      {
-        "seq": "ITAKPAKTPT",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3948",
-    "components": [
-      {
-        "seq": "MEVNILAFIATALFILVPTAFLLIIYVKTVSQSVE",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2886",
-    "components": [
-      {
-        "seq": "MPIIGVPRCLENPFCAPAKFPLSVKKKIRI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2359",
-    "components": [
-      {
-        "seq": "EPFIQMAFLSLPVIPALKLTSQGLFDG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2943",
-    "components": [
-      {
-        "seq": "TCRGIGFVSNDVGLDADHCKVLVNIEQQSP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1085",
-    "components": [
-      {
-        "seq": "AAKLSASDIDEVLLVGGST",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2542",
-    "components": [
-      {
-        "seq": "KKDYKLKIFNLVKVMKLRVVCKDENLTD",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3179",
-    "components": [
-      {
-        "seq": "MLTLTSYFGFLLAALTITSALFIGLNKIRLI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3395",
-    "components": [
-      {
-        "seq": "YKPVTSSTRHRVVIDYKSVITKTEPEKSLLAP",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_662",
-    "components": [
-      {
-        "seq": "AVDFSKVPTATAGPCKG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_13",
-    "components": [
-      {
-        "seq": "ADEKVVIGLAADSG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1576",
-    "components": [
-      {
-        "seq": "MNRIGMITTIITTTITTGNGAG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2740",
-    "components": [
-      {
-        "seq": "MDIVSLAWAALMVVFTFSLSLVVWGRSGL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1312",
-    "components": [
-      {
-        "seq": "DEQSGISQTVIVGPWGAKVS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1962",
-    "components": [
-      {
-        "seq": "IDALEIDEDAYEQAVENFEASPWGD",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1828",
-    "components": [
-      {
-        "seq": "IAGSEEYGKHCFKGAVADAYLAKH",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3672",
-    "components": [
-      {
-        "seq": "GSSGLISMTRV",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3102",
-    "components": [
-      {
-        "seq": "MSLFIGYIIFLVAFFGLATGLFLGLKAIKLI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_259",
-    "components": [
-      {
-        "seq": "QTSFTPRL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3296",
-    "components": [
-      {
-        "seq": "LRGWVVTGCLG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3427",
-    "components": [
-      {
-        "seq": "RLARFGAKKRPFYRIVVADSRAPRDGRFIEKI",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_384",
-    "components": [
-      {
-        "seq": "GNVLLTGGVLMLIQLV",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_1358",
-    "components": [
-      {
-        "seq": "EDPVRFNLG",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_3649",
-    "components": [
-      {
-        "seq": "ATSYEKITINKNSRSTLSSVRHIIRKNNYRKDL",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_524",
-    "components": [
-      {
-        "seq": "KGNHNFSSFRAKCCQS",
-        "chain_id": "A"
-      }
-    ]
-  },
-  {
-    "name": "train_neg_2124",
-    "components": [
-      {
-        "seq": "FQPSLVLDTAKILLDNYTFPESLMG",
-        "chain_id": "A"
-      }
-    ]
-  }
-]
+{
+  "run_config": {
+    "activation_collection": {
+      "hooks": [
+        {
+          "name": "to_si",
+          "module_path": "diffusion_module.diffusion_conditioning.to_si",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 1
+        },
+        {
+          "name": "block12",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.12.conditioned_transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 50
+        },
+        {
+          "name": "block16",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.16.conditioned_transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 50
+        },
+        {
+          "name": "to_r_update",
+          "module_path": "diffusion_module.atom_attention_decoder.to_r_update",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 50
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "train_pos_3156",
+      "components": [
+        {
+          "seq": "GSIPACGESCFKGKCYTPGCSCSKYPLCAKN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3446",
+      "components": [
+        {
+          "seq": "CAPPGSSCNHTDNKCCISACCFGACVLPCQVP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_332",
+      "components": [
+        {
+          "seq": "GCCSYPPCGATNPDC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2122",
+      "components": [
+        {
+          "seq": "EIILHALGTRCCSWDVCDHPSCTCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4189",
+      "components": [
+        {
+          "seq": "CPWDPWC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3981",
+      "components": [
+        {
+          "seq": "GWCGDPGATCGKLRLYCCAGFCDCYTKTCKDKSSA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3318",
+      "components": [
+        {
+          "seq": "VACVYRTCDKDCTSRKYRSGKCINNACKCYPY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2485",
+      "components": [
+        {
+          "seq": "KEGYPDGQNGKKIPCAINDNISKTEQA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3905",
+      "components": [
+        {
+          "seq": "MCMPCFTTDPNMAKKCRDCCGGNGKCFGPQCLCNR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2934",
+      "components": [
+        {
+          "seq": "GTHPCQETCVTSTRCSTQGCHCNWPICFKN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1790",
+      "components": [
+        {
+          "seq": "DSHAKRHHGYKRKFHEKHHSHRGY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4135",
+      "components": [
+        {
+          "seq": "YQCGQGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1141",
+      "components": [
+        {
+          "seq": "GLEEDLEIAEMVNELEEIG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2309",
+      "components": [
+        {
+          "seq": "QKLCERPSGTWSGVCGNNNACKNQCIN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1145",
+      "components": [
+        {
+          "seq": "TLQSLWMTRGCCPGNVLCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_777",
+      "components": [
+        {
+          "seq": "GCCSDPRCRYRCGAAGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2053",
+      "components": [
+        {
+          "seq": "CQGRGASCRKTMYNCCSGSCNRGRC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4363",
+      "components": [
+        {
+          "seq": "NLINFMEMIRYTIP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1204",
+      "components": [
+        {
+          "seq": "NCCNGGCSSAWCAADAACC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2541",
+      "components": [
+        {
+          "seq": "RCLPAGKTCVRGPMRVPCCGSCSQNKCT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_810",
+      "components": [
+        {
+          "seq": "DICLSTPDVKSKTCPPG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_605",
+      "components": [
+        {
+          "seq": "GCCSHPACNFNNPHIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2705",
+      "components": [
+        {
+          "seq": "CKSPGTPCSRGMRDCCTSCLLYSNKCRRY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3868",
+      "components": [
+        {
+          "seq": "SDSKIGDGCFGLPLDHIGSVSGLGCNRPVQNRPKK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_825",
+      "components": [
+        {
+          "seq": "GCCSHPACRVHYPHVCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2899",
+      "components": [
+        {
+          "seq": "NIVDVPCRDDYYRDSSGNGVYDQLGGCGAA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3557",
+      "components": [
+        {
+          "seq": "SLGSFMKGVGKGLATVGKIVADQFGKLLEAGQG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2591",
+      "components": [
+        {
+          "seq": "ECTRSGGACNSHTQCCDDFCSTATSTCI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1676",
+      "components": [
+        {
+          "seq": "FWGTLAKWALKAIPAAMGMKQNK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3908",
+      "components": [
+        {
+          "seq": "GFGSLFKFLAKKVAKTVAKQAAKQGAKYVANKHME",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3627",
+      "components": [
+        {
+          "seq": "YAAVVNRASALMAQAVLRDCCSNPPCAHNIHCA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4271",
+      "components": [
+        {
+          "seq": "CCKVLCESCTPCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2134",
+      "components": [
+        {
+          "seq": "CKQAGESCDIFSQNCCVGTCAFICIE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_511",
+      "components": [
+        {
+          "seq": "ACCSNPACRVNNPHVC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_116",
+      "components": [
+        {
+          "seq": "GCCSHPACRIHPEC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_765",
+      "components": [
+        {
+          "seq": "GGCCSRPPCILKHPEIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3268",
+      "components": [
+        {
+          "seq": "AAKVKYSNTREECCPNPPCFATHSEICGGRR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_10",
+      "components": [
+        {
+          "seq": "GCPWDPWC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4044",
+      "components": [
+        {
+          "seq": "GLLSGTSVRGSI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2730",
+      "components": [
+        {
+          "seq": "YCQKFLWTCDTERKCCEDMVCELWCKYKE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1999",
+      "components": [
+        {
+          "seq": "INPKSVQSLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2665",
+      "components": [
+        {
+          "seq": "ECTPPSGYCTWPSECCEVECGQHYCDWW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_516",
+      "components": [
+        {
+          "seq": "NCCRQICC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1566",
+      "components": [
+        {
+          "seq": "FLRSLLRGAKAIYRGARAGWRG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1817",
+      "components": [
+        {
+          "seq": "GLNALKKVFQGIHEAIKLINNHVQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1955",
+      "components": [
+        {
+          "seq": "GDCGCSGASSCTCASGQCTCSGCGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1168",
+      "components": [
+        {
+          "seq": "ARDECCSNPACRVNNPHVC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3670",
+      "components": [
+        {
+          "seq": "KPSEDCGKTCETAENCPDDCSSCLSVEGTYRCA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_748",
+      "components": [
+        {
+          "seq": "CCSRHCWVCIPCCPNGS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_660",
+      "components": [
+        {
+          "seq": "FLIGMTQGLICLITRKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2622",
+      "components": [
+        {
+          "seq": "AAKVKYSKTPEECCPNPPCFATHSEICG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4162",
+      "components": [
+        {
+          "seq": "KLVKKLLKKYITF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4009",
+      "components": [
+        {
+          "seq": "GCLEFWWKCNPNDDKCCRPKLKCSKLFKLCNFSSG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_894",
+      "components": [
+        {
+          "seq": "FLPKLFAKITKKNMAHIR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2470",
+      "components": [
+        {
+          "seq": "CKSPGSSCSPTSYNCCRSCNPYTKRCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2385",
+      "components": [
+        {
+          "seq": "CTSPDGACNTPPQCCSKYCISISTTCN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1023",
+      "components": [
+        {
+          "seq": "RDPCCYHPTCNMSNPAIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2726",
+      "components": [
+        {
+          "seq": "KQCTSNMCSADCSPGCCIIDKLEWCTCDC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1665",
+      "components": [
+        {
+          "seq": "PAWLVDCPCVGDDISRLLTRGEK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2357",
+      "components": [
+        {
+          "seq": "WDAYDCIQFCMRPEMRHTYAQCLSICT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3646",
+      "components": [
+        {
+          "seq": "ECREKGQGCTNTALCCPAVECEGQSQGGLCVDN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_751",
+      "components": [
+        {
+          "seq": "CCSVSICQPPPVCECCA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3154",
+      "components": [
+        {
+          "seq": "KRFQNFFRELEKKFREFFRVYRITIGATIRF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2598",
+      "components": [
+        {
+          "seq": "ECTPPEGACNHPSHCCEDFCDRGRNRCM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1984",
+      "components": [
+        {
+          "seq": "GLLSVLGSVVKHVIPHVVPVIAEHL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2379",
+      "components": [
+        {
+          "seq": "CTPPGGYCYHPDPCCSQYCNFPRKHCL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1507",
+      "components": [
+        {
+          "seq": "MTVRECCSQPPCRWKHPELCS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1552",
+      "components": [
+        {
+          "seq": "GVVDILKGAAKDIAGHLASKVM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1530",
+      "components": [
+        {
+          "seq": "FFHHIFRPIVHVGKTIHRLVTG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_271",
+      "components": [
+        {
+          "seq": "CCPIQGCILGCTPCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2131",
+      "components": [
+        {
+          "seq": "KGKGAKCSRLMYDCTGSCRSGKCGS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3904",
+      "components": [
+        {
+          "seq": "MTLAQFAMIFWHDLAAPILAGIITAAIVSWWRNRK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_566",
+      "components": [
+        {
+          "seq": "GCCSHPACSGNNAYFC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_736",
+      "components": [
+        {
+          "seq": "AKEKEVTFQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1067",
+      "components": [
+        {
+          "seq": "RILRGVSRRIMRRILTGRR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1226",
+      "components": [
+        {
+          "seq": "FLAKKVAKKLVSHVAQKQLE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_317",
+      "components": [
+        {
+          "seq": "NGCCRNPACESHRCG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_658",
+      "components": [
+        {
+          "seq": "LGRVDIHVWDAVYIRGR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3206",
+      "components": [
+        {
+          "seq": "AANDKAPVQIVLTVQECCADSACSLTNPLIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4298",
+      "components": [
+        {
+          "seq": "CCSKYCWRCIPCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2258",
+      "components": [
+        {
+          "seq": "VIVGDCCDNYCTDERLKGYCASLLGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4275",
+      "components": [
+        {
+          "seq": "CCGNPPCAHVNCR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1930",
+      "components": [
+        {
+          "seq": "RICLNQQSSEPQTTEICPDGEDTCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1763",
+      "components": [
+        {
+          "seq": "GPNPGFSPFR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3436",
+      "components": [
+        {
+          "seq": "DCTPCGPNLCCEPGKTCGTSTHHDHYGEPACV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2255",
+      "components": [
+        {
+          "seq": "GCTPPGGACGYHGHCCDFCDTFGNLC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3692",
+      "components": [
+        {
+          "seq": "LNKRSCLPLDWFCGFNIIGAFLCCSGYCLVVCM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_4036",
+      "components": [
+        {
+          "seq": "ILGKIWKIKKLF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2928",
+      "components": [
+        {
+          "seq": "MSTFQALMLMLAIGSFIIALLTYIEKIDLP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_675",
+      "components": [
+        {
+          "seq": "AAPRGGKGFFCKLFKDC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2657",
+      "components": [
+        {
+          "seq": "SDSGTTLVRRRLCGSELVTYLGELCLGN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_945",
+      "components": [
+        {
+          "seq": "TLQKLLNKTLLPNSATVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_3985",
+      "components": [
+        {
+          "seq": "GWCGDPGATCGKLRLYCCSGFCDCATKTCKDKSSA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2747",
+      "components": [
+        {
+          "seq": "SIGSAFKKAAHVGKHVGKAALGAAARRRK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1560",
+      "components": [
+        {
+          "seq": "FFGSTIGALANFLPSLISKIRN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1991",
+      "components": [
+        {
+          "seq": "APAHRSSTFPKWVTKTERGRQPLRS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_133",
+      "components": [
+        {
+          "seq": "ECCNPACGRHYSCGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_2221",
+      "components": [
+        {
+          "seq": "QCLPPLHWCNMVDDECCHFCVLLACV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_960",
+      "components": [
+        {
+          "seq": "GRRND",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_pos_1807",
+      "components": [
+        {
+          "seq": "FLPMLAGLAANFLPKIVCKITKKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3048",
+      "components": [
+        {
+          "seq": "NAVAFDTGFCHVERVMRNLFVRKLYLWPRF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1397",
+      "components": [
+        {
+          "seq": "MGIIAGIIKFIKGLIEKFTGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2725",
+      "components": [
+        {
+          "seq": "APQDLSGKMFIFPQETSTANVLTARSQDF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3491",
+      "components": [
+        {
+          "seq": "LENRIAALTVRDDARLELAADFCGLFLMTDKQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_510",
+      "components": [
+        {
+          "seq": "GLFDIIKKVASVVGGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_825",
+      "components": [
+        {
+          "seq": "NEVDIVGALNADLTQFL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1199",
+      "components": [
+        {
+          "seq": "AFQKIKVANPVVELDGDEM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1793",
+      "components": [
+        {
+          "seq": "NPELRCGLKD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_371",
+      "components": [
+        {
+          "seq": "VVSLSIPR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_4377",
+      "components": [
+        {
+          "seq": "GYPRKTVDVFTFTN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_607",
+      "components": [
+        {
+          "seq": "FNCPGSDPTTDSGPSY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_219",
+      "components": [
+        {
+          "seq": "SPSLDDERNDNFVRL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1020",
+      "components": [
+        {
+          "seq": "PKGTRVFGAIAHELRELS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1545",
+      "components": [
+        {
+          "seq": "CPAIQRCCQQLRNIQPPCRCCQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_981",
+      "components": [
+        {
+          "seq": "SGNPKLNWAGAEVFSGLS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3205",
+      "components": [
+        {
+          "seq": "GRGGSSNYVRL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_750",
+      "components": [
+        {
+          "seq": "VRTVRELGFPGLVTGVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3033",
+      "components": [
+        {
+          "seq": "GLPCGESCVFIPCITTVVGCSCKNKVCYNN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_951",
+      "components": [
+        {
+          "seq": "GMTSWPGAFTTIDGKALK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_299",
+      "components": [
+        {
+          "seq": "PRNFLQEDLLKLKSI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_178",
+      "components": [
+        {
+          "seq": "YLPT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1595",
+      "components": [
+        {
+          "seq": "MQYISLNTTIITTTETTGYGAG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1516",
+      "components": [
+        {
+          "seq": "VPPHIY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1015",
+      "components": [
+        {
+          "seq": "FEDGKKVRFFKSNKETIK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3926",
+      "components": [
+        {
+          "seq": "EHLFLLFPALNEGLLSTTRAALVNAEACFEYTQKL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1726",
+      "components": [
+        {
+          "seq": "ANTVKVTLIKSTNGRLANHKAVK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_501",
+      "components": [
+        {
+          "seq": "RWRDRFVFCAEAIYKS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_187",
+      "components": [
+        {
+          "seq": "SKVENIVDELKTLTL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3487",
+      "components": [
+        {
+          "seq": "EAAGLLAFPRT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_832",
+      "components": [
+        {
+          "seq": "FGGFTGARKSARKLANQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2130",
+      "components": [
+        {
+          "seq": "AGDISVDWGAILFKGLTLKGIYGRE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_574",
+      "components": [
+        {
+          "seq": "SDPAGGEFLAEGGGVR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1810",
+      "components": [
+        {
+          "seq": "KQFTKCELSQVLKDMDGYGGIALP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_590",
+      "components": [
+        {
+          "seq": "KLLARYIPLIQGIDPS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2467",
+      "components": [
+        {
+          "seq": "TAGAGIAYVPLMWVINEINRGELEILL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2870",
+      "components": [
+        {
+          "seq": "MDIINIAWAALMVIFTFSLSLVVWGRSGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3573",
+      "components": [
+        {
+          "seq": "ETLSSARFRCKPNSEWRTQIPLFPQEVEACVLS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1478",
+      "components": [
+        {
+          "seq": "GKFLHSAGKFGKAFLGEVMIG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_4126",
+      "components": [
+        {
+          "seq": "ARLRPGTFYALPQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3827",
+      "components": [
+        {
+          "seq": "MGSMILDITGNSMSAIVKVVSNIIRPLVLKNFII",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_323",
+      "components": [
+        {
+          "seq": "VNSTYIGYAPIDDPK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_827",
+      "components": [
+        {
+          "seq": "GVGDLIRKAVAAIKNIV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3206",
+      "components": [
+        {
+          "seq": "MSLIIGYIILLACAFGLAAGLYFGLSAIKLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1634",
+      "components": [
+        {
+          "seq": "MKTKAAVLFETHKPFEIVELEL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2132",
+      "components": [
+        {
+          "seq": "DTNKVSLAILQKQLSEMANGGPHQN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2938",
+      "components": [
+        {
+          "seq": "GLKDMIKNLAKEAAVKLAGAVINKFSPQPQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3853",
+      "components": [
+        {
+          "seq": "MEALVYTFLLISTLGIIFFAIFFRDPPRISTKKMK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1388",
+      "components": [
+        {
+          "seq": "MALNLQDKQAIVAEVSEVAK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1667",
+      "components": [
+        {
+          "seq": "SENTGAIGKVFPRGNHWAVGHLM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_476",
+      "components": [
+        {
+          "seq": "DQGFNSWG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1297",
+      "components": [
+        {
+          "seq": "TDMLAVSVSSTDAIGHKYGT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1327",
+      "components": [
+        {
+          "seq": "YGGSQGNLIFGKGTKLSVKP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2805",
+      "components": [
+        {
+          "seq": "HEPCGESCVFIPCITTVVGCSCKNKVCYN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_4338",
+      "components": [
+        {
+          "seq": "FLPIIAKLLGGLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2054",
+      "components": [
+        {
+          "seq": "KLQELRMWSMLKKWILMFILDFPTR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_961",
+      "components": [
+        {
+          "seq": "DIKNNPEYSSFFGVMGAS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3624",
+      "components": [
+        {
+          "seq": "MLFTLAWASLAAVFSFSIAMVVWGRNGDGSLNF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1433",
+      "components": [
+        {
+          "seq": "GMASKAGQVLGKLAKVAIGAA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_109",
+      "components": [
+        {
+          "seq": "MEDEIQDI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3864",
+      "components": [
+        {
+          "seq": "MEALVYTFLLVSTLGIIFFAIFFREPPKVPTKNTK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3358",
+      "components": [
+        {
+          "seq": "MSALSYFFAAYCIGWVISHSILVFKKLSEVST",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_4167",
+      "components": [
+        {
+          "seq": "QNARIAVVYFAGY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2552",
+      "components": [
+        {
+          "seq": "FKGEILEHDPMASERRAVEGDNQGSSSN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2926",
+      "components": [
+        {
+          "seq": "ERRCPRILKQCKRDSDCPGECICMAHGFCG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3184",
+      "components": [
+        {
+          "seq": "GSIPCGESCVYIPCISAVLGCSCKNKVCYRN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2056",
+      "components": [
+        {
+          "seq": "VTIGPVCELPKEVGGPCRGHIIPRY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1257",
+      "components": [
+        {
+          "seq": "SQPSMRLRF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_102",
+      "components": [
+        {
+          "seq": "NYMKPKLLYSNGGH",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3752",
+      "components": [
+        {
+          "seq": "SKEVMKSLSINFSKPLEVKQEMGLQDAVMQDFYN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_648",
+      "components": [
+        {
+          "seq": "FIAGLNGLR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2752",
+      "components": [
+        {
+          "seq": "MEIDVLGWVALLVVFTWSIAMVVWGRNGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_375",
+      "components": [
+        {
+          "seq": "FSREEIKRFIESLGGH",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2301",
+      "components": [
+        {
+          "seq": "VLAGSIIVRQRGTKFHAGANVGCGRDH",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1105",
+      "components": [
+        {
+          "seq": "ITCGQVTGSLAPIPFLRTG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1968",
+      "components": [
+        {
+          "seq": "ITAKPAKTPT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3948",
+      "components": [
+        {
+          "seq": "MEVNILAFIATALFILVPTAFLLIIYVKTVSQSVE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2886",
+      "components": [
+        {
+          "seq": "MPIIGVPRCLENPFCAPAKFPLSVKKKIRI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2359",
+      "components": [
+        {
+          "seq": "EPFIQMAFLSLPVIPALKLTSQGLFDG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2943",
+      "components": [
+        {
+          "seq": "TCRGIGFVSNDVGLDADHCKVLVNIEQQSP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1085",
+      "components": [
+        {
+          "seq": "AAKLSASDIDEVLLVGGST",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2542",
+      "components": [
+        {
+          "seq": "KKDYKLKIFNLVKVMKLRVVCKDENLTD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3179",
+      "components": [
+        {
+          "seq": "MLTLTSYFGFLLAALTITSALFIGLNKIRLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3395",
+      "components": [
+        {
+          "seq": "YKPVTSSTRHRVVIDYKSVITKTEPEKSLLAP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_662",
+      "components": [
+        {
+          "seq": "AVDFSKVPTATAGPCKG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_13",
+      "components": [
+        {
+          "seq": "ADEKVVIGLAADSG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1576",
+      "components": [
+        {
+          "seq": "MNRIGMITTIITTTITTGNGAG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2740",
+      "components": [
+        {
+          "seq": "MDIVSLAWAALMVVFTFSLSLVVWGRSGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1312",
+      "components": [
+        {
+          "seq": "DEQSGISQTVIVGPWGAKVS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1962",
+      "components": [
+        {
+          "seq": "IDALEIDEDAYEQAVENFEASPWGD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1828",
+      "components": [
+        {
+          "seq": "IAGSEEYGKHCFKGAVADAYLAKH",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3672",
+      "components": [
+        {
+          "seq": "GSSGLISMTRV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3102",
+      "components": [
+        {
+          "seq": "MSLFIGYIIFLVAFFGLATGLFLGLKAIKLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_259",
+      "components": [
+        {
+          "seq": "QTSFTPRL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3296",
+      "components": [
+        {
+          "seq": "LRGWVVTGCLG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3427",
+      "components": [
+        {
+          "seq": "RLARFGAKKRPFYRIVVADSRAPRDGRFIEKI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_384",
+      "components": [
+        {
+          "seq": "GNVLLTGGVLMLIQLV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_1358",
+      "components": [
+        {
+          "seq": "EDPVRFNLG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_3649",
+      "components": [
+        {
+          "seq": "ATSYEKITINKNSRSTLSSVRHIIRKNNYRKDL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_524",
+      "components": [
+        {
+          "seq": "KGNHNFSSFRAKCCQS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "train_neg_2124",
+      "components": [
+        {
+          "seq": "FQPSLVLDTAKILLDNYTFPESLMG",
+          "chain_id": "A"
+        }
+      ]
+    }
+  ]
+}

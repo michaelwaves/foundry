@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""Convert ToxinPred line-format CSVs into RF3 inference JSON.
+"""Build/refresh an RF3 saffron-collect inputs JSON from ToxinPred CSVs.
 
-Each peptide becomes one example. The example name matches the source_id format
-emitted by `detect labels` for line-format CSVs (`{stem}_{lineno}`), so labels
-align cleanly: design_id == example_id == source_id.
+The output JSON is a dict::
+
+    {"run_config": {"activation_collection": {"hooks": [...]}}, "examples": [...]}
+
+`run_config` is preserved when the file already exists (so hand-edited hook configs
+survive a rebuild). On first run, `run_config` is seeded from `hooks.yaml`. The
+`examples` list is always regenerated from the source CSVs.
+
+Each example name is `{stem}_{lineno}` so it matches the source_id format emitted
+by `detect labels` for line-format CSVs — `design_id == example_id == source_id`.
 
 Usage:
   python build_inputs.py \
@@ -17,22 +24,23 @@ import json
 import random
 from pathlib import Path
 
+import yaml
+
 
 def main() -> None:
     args = _parse_args()
     rng = random.Random(args.seed)
 
-    examples = []
-    for path in args.positive:
-        examples.extend(_make_examples(Path(path), rng, args.subsample))
-    for path in args.negative:
-        examples.extend(_make_examples(Path(path), rng, args.subsample))
+    examples = _build_examples(args.positive + args.negative, rng, args.subsample)
+    run_config = _load_or_seed_run_config(Path(args.out), Path(args.hooks_yaml))
 
-    Path(args.out).write_text(json.dumps(examples, indent=2))
-    print(f"wrote {len(examples)} examples -> {args.out}")
+    payload = {"run_config": run_config, "examples": examples}
+    Path(args.out).write_text(json.dumps(payload, indent=2))
+    print(f"wrote {len(examples)} examples + run_config -> {args.out}")
 
 
 def _parse_args() -> argparse.Namespace:
+    here = Path(__file__).parent
     parser = argparse.ArgumentParser()
     parser.add_argument("--positive", action="append", default=[])
     parser.add_argument("--negative", action="append", default=[])
@@ -40,21 +48,24 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--subsample", type=int, default=None,
                         help="if set, randomly take this many sequences from each file")
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--chain-id", default="A")
+    parser.add_argument("--hooks-yaml", default=str(here / "hooks.yaml"),
+                        help="seed run_config from this file when out doesn't exist yet")
     return parser.parse_args()
 
 
-def _make_examples(path: Path, rng: random.Random, subsample: int | None) -> list[dict]:
-    sequences = _read_sequences(path)
-    if subsample is not None and subsample < len(sequences):
-        sequences = rng.sample(sequences, subsample)
-    return [
-        {
-            "name": f"{path.stem}_{lineno}",
-            "components": [{"seq": seq, "chain_id": "A"}],
-        }
-        for lineno, seq in sequences
-    ]
+def _build_examples(paths: list[str], rng: random.Random, subsample: int | None) -> list[dict]:
+    examples = []
+    for path_str in paths:
+        path = Path(path_str)
+        sequences = _read_sequences(path)
+        if subsample is not None and subsample < len(sequences):
+            sequences = rng.sample(sequences, subsample)
+        for lineno, seq in sequences:
+            examples.append({
+                "name": f"{path.stem}_{lineno}",
+                "components": [{"seq": seq, "chain_id": "A"}],
+            })
+    return examples
 
 
 def _read_sequences(path: Path) -> list[tuple[int, str]]:
@@ -64,6 +75,14 @@ def _read_sequences(path: Path) -> list[tuple[int, str]]:
         if sequence and not sequence.startswith(">"):
             sequences.append((lineno, sequence))
     return sequences
+
+
+def _load_or_seed_run_config(out_path: Path, hooks_yaml: Path) -> dict:
+    if out_path.exists():
+        existing = json.loads(out_path.read_text())
+        if isinstance(existing, dict) and "run_config" in existing:
+            return existing["run_config"]
+    return {"activation_collection": yaml.safe_load(hooks_yaml.read_text())}
 
 
 if __name__ == "__main__":
