@@ -87,10 +87,11 @@ Every command takes exactly two flags: `inputs=<config.yaml|json>` and `out_dir=
 The config carries everything else (extractor, scorer, classifier, paths, hooks).
 
 ```bash
-detect score    inputs=detectors/src/detectors/configs/score_block8.yaml      out_dir=outputs/detect/score_block8
-detect fit      inputs=detectors/src/detectors/configs/fit_block8_logistic.yaml  out_dir=outputs/detect/block8_lr
-detect screen   inputs=detectors/src/detectors/configs/screen_block8.yaml     out_dir=outputs/detect/screen_block8
-detect evaluate inputs=detectors/src/detectors/configs/screen_block8.yaml     out_dir=outputs/detect/eval_block8
+detect labels   inputs=detectors/src/detectors/configs/labels_safeprotein.yaml    out_dir=detectors/datasets/labels/safeprotein
+detect score    inputs=detectors/src/detectors/configs/score_block8.yaml          out_dir=outputs/detect/score_block8
+detect fit      inputs=detectors/src/detectors/configs/fit_block8_logistic.yaml   out_dir=outputs/detect/block8_lr
+detect screen   inputs=detectors/src/detectors/configs/screen_block8.yaml         out_dir=outputs/detect/screen_block8
+detect evaluate inputs=detectors/src/detectors/configs/screen_block8.yaml         out_dir=outputs/detect/eval_block8
 ```
 
 `saffron screen` is an alias for `detect screen`.
@@ -99,6 +100,7 @@ detect evaluate inputs=detectors/src/detectors/configs/screen_block8.yaml     ou
 
 | Command | Reads | Writes |
 |---|---|---|
+| `labels` | labelled FASTAs + activations.h5 | `labels.csv` (design_id → label) + `sources.csv` |
 | `score` | activations.h5 + labels.csv | `feature_scores.parquet`, `feature_scores_top.md` — features ranked by AUROC vs the positive class |
 | `fit` | activations.h5 + labels.csv | `bundle/` (extractor + detector + config), `metrics.json`, `train_predictions.csv` |
 | `screen` | activations.h5 + bundle/ | `screen_report.csv` — per-design probability + prediction |
@@ -146,6 +148,24 @@ design_id,label
 design_001,1
 design_002,0
 ```
+
+Generated automatically by `detect labels` from labelled FASTAs:
+
+```yaml
+# labels_*.yaml
+positives:                            # files whose entries get label=1
+  - /path/to/safeprotein.fasta
+  - /path/to/vfdb_setA_pro.fas
+negatives:                            # files whose entries get label=0
+  - /path/to/uniprot_benigns/benigns.fasta
+activations_path: /path/to/activations.h5
+```
+
+The aligner extracts source IDs from FASTA headers (or `{stem}_{lineno}` for line-format
+inputs like ToxinPred CSVs), then matches each `design_id` in the h5 to a source by
+stripping the trailing `_<batch_index>` suffix that saffron-collect appends. Unmatched
+design_ids are dropped (with a count printed). Convention: name your saffron-collect
+input keys to match source IDs exactly.
 
 ## GPU
 

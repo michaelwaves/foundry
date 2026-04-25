@@ -5,11 +5,18 @@ import typer
 import yaml
 
 from detectors.pipelines.fit import run_fit
+from detectors.pipelines.labels import run_labels
 from detectors.pipelines.score import run_score
 from detectors.pipelines.screen import run_screen
 
 app = typer.Typer(add_completion=False)
 _EXTRA_ARGS = {"allow_extra_args": True, "ignore_unknown_options": True}
+
+
+@app.command(context_settings=_EXTRA_ARGS)
+def labels(ctx: typer.Context) -> None:
+    """Build labels.csv from labelled FASTAs + activations.h5."""
+    run_labels(_load_config(ctx.args))
 
 
 @app.command(context_settings=_EXTRA_ARGS)
