@@ -6,6 +6,67 @@ Toxic/viral classifiers over RFD3 SAE features. Three orthogonal axes:
 See [`plan.md`](plan.md) for the full design. Lit review of toxic/viral datasets in
 [`datasets/lit_review.csv`](datasets/lit_review.csv).
 
+## Datasets
+
+**ToxinPred 3.0 — peptides** (4,414 toxic + 4,414 non-toxic train; 1,104 + 1,104 test;
+~265 KB total). One sequence per line, no header.
+
+```bash
+detectors/datasets/download_toxinpred.sh                    # → detectors/datasets/toxinpred3/
+detectors/datasets/download_toxinpred.sh /custom/dest       # custom location
+```
+
+**ToxinPred 2 — proteins** (3 splits × pos/neg, ~17 MB total). Real FASTA format.
+The `realistic` split has a heavily unbalanced negative pool (1,924 pos / 19,240 neg)
+and is closest to deployment conditions.
+
+```bash
+detectors/datasets/download_toxinpred2.sh                   # → detectors/datasets/toxinpred2/
+detectors/datasets/download_toxinpred2.sh /custom/dest
+```
+
+**VFDB — bacterial virulence factors**. Set A is the experimentally verified core
+(~4,600 proteins, 1.3 MB gz); Set B is the full set including predictions (~5.6 MB gz).
+
+```bash
+detectors/datasets/download_vfdb.sh              # core (set A) → detectors/datasets/vfdb/
+detectors/datasets/download_vfdb.sh full         # full (set B)
+```
+
+**NCBI viral RefSeq — all curated viral proteins** (~106 MB compressed). The canonical
+viral protein resource. For taxon/host filtering, use NCBI's `datasets` CLI instead.
+
+```bash
+detectors/datasets/download_ncbi_viral.sh        # → detectors/datasets/ncbi_viral/
+```
+
+**SafeProtein hazard set** — the positive class used by SafeBench-Seq. 429 hazardous
+proteins with full sequences + PDB metadata + conservation scores. Sequences are
+distributed directly (so no UniProt round-trip needed for positives).
+
+```bash
+detectors/datasets/download_safeprotein.sh       # → detectors/datasets/safeprotein/
+# emits SafeProtein_Bench.json, safeprotein.fasta, accessions.txt
+```
+
+**UniProt benigns — the universal negative pool**. Cursor-paginated FASTA download
+filtered by `reviewed:true NOT keyword:KW-0800 (Toxin) NOT keyword:KW-0843 (Virulence)
+NOT taxonomy_id:10239 (Viruses)` and a length range. Matches SafeBench-Seq's recipe
+(plus the stricter NOT virulence filter).
+
+```bash
+detectors/datasets/download_uniprot_benigns.sh                        # default 10000, length 1-2000
+detectors/datasets/download_uniprot_benigns.sh 1500 50 600            # 1500 benigns, length 50-600
+detectors/datasets/download_uniprot_benigns.sh 1500 50 600 /dest      # custom dest
+```
+
+Use any positive set as RFD3 scaffold inputs to generate labelled designs — the design's
+label is inherited from its source file. Pair with `download_uniprot_benigns.sh` (or
+ToxinPred's existing negatives) for the negative class.
+
+SafeBench-Seq isn't publicly downloadable yet — see [`plan.md`](plan.md) for backup
+plans (UniProt API, Victors, VFDB).
+
 ## Install
 
 From the repo root:
