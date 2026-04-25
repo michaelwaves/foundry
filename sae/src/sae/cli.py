@@ -42,6 +42,14 @@ def eval_(ctx: typer.Context) -> None:
     run_eval(cfg)
 
 
+@app.command(context_settings=_EXTRA_ARGS)
+def screen(ctx: typer.Context) -> None:
+    """Screen activations with a saved detector bundle. Alias for `detect screen`."""
+    from detectors.cli import screen as detect_screen
+
+    detect_screen(ctx)
+
+
 def _build_config(config_dir: str, config_name: str, raw_args: list[str]) -> DictConfig:
     overrides, inputs_path = _split_inputs_override(raw_args)
     with initialize_config_dir(config_dir=config_dir, version_base="1.3"):

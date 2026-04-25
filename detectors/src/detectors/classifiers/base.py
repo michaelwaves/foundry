@@ -1,0 +1,13 @@
+from pathlib import Path
+from typing import Protocol, runtime_checkable
+
+import numpy as np
+
+
+@runtime_checkable
+class Detector(Protocol):
+    def fit(self, features: np.ndarray, labels: np.ndarray) -> None: ...
+    def predict_proba(self, features: np.ndarray) -> np.ndarray: ...
+    def save(self, directory: Path) -> None: ...
+    @classmethod
+    def load(cls, directory: Path) -> "Detector": ...
