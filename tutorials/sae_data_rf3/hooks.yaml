@@ -1,0 +1,24 @@
+# RF3 activation hooks for toxic/non-toxic ToxinPred 3 peptide folding.
+# Loaded by the rf3 saffron collector via `hooks=path/to/this/file`.
+#
+# `to_si` runs once per recycle (~10x per design); the others fire per diffusion
+# step inside the recycle (~500x per design at default settings). collect_every_n_steps
+# subsamples the call stream — every 50th call kept gives ~10 timepoints per design.
+
+hooks:
+  - name: to_si
+    module_path: diffusion_module.diffusion_conditioning.to_si
+    hook_type: dynamic
+    collect_every_n_steps: 1
+  - name: block12
+    module_path: diffusion_module.diffusion_transformer.blocks.12.conditioned_transition_block
+    hook_type: dynamic
+    collect_every_n_steps: 50
+  - name: block16
+    module_path: diffusion_module.diffusion_transformer.blocks.16.conditioned_transition_block
+    hook_type: dynamic
+    collect_every_n_steps: 50
+  - name: to_r_update
+    module_path: diffusion_module.atom_attention_decoder.to_r_update
+    hook_type: dynamic
+    collect_every_n_steps: 50

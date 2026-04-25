@@ -103,8 +103,9 @@ class ActivationBuffer:
         with open(f"{self.out_dir}/{example_id}_metadata.pkl", 'wb') as f:
             pickle.dump(metadata, f)
 
-    def on_design_start(self, example_id: str, pipeline_output: dict):
-        self.store_metadata(example_id, pipeline_output)
+    def on_design_start(self, example_id: str, pipeline_output: dict | None = None):
+        if pipeline_output is not None:
+            self.store_metadata(example_id, pipeline_output)
         self._current_example_id = example_id
         for name in self._step_counts:
             self._step_counts[name] = 0

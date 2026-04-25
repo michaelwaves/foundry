@@ -72,7 +72,8 @@ class SampleDiffusion:
             AlphaFold 3 Supplement, Section 3.7.1.
         """
         # Create a linearly spaced tensor of timesteps between min_t and max_t
-        t = torch.linspace(self.min_t, self.max_t, self.num_timesteps, device=device)
+        t = torch.linspace(self.min_t, self.max_t,
+                           self.num_timesteps, device=device)
 
         # Construct the noise schedule, using the formula provided in the reference
         t_hat = (
@@ -102,7 +103,8 @@ class SampleDiffusion:
             L (int): The number of atoms in the structure.
             coord_atom_lvl_to_be_noised (torch.Tensor): The atom-level coordinates to be noised (either completely or partially)
         """
-        noise = c0 * torch.normal(mean=0.0, std=1.0, size=(D, L, 3), device=c0.device)
+        noise = c0 * torch.normal(mean=0.0, std=1.0,
+                                  size=(D, L, 3), device=c0.device)
         X_L = noise + coord_atom_lvl_to_be_noised
 
         return X_L
@@ -199,7 +201,8 @@ class SampleDiffusion:
             X_L=X_L,  # (D, L, 3)
             X_noisy_L_traj=X_noisy_L_traj,  # list[Tensor[D, L, 3]]
             X_denoised_L_traj=X_denoised_L_traj,  # list[Tensor[D, L, 3]]
-            t_hats=t_hats,  # list[Tensor[D]], where D is shared across all diffusion batches
+            # list[Tensor[D]], where D is shared across all diffusion batches
+            t_hats=t_hats,
         )
 
 
@@ -219,4 +222,4 @@ class SamplePartialDiffusion(SampleDiffusion):
             f"Using partial t index: {self.partial_t} [e.g., {t_hat_full[self.partial_t]:.4}], or {self.partial_t / (self.num_timesteps):.2%}, by index (100% is data, 0% is noise)"
         )
 
-        return t_hat_full[self.partial_t :]
+        return t_hat_full[self.partial_t:]

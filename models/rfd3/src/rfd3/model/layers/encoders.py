@@ -177,6 +177,7 @@ class TokenInitializer(nn.Module):
         L = len(tok_idx)
         f["ref_atom_name_chars"] = f["ref_atom_name_chars"].reshape(L, -1)
         I = len(f["restype"])
+        breakpoint()
 
         def init_tokens():
             # Embed token features

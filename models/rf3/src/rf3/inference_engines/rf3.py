@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from os import PathLike
 from pathlib import Path
@@ -254,6 +255,8 @@ class RF3InferenceEngine(BaseInferenceEngine):
         early_stopping_plddt_threshold: float | None = None,
         # Metrics
         metrics_cfg: dict | OmegaConf | MetricManager | str | None = "default",
+        # SAE activation collection (saffron-collect integration)
+        activation_collection: dict | None = None,
         **kwargs,
     ):
         """Initialize inference engine and load model.
@@ -342,6 +345,9 @@ class RF3InferenceEngine(BaseInferenceEngine):
         self.early_stopping_plddt_threshold = early_stopping_plddt_threshold
         self.compress_outputs = compress_outputs
 
+        # SAE activation collection (None = disabled)
+        self.activation_collection = activation_collection
+
     def initialize(self):
         # Log checkpoint path on first init (base class logger may be suppressed in quiet mode)
         if not self.initialized_:
@@ -374,6 +380,31 @@ class RF3InferenceEngine(BaseInferenceEngine):
                 self.trainer.metrics = None
 
         return cfg
+
+    @contextmanager
+    def _maybe_activation_buffer(self, out_dir):
+        """Yield an SAE ActivationBuffer with hooks registered, or None if disabled."""
+        if self.activation_collection is None or out_dir is None:
+            yield None
+            return
+        from sae import ActivationBuffer, HookConfig, HookType
+
+        activations_dir = Path(out_dir) / "activations"
+        activations_dir.mkdir(parents=True, exist_ok=True)
+        with ActivationBuffer(self._get_shadow_model(), str(activations_dir)) as buf:
+            for spec in self.activation_collection["hooks"]:
+                buf.register(HookConfig(
+                    name=spec["name"],
+                    module_path=spec["module_path"],
+                    hook_type=HookType(spec["hook_type"]),
+                    collect_every_n_steps=spec.get("collect_every_n_steps", 1),
+                ))
+            yield buf
+
+    def _get_shadow_model(self):
+        model = self.trainer.state["model"]
+        unwrapped = getattr(model, "_forward_module", model)
+        return getattr(unwrapped, "shadow", unwrapped)
 
     def run(
         self,
@@ -518,6 +549,11 @@ class RF3InferenceEngine(BaseInferenceEngine):
         # Prepare results dict (if returning in-memory)
         results = {} if out_dir is None else None
 
+        # Optional SAE activation collection (saffron-collect): manual enter/exit
+        # to avoid indenting the entire inference loop. Closed at end of run().
+        activation_buffer_cm = self._maybe_activation_buffer(out_dir)
+        activation_buffer = activation_buffer_cm.__enter__()
+
         # Main inference loop
         for batch_idx, input_spec in enumerate(loader):
             input_spec = input_spec[
@@ -551,6 +587,8 @@ class RF3InferenceEngine(BaseInferenceEngine):
                 )
 
             # Model inference
+            if activation_buffer is not None:
+                activation_buffer.on_design_start(input_spec.example_id)
             with torch.no_grad():
                 pipeline_output = self.trainer.fabric.to_device(pipeline_output)
                 if should_early_stop_fn:
@@ -568,6 +606,8 @@ class RF3InferenceEngine(BaseInferenceEngine):
                     )
                 network_output = valid_step_outs["network_output"]
                 metrics_output = valid_step_outs["metrics_output"]
+            if activation_buffer is not None:
+                activation_buffer.on_design_end()
 
             # Handle early stopping
             if network_output.get("early_stopped", False):
@@ -730,6 +770,9 @@ class RF3InferenceEngine(BaseInferenceEngine):
             else:
                 # Store in memory - return list of RF3Output objects
                 results[input_spec.example_id] = rf3_outputs
+
+        # Close SAE activation buffer (no-op if not configured)
+        activation_buffer_cm.__exit__(None, None, None)
 
         # merge results across ranks
         self.trainer.fabric.barrier()
