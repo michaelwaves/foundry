@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from rfd3.model.layers.block_utils import (
     bucketize_scaled_distogram,
+    gaussian_rbf_distogram,
     create_attention_indices,
 )
 from rfd3.model.layers.blocks import (
@@ -80,6 +81,11 @@ class RFD3DiffusionModule(nn.Module):
             sigma_data=1,
             n_bins=self.n_bins,
         )
+
+        # self.bucketize_fn = functools.partial(
+        #     gaussian_rbf_distogram,
+        #     n_bins=self.n_bins, min_dist=0.5, max_dist=50.0, width=1.0
+        # )
 
         # Time processing
         self.fourier_embedding = nn.ModuleList(
@@ -206,8 +212,6 @@ class RFD3DiffusionModule(nn.Module):
             n_attn_keys=self.n_attn_keys,
             n_attn_seq_neighbours=self.n_attn_seq_neighbours,
         )
-
-        breakpoint()
 
         # ... Expand t tensors
         t_L = t.unsqueeze(-1).expand(-1, L) * (

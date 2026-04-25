@@ -1,6 +1,6 @@
 import logging
 from typing import Tuple
-
+import math
 import torch
 import torch.nn.functional as F
 from jaxtyping import Float, Int
@@ -30,6 +30,14 @@ def bucketize_scaled_distogram(R_L, min_dist=1, max_dist=30, sigma_data=16, n_bi
     return F.one_hot(bin_idxs, num_classes=len(bins) + 1).float()
 
 
+def gaussian_rbf_distogram(R_L, n_bins=65, min_dist=0.5, max_dist=50.0, width=1.0):
+    D = torch.cdist(R_L, R_L)
+    centers = torch.logspace(
+        math.log10(min_dist), math.log10(max_dist), n_bins, device=D.device
+    )
+    return torch.exp(-((D.unsqueeze(-1) - centers) ** 2) / (2 * width ** 2))
+
+
 def build_valid_mask(
     tok_idx: torch.Tensor, n_atoms_per_tok_max: int | None = None
 ) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -45,7 +53,8 @@ def build_valid_mask(
     tokens     : (n_tokens,)    the unique token IDs in ascending order
     """
     tokens, counts = torch.unique(tok_idx, return_counts=True)
-    A = int(counts.max()) if n_atoms_per_tok_max is None else int(n_atoms_per_tok_max)
+    A = int(counts.max()) if n_atoms_per_tok_max is None else int(
+        n_atoms_per_tok_max)
 
     # build [n_tokens, A] mask; broadcasting keeps it vectorised
     atom_idx_grid = torch.arange(A, device=tok_idx.device)[None, :]  # (1, A)
@@ -77,11 +86,13 @@ def ungroup_atoms(Q_L, valid_mask):
         # use scatter with integer indices instead.
         flat_idx = _atom_flat_idx(valid_mask)  # (n_atoms,)
         idx = flat_idx.view(1, -1, 1).expand(B, -1, c)  # (B, n_atoms, c)
-        Q_IA = torch.zeros(B, n_tokens * A, c, dtype=Q_L.dtype, device=Q_L.device)
+        Q_IA = torch.zeros(B, n_tokens * A, c,
+                           dtype=Q_L.dtype, device=Q_L.device)
         Q_IA = Q_IA.scatter(1, idx, Q_L)
         return Q_IA.reshape(B, n_tokens, A, c)
     else:
-        Q_IA = torch.zeros(B, n_tokens, A, c, dtype=Q_L.dtype, device=Q_L.device)
+        Q_IA = torch.zeros(B, n_tokens, A, c,
+                           dtype=Q_L.dtype, device=Q_L.device)
         mask4d = valid_mask.unsqueeze(0).unsqueeze(-1)  # (1, n_tok, A, 1)
         mask4d = mask4d.expand(B, -1, -1, c)  # (B, n_tok, A, c)
         Q_IA.masked_scatter_(mask4d, Q_L)
@@ -123,7 +134,8 @@ def group_pair(P_IAA, valid_mask):
         P_LA = P_IAA[mask5d].view(B, -1, A, c)  # (B, n_valid, A, c)
     elif P_IAA.ndim == 4:
         _, _, A, c = P_IAA.shape
-        mask4d = valid_mask[..., None, None].expand(-1, -1, A, c)  # (L, L, A, c)
+        mask4d = valid_mask[..., None,
+                            None].expand(-1, -1, A, c)  # (L, L, A, c)
         P_LA = P_IAA[mask4d].view(-1, A, c)  # (n_valid, A, c)
     else:
         raise ValueError(
@@ -167,14 +179,16 @@ def scatter_add_pair_features(P_LK_tgt, P_LK_indices, P_LA_src, P_LA_indices):
         P_LA_src.shape[-1], P_LK_tgt.shape[-1]
     )
 
-    matches = P_LA_indices.unsqueeze(-1) == P_LK_indices.unsqueeze(-2)  # (B, L, a, k)
+    # (B, L, a, k)
+    matches = P_LA_indices.unsqueeze(-1) == P_LK_indices.unsqueeze(-2)
     if not torch.all(matches.sum(dim=(-1, -2)) >= 1):
         raise ValueError("Found multiple scatter indices for some atoms")
     elif not torch.all(matches.sum(dim=-1) <= 1):
         raise ValueError("Did not find a scatter index for every atom")
     k_indices = matches.long().argmax(dim=-1)  # (B, L, a)
     scatter_indices = (
-        k_indices.unsqueeze(-1).expand(-1, -1, -1, P_LK_tgt.shape[-1]).contiguous()
+        k_indices.unsqueeze(-1).expand(-1, -1, -1,
+                                       P_LK_tgt.shape[-1]).contiguous()
     )  # (B, L, a, c)
     P_LK_tgt = P_LK_tgt.scatter_add(
         dim=2, index=scatter_indices, src=P_LA_src.contiguous()
@@ -286,7 +300,8 @@ def get_sparse_attention_indices_with_inter_chain(
     )  # [B, L, k_intra]
 
     # Get inter-chain indices for clash avoidance
-    inter_indices = torch.zeros(B, L, k_inter, dtype=torch.long, device=D_LL.device)
+    inter_indices = torch.zeros(
+        B, L, k_inter, dtype=torch.long, device=D_LL.device)
     unique_chains = torch.unique(chain_id)
     for b in range(B):
         for c in unique_chains:
@@ -302,7 +317,8 @@ def get_sparse_attention_indices_with_inter_chain(
 
                 # Select k_inter closest atoms from other chains
                 n_select = min(k_inter, len(other_chain_atoms))
-                _, closest_idx = torch.topk(distances_to_other, n_select, largest=False)
+                _, closest_idx = torch.topk(
+                    distances_to_other, n_select, largest=False)
                 selected_atoms = other_chain_atoms[closest_idx]
 
                 # Fill inter-chain indices
@@ -352,7 +368,8 @@ def build_index_mask(
     k_max = min(k_max, L)
     I = int(tok_idx.max()) + 1  # Number of unique tokens
     n_atoms_per_token = torch.zeros(I, device=device).float()
-    n_atoms_per_token.scatter_add_(0, tok_idx.long(), torch.ones_like(tok_idx).float())
+    n_atoms_per_token.scatter_add_(
+        0, tok_idx.long(), torch.ones_like(tok_idx).float())
 
     # Create index masks for tokens and atoms
     token_indices = torch.arange(I, device=device)
@@ -383,7 +400,8 @@ def build_index_mask(
     # Contract to (L, L) and count the number of atoms within tokens that
     # fully include other tokens
     n_atoms_fully_included = torch.zeros((I, I), device=device)
-    n_atoms_fully_included.index_add_(0, tok_idx.long(), fully_included.float())
+    n_atoms_fully_included.index_add_(
+        0, tok_idx.long(), fully_included.float())
     full_token_mask = n_atoms_fully_included == n_atoms_per_token[:, None]
 
     # Map this back to (L, L) — include token j in row i only if all its atoms are included
@@ -468,7 +486,8 @@ def get_sparse_attention_indices(
     # Sort and assert no duplicates (optional but good practise)
     indices, _ = torch.sort(indices, dim=-1)
     if indices.device.type != "mps" and (indices[..., 1:] == indices[..., :-1]).any():
-        raise AssertionError("Tensor has duplicate elements along the last dimension.")
+        raise AssertionError(
+            "Tensor has duplicate elements along the last dimension.")
 
     assert (
         indices.shape[-1] == k_max
@@ -490,13 +509,17 @@ def indices_to_mask(neigh_idx):
 
     if neigh_idx.ndim == 2:
         L = neigh_idx.shape[0]
-        mask_out = torch.zeros((L, L), dtype=torch.bool, device=neigh_idx.device)
-        mask_out.scatter_(1, neigh_idx, torch.ones_like(neigh_idx, dtype=torch.bool))
+        mask_out = torch.zeros((L, L), dtype=torch.bool,
+                               device=neigh_idx.device)
+        mask_out.scatter_(1, neigh_idx, torch.ones_like(
+            neigh_idx, dtype=torch.bool))
 
     elif neigh_idx.ndim == 3:
         B, L, k = neigh_idx.shape
-        mask_out = torch.zeros((B, L, L), dtype=torch.bool, device=neigh_idx.device)
-        mask_out.scatter_(2, neigh_idx, torch.ones_like(neigh_idx, dtype=torch.bool))
+        mask_out = torch.zeros(
+            (B, L, L), dtype=torch.bool, device=neigh_idx.device)
+        mask_out.scatter_(2, neigh_idx, torch.ones_like(
+            neigh_idx, dtype=torch.bool))
 
     else:
         raise ValueError(f"Expected ndim 2 or 3, got {neigh_idx.ndim}")
@@ -527,7 +550,8 @@ def create_valid_mask_LA(valid_mask):
         L, A
     )  # [I, A, A] -> [L, A]
 
-    indices = torch.arange(L, device=valid_mask.device).unsqueeze(-1).expand(L, A)
+    indices = torch.arange(
+        L, device=valid_mask.device).unsqueeze(-1).expand(L, A)
     indices = indices + rel_pos_LA
 
     valid_mask_IAA = valid_mask.unsqueeze(-2).expand(-1, A, -1)
@@ -581,7 +605,8 @@ def pairwise_mean_pool(
 
         # Second step: contract on axis 2 (right-side tokens)
         # (L, I) = (L, I), (B, I, L, d) → (B, I, I, d)
-        token_features_sum = torch.einsum("cj,bicd->bijd", atom_to_token_onehot, temp)
+        token_features_sum = torch.einsum(
+            "cj,bicd->bijd", atom_to_token_onehot, temp)
 
         # Optionally free temp
         del temp
@@ -605,6 +630,7 @@ def pairwise_mean_pool(
 
     # Avoid division by zero and compute mean
     token_pair_counts = torch.clamp(token_pair_counts, min=1)
-    token_pairwise_features = token_features_sum / token_pair_counts.unsqueeze(-1)
+    token_pairwise_features = token_features_sum / \
+        token_pair_counts.unsqueeze(-1)
 
     return token_pairwise_features
