@@ -183,11 +183,32 @@ consistency with the rest of the foundry CLI surface, e.g. RFD3 design passthrou
 - **Default scorer: AUROC** (binary toxic/benign). Spearman if we get a continuous
   toxicity score (LD50, MIC); Lift to surface rare-but-discriminative features.
 
-## Open questions
+## Feature cache
 
-- Where to materialise per-design activations for fit/screen? Keep h5 + lazy-iterate
-  (cheaper) or pre-compute pooled features to a parquet (faster iteration, lets DuckDB
-  do the aggregation like sae_experiments). Lean parquet for `score` (touched many
-  times), lazy h5 for `screen` (one pass).
-- Should `score` and `fit` share the same pooled-feature parquet to avoid recomputing
-  the SAE encode pass twice? Probably yes — the encode is the expensive step.
+Pre-compute pooled features once and write to parquet. `score` and `fit` both read from
+this cache — the SAE encode pass is the expensive step and we don't want to repeat it.
+
+```
+{out_dir}/features.parquet   # (design_id, sample, step, token, feature_id, value)
+                             # or pre-pooled: (design_id, feature_id, value) when
+                             # PoolingStrategy != PER_TOKEN
+```
+
+DuckDB can aggregate (max/mean/sum across tokens × steps) directly out of this parquet,
+matching the sae_experiments `score_features.py` pattern. `screen` keeps lazy-h5
+streaming since it's a one-shot pass on novel designs and the parquet adds latency.
+
+Add a `detect cache` (or implicit step inside `score`/`fit`) that materialises this once
+per `(activations.h5, hook, extractor)` triple.
+
+## Score vs Fit (clarification)
+
+| | `score` | `fit` |
+|---|---|---|
+| What | Per-feature univariate ranking | Multivariate classifier |
+| Output | Sorted parquet `(feature_id, auroc, p)` | Trained model + bundle |
+| Answers | "Which features fire on positives?" | "Is this new design toxic?" |
+| Train/test split | Not strictly needed | Required |
+| Composition | Feeds `fit` via `select_top_k=N` | Can run alone, or after `score` |
+
+Both consume the cached `(N_designs, F_features)` matrix.
