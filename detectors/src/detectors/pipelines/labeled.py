@@ -4,9 +4,22 @@ import pandas as pd
 from detectors.pipelines.cache import FeatureCache
 
 
-def attach_labels(cache: FeatureCache, labels_path: str) -> np.ndarray:
+def attach_labels(cache: FeatureCache, labels_path: str) -> tuple[FeatureCache, np.ndarray]:
+    """Return (cache restricted to labelled designs, label array).
+
+    Designs in the h5 but absent from labels.csv are dropped — this lets a
+    single activations.h5 back both fit (labels_train.csv) and evaluate
+    (labels_test.csv) without re-collecting activations.
+    """
     labels_df = pd.read_csv(labels_path).set_index("design_id")
-    return np.array([int(labels_df.loc[design_id, "label"]) for design_id in cache.design_ids])
+    keep = np.array([d in labels_df.index for d in cache.design_ids])
+    filtered = FeatureCache(
+        features=cache.features[keep],
+        design_ids=cache.design_ids[keep],
+        sample_indices=cache.sample_indices[keep],
+    )
+    labels = np.array([int(labels_df.loc[d, "label"]) for d in filtered.design_ids])
+    return filtered, labels
 
 
 def aggregate_per_design(

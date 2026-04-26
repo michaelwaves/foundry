@@ -1,0 +1,12 @@
+activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rf3/train_activations/activations/activations.h5
+labels_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/classifiers/rf3_toxinpred3/labels.csv
+hook_name: block12
+extractor:
+  kind: sae_encode
+  checkpoint_path: /mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-23-45/train/block12/final.pt
+  device: cpu
+pooling: last_step
+scorer: auroc
+aggregation: mean
+top_k: 50
+p_value_top_k: 200

@@ -16,8 +16,9 @@ def run_fit(config: dict) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     cache = build_feature_cache(config, out_dir / "features.npz")
+    cache, row_labels = attach_labels(cache, config["labels_path"])
     matrix, labels, design_ids = aggregate_per_design(
-        cache, config.get("aggregation", "mean"), attach_labels(cache, config["labels_path"])
+        cache, config.get("aggregation", "mean"), row_labels,
     )
     matrix, selected_indices = _select_top_k(matrix, labels, config.get("select_top_k"))
 

@@ -14,8 +14,8 @@ def run_score(config: dict) -> pd.DataFrame:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     cache = build_feature_cache(config, out_dir / "features.npz")
-    matrix, labels, _ = aggregate_per_design(cache, config.get("aggregation", "mean"),
-                                             attach_labels(cache, config["labels_path"]))
+    cache, row_labels = attach_labels(cache, config["labels_path"])
+    matrix, labels, _ = aggregate_per_design(cache, config.get("aggregation", "mean"), row_labels)
 
     scorer = SCORERS[config.get("scorer", "auroc")]
     feature_ids = np.arange(matrix.shape[1])
@@ -30,11 +30,11 @@ def _write_top_k_markdown(scores: pd.DataFrame, scorer, path: Path, top_k: int) 
     null = scorer.null_value
     head = scores.head(top_k)
     lines = [f"# Top {len(head)} features by |{scorer.score_column} - {null}|", ""]
-    lines.append(f"| feature_id | {scorer.score_column} | {scorer.p_value_column} | n_samples |")
-    lines.append("|---|---|---|---|")
+    lines.append(f"| feature_id | {scorer.score_column} | {scorer.p_value_column} | q_value | n_samples |")
+    lines.append("|---|---|---|---|---|")
     for _, row in head.iterrows():
         lines.append(
             f"| {int(row['feature_id'])} | {row[scorer.score_column]:.3f} | "
-            f"{row[scorer.p_value_column]:.4f} | {int(row['n_samples'])} |"
+            f"{row[scorer.p_value_column]:.4f} | {row['q_value']:.4f} | {int(row['n_samples'])} |"
         )
     path.write_text("\n".join(lines))
