@@ -8,5 +8,4 @@ collect_train.sh
 detect fit  inputs=/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rf3/block12_logistic.yaml out_dir=/mnt/nw/home/m.yu/repos/foundry/outputs/detect/rf3_block12_lr
  
  # 4 evaluate 
-
-  detect evaluate inputs=tutorials/sae_data_rf3/evaluate_block12.yaml out_dir=outputs/detect/rf3_block12_lr_eval
+detect evaluate inputs=tutorials/sae_data_rf3/evaluate_block12_logistic.yaml out_dir=outputs/detect/rf3_block12_lr_eval
