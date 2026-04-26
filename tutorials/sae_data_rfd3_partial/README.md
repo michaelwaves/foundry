@@ -10,7 +10,7 @@
 
 
   # 3. merge into one sources.csv
-  tail -n +2 detectors/datasets/uniprot_pdb_benigns/sources.csv \
+  tail -n +2 detesure lctors/datasets/uniprot_pdb_benigns/sources.csv \
     >> tutorials/sae_data_rfd3_partial/sources.csv
 
     3b. filter to <300 residues to prevent oom on l40

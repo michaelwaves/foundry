@@ -29,1184 +29,1096 @@
       ]
     }
   },
-  "hazard_P0A0L8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1xxg.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9I788": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4jmf.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O14796": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5kaz.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8N8Q3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4nsp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P00609": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2not.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9I840": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2vrp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0C0I6": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1et9.pdb",
+  "benign_P41223": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4oed.pdb",
     "partial_t": 5.0
   },
   "hazard_P49121": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1s8g.pdb",
     "partial_t": 5.0
   },
-  "benign_Q86YI8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3o70.pdb",
+  "hazard_Q06ZW0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h5f.pdb",
     "partial_t": 5.0
   },
-  "hazard_P17935": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3dih.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q6PQK2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4xmc.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O43482": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7sfy.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_O57385": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1mc2.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0C5Z0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6a7u.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BWK5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6tyu.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P24605": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1clp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A8B7DWS6": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7ekz.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P58340": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3ual.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8N9A8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8ujl.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O95257": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2wal.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8TD06": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3ph9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_O57413": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kuf.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8TCE9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6k2y.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P81637": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1h9p.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q4G0W2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5y15.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8JIV9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ubu.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BRJ7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3kvh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P82950": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2aoz.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A3F2YKH3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6xy4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7LZK8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1jwi.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P10720": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4hsv.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q13765": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3lkx.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9DF52": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1dpy.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NPJ4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4b6h.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8TCB7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7ezg.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P01764": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1ohq.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9DEF9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1y17.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q969T7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7zee.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BQE4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2q2f.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P81397": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1sb2.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P20656": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1qi7.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8NKX2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1an8.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0CE82": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4rw3.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q805F7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c05.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P28325": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1rn7.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P41223": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4oed.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8AV98": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1c3a.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P14418": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bk9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P01543": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bhp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P58907": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3rrd.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8WYQ3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/9cww.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P34071": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1cqv.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0S865": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h7z.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9H4A6": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3kn1.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_D0VWS7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3bwh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A7H0DNA4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8izt.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P17347": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6lsq.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NV23": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4xjv.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P86397": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3ir3.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P09872": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2aip.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q06535": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ck1.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0A077": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1lkf.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BQ24": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2rrf.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BUH6": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3wtd.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8AV97": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1c3a.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_M1LBP0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/9j7y.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O00399": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3tv0.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6UVW9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4iop.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q1RP79": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2i0u.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NWW9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4dpz.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0DTC7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6w37.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P04361": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ppa.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0DTC8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7f5f.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96CS7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3aj4.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96CG3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4ym4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q26241": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1euo.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6UXN8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3vpp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_D9J2T9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3mrw.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9I841": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2vrp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7LZK5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1jwi.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0A0M0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1enf.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P01558": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2quo.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P84786": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2b7u.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q5TA50": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4k80.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6P4F2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2y5c.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q03464": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1apa.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7LZ71": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bj3.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P20474": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5tfv.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O14931": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3noi.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P60244": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1qua.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BXS1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2pny.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96LW7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4dwn.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96A58": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2atv.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_E0CX04": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3my6.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6ZNX1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6k07.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P02879": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1br5.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O14960": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5b0h.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8WU39": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7aah.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6IQ22": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2il1.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q2FXB0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3roh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P32092": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7dnt.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9Y365": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6ser.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7SZE1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3s69.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O76096": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ch9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P67863": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wq8.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8AYA3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ubu.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P85314": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3gbo.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6UXZ0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8cd3.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NY56": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4run.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0DRC4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7px1.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7T3S7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1oz6.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8TCF1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7y39.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7T2Q0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ukm.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q86Y78": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6gbi.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P42485": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5ua4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P01538": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1okh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A3UNN4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4xzj.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A7H0DN78": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8gz4.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q5SRE7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2opw.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P83512": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1nd1.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_F8QQG5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3u3l.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P01704": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5c2b.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P81165": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1god.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_O92323": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4wb4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A2X0RVH4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7yeq.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A0D4WV12": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4q6x.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q99581": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ypr.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O43745": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2bec.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9HD47": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5yfg.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9PYC1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2o1j.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6W0C5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8wms.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8N4E7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1r03.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q12918": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5mgr.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O95998": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7al7.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96AZ1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4qpn.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q5VVY1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5ubb.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A1S4K3K8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6v4c.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P22851": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1nio.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q05315": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1g86.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O15467": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5ltl.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9DEF8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1iod.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q805F6": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c05.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q53S33": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ncl.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7T248": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1oz7.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NPB1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1mh9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P9WJ62": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5eov.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q3KP22": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6gnx.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NYP9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7sfy.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9I8X1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1op0.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P18965": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3s9a.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A7H0DN46": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/9jvu.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P01544": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2plh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P21742": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wuw.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9Y5W9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4ikb.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9NWS0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4psf.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P09332": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1dt2.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P08434": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5y2e.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A7H0DN96": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8jed.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q40772": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1lln.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P45881": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2oqd.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P01721": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1cd0.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9UNG2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2q1m.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0C024": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5qgg.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P23807": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bj3.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9GZN7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5xqh.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O95715": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2hdl.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P82896": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4rfp.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P04512": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1g1i.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P59071": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1cl5.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P00624": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1pp2.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P33183": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c9z.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_C0HK27": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6cj9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9PW35": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bsw.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6P589": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3f4m.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P84907": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4q1l.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P11407": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3g8h.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A447RTX7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7by2.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q45723": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2rci.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P04084": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1aok.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9UBU3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6h3e.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_O18423": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3zx7.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9H5X1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2m5h.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P06312": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1eeq.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P16948": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kp6.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P58399": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2ok9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P18153": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3dxl.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P01619": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4lrn.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O43822": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8axr.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9H063": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3nr5.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O60479": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4xrs.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9IAM1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1iod.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P81398": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1sb2.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BUF7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5i7z.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P84776": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2ph4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q6QT01": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5y2h.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BSB4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4wzg.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P81458": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1vip.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P14207": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4kmy.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_D0VWY1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2q8w.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0DP25": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5coc.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A0A1E3R5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7ype.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q65163": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3gwl.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P08943": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2v9b.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96BR5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7mqz.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q5WPZ4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5kx4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9IAT9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1pa0.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P61898": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4ec7.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0S864": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h7z.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q86UU9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2moc.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9Y4P9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ee7.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8W4U4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ctk.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q92564": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5v89.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A4FS04": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2osh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q01747": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1i8n.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P9WJ63": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5ks2.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0DML2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1z7c.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P19250": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3a57.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O95971": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6ng3.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O43759": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8a6m.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q46669": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2f1n.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6ZRY4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2m9k.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8AXY1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1u73.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q6SLM1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1g0z.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7T2Q1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ukm.pdb",
+  "benign_O00287": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2kw3.pdb",
     "partial_t": 5.0
   },
   "hazard_Q90249": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h8i.pdb",
     "partial_t": 5.0
   },
-  "hazard_A0A2X0SE53": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6ky8.pdb",
-    "partial_t": 5.0
-  },
-  "benign_O94811": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/9j4d.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q96LC9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7cnu.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P58464": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1gmz.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P14420": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1aok.pdb",
-    "partial_t": 5.0
-  },
-  "benign_D3W0D1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4iop.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q9BVM4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3jub.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8IVP5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2n9x.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q99417": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2yy0.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P09989": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1gis.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0DMM9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1cjm.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0C7P0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6avj.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q01524": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1zmq.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A7H0DND8": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8jc6.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P0DPD7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2pxx.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7T247": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1oz7.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q16663": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2hcc.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P00598": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1poa.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q6P1N9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2xio.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8JI39": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wvr.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P68742": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6lmh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P84854": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2qes.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q2PQJ3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4gso.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q2PHL4": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3le0.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_F8R290": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7ui2.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P30403": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3uci.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q06ZW0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h5f.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P41271": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4x1j.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P67861": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wq9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q6T179": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1yxh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q939T0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4jox.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P00608": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ae7.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P16094": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1aha.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q8V4T7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4qwo.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P00617": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bun.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P01597": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1f6l.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7SID6": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ijl.pdb",
+  "benign_P86397": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3ir3.pdb",
     "partial_t": 5.0
   },
   "benign_Q8NHS0": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2dmx.pdb",
     "partial_t": 5.0
   },
-  "benign_P01593": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1ar2.pdb",
+  "benign_Q4G0W2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5y15.pdb",
     "partial_t": 5.0
   },
-  "hazard_A0A6G7S6L7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8r6e.pdb",
+  "hazard_P82950": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2aoz.pdb",
     "partial_t": 5.0
   },
-  "benign_Q3KRA9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7vjs.pdb",
+  "hazard_P01538": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1okh.pdb",
     "partial_t": 5.0
   },
-  "hazard_Q95NY5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ngv.pdb",
+  "benign_Q9BXU0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6hk8.pdb",
     "partial_t": 5.0
   },
-  "hazard_Q6SLM2": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1tc8.pdb",
+  "benign_Q5SRE7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2opw.pdb",
     "partial_t": 5.0
   },
-  "benign_P23435": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5kc5.pdb",
+  "benign_O00399": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3tv0.pdb",
     "partial_t": 5.0
   },
-  "hazard_J7LCB0": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5xrf.pdb",
+  "hazard_Q805F6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c05.pdb",
     "partial_t": 5.0
   },
-  "hazard_P21454": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2gwl.pdb",
+  "hazard_P16094": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1aha.pdb",
     "partial_t": 5.0
   },
-  "hazard_Q4MV79": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4fk7.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P00626": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3g8g.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P24476": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1lp8.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_A0A2X0TKQ7": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7wlh.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q7N439": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3gqj.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P35259": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4gh9.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q8IYS5": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5cj8.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P13349": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7z5i.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q04470": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1cby.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P47224": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1fwq.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q2FXB1": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6u2s.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q1CQP3": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2ici.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q9I834": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1xxs.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P23339": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1gik.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P0CG56": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3r0l.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P57052": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ywk.pdb",
-    "partial_t": 5.0
-  },
-  "benign_P51460": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2h8b.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_P60623": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1rc9.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q5YD59": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2cm4.pdb",
-    "partial_t": 5.0
-  },
-  "hazard_Q90121": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kpt.pdb",
+  "benign_Q6P4F2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2y5c.pdb",
     "partial_t": 5.0
   },
   "hazard_P82287": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1qll.pdb",
     "partial_t": 5.0
   },
+  "benign_P55344": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/9cbv.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q13765": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3lkx.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q4MV79": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4fk7.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q92564": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5v89.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P33764": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1kso.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q90121": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kpt.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_C0HK27": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6cj9.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6ZRY4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2m9k.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P01704": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5c2b.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O95257": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2wal.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q1CQP3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2ici.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9GZN7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5xqh.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9NYP9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7sfy.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O43482": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7sfy.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q5TA50": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4k80.pdb",
+    "partial_t": 5.0
+  },
+  "benign_D3W0D1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4iop.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P04361": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ppa.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P17935": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3dih.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P58907": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3rrd.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A2X0TKQ7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7wlh.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9I840": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2vrp.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q06535": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ck1.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P58340": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3ual.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P09989": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1gis.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q2PHL4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3le0.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_D0VWY1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2q8w.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q96BR5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7mqz.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8TAI7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3oes.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O60479": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4xrs.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9NY56": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4run.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9BUH6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3wtd.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8NKX2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1an8.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P24605": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1clp.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P01543": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bhp.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0CG56": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3r0l.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0CE82": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4rw3.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O95944": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1hkf.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0DRC4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7px1.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8WYQ3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/9cww.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P01558": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2quo.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0DP25": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5coc.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q6T179": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1yxh.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O43745": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2bec.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7SZE1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3s69.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9Y2Y0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2k9a.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O94811": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/9j4d.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O95971": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6ng3.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9H4A6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3kn1.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P20474": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5tfv.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7T2Q0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ukm.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P24476": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1lp8.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0S865": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h7z.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9PYC1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2o1j.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P14207": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4kmy.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8N9A8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8ujl.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9BWK5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6tyu.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q86YI8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3o70.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P33183": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c9z.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P58464": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1gmz.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q2FXB1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6u2s.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O43822": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8axr.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9NV23": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4xjv.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6UVW9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4iop.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7T247": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1oz7.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6P1N9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2xio.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q53S33": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ncl.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q6PQK2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4xmc.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q96LC9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7cnu.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A0D4WV12": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4q6x.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q3KP22": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6gnx.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_F8QQG5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3u3l.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9BSB4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4wzg.pdb",
+    "partial_t": 5.0
+  },
+  "benign_A6NI73": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2d3v.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9UHV8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5xg7.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q16663": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2hcc.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P04512": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1g1i.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P01721": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1cd0.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q5WPZ4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5kx4.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q99581": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ypr.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P81637": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1h9p.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9BQ24": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2rrf.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_D9J2T9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3mrw.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P00617": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bun.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A3F2YKH3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6xy4.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P06312": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1eeq.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P23339": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1gik.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9BPZ3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1jgn.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O95998": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7al7.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O14931": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3noi.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q01524": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1zmq.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8AV97": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1c3a.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P00609": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2not.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9I788": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4jmf.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q65163": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3gwl.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0C024": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5qgg.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0A077": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1lkf.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9Y365": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6ser.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0A0M0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1enf.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P00624": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1pp2.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0DPD7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2pxx.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q939T0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4jox.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q3KRA9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7vjs.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q1RP79": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2i0u.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q86T03": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8oqh.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P23807": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bj3.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6EIG7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5vyb.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_M1LBP0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/9j7y.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P60623": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1rc9.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q01747": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1i8n.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q40772": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1lln.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P34071": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1cqv.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8WU39": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7aah.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P13349": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7z5i.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P01544": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2plh.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P08943": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2v9b.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q2FXB0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3roh.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0DML2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1z7c.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P83512": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1nd1.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q805F7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c05.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q6QT01": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5y2h.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9UKW6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1wwx.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9UBY9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8pa0.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9DEF8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1iod.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q2PQJ3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4gso.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P14418": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bk9.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P84776": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2ph4.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P16948": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kp6.pdb",
+    "partial_t": 5.0
+  },
   "hazard_P0A0L2": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1dyq.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P22851": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1nio.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8AYA3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ubu.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A3UNN4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4xzj.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q03464": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1apa.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0DMM9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1cjm.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P00626": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3g8g.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A8B7DWS6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7ekz.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6P589": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3f4m.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9UBU3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6h3e.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P84854": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2qes.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P81398": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1sb2.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O60232": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6hcz.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_J7LCB0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5xrf.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6ZNX1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6k07.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P9WJ62": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5eov.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0C0I6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1et9.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q12918": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5mgr.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P41271": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4x1j.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P81165": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1god.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9I841": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2vrp.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9NWS0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4psf.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q96M98": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6ndu.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0DTC7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6w37.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0S864": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h7z.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q04470": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1cby.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P42485": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5ua4.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q86UU9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2moc.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9DEF9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1y17.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q6SLM1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1g0z.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A1S4K3K8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6v4c.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P21454": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2gwl.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P68742": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6lmh.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q96AZ1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4qpn.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7LZK8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1jwi.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9I834": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1xxs.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q5VVY1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5ubb.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P84907": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4q1l.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P58399": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2ok9.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P82896": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4rfp.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6UXN8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3vpp.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P85314": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3gbo.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P32092": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7dnt.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A2X0SE53": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6ky8.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_D0VWS7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3bwh.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9PW35": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bsw.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q96A58": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2atv.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8W4U4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ctk.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P20656": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1qi7.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P00598": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1poa.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P00608": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ae7.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A6G7S6L7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8r6e.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7T248": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1oz7.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_O92323": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4wb4.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7SID6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ijl.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8IVP5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2n9x.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_O18423": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3zx7.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P09332": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1dt2.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P11407": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3g8h.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P84786": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2b7u.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q96A44": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2v24.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9I8X1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1op0.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P21742": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wuw.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7LZK5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1jwi.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P18153": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3dxl.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P51460": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2h8b.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7T3S7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1oz6.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8JIV9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ubu.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9UHQ4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4w7y.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9DF52": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1dpy.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9NX07": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2dhg.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O43759": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8a6m.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P02879": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1br5.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0C7P0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6avj.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_O57413": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kuf.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9IAM1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1iod.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8N8Q3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4nsp.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O14960": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5b0h.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P01764": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1ohq.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8AV98": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1c3a.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P10720": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/4hsv.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q6SLM2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1tc8.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8IVV7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6ccr.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0C5Z0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6a7u.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A447RTX7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7by2.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0DTC8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7f5f.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P35259": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4gh9.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P67861": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wq9.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P19250": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3a57.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8JI39": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wvr.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q95NY5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3ngv.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P57052": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ywk.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A2X0RVH4": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/7yeq.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9P0R6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/1sgo.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P9WJ63": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5ks2.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8TCE9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/6k2y.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9NZK7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5wzm.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_E0CX04": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3my6.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P09872": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2aip.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P04084": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1aok.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q5YD59": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2cm4.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P81397": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1sb2.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q8AXY1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1u73.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P81458": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1vip.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P59071": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1cl5.pdb",
+    "partial_t": 5.0
+  },
+  "benign_O60844": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3apa.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q9IAT9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1pa0.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6UXZ0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8cd3.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7LZ71": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1bj3.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P61898": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4ec7.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7N439": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3gqj.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q8TD06": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3ph9.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P60244": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1qua.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A7H0DND8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8jc6.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A4FS04": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2osh.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q6W0C5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/8wms.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P18965": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3s9a.pdb",
+    "partial_t": 5.0
+  },
+  "benign_Q9P0S9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2los.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P14420": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1aok.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P0A0L8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1xxg.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P45881": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2oqd.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_A0A7H0DN78": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/8gz4.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q45723": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2rci.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P67863": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1wq8.pdb",
     "partial_t": 5.0
   },
   "hazard_Q6YCN3": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/6kry.pdb",
     "partial_t": 5.0
   },
-  "benign_O60844": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3apa.pdb",
+  "benign_Q8TCF1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7y39.pdb",
+    "partial_t": 5.0
+  },
+  "benign_P0DPK5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7zdd.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P08434": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/5y2e.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q7T2Q1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1ukm.pdb",
     "partial_t": 5.0
   }
 }
