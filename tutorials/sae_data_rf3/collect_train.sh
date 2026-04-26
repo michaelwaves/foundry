@@ -7,7 +7,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 TOX_DIR="$HERE/../../detectors/datasets/toxinpred3"
 INPUTS="$HERE/train_inputs.json"
 OUT_DIR="$HERE/train_activations"
-SUBSAMPLE="${SUBSAMPLE:-100}"
+SUBSAMPLE="${SUBSAMPLE:-1000}"
 
 if [[ ! -f "$TOX_DIR/train_pos.csv" || ! -f "$TOX_DIR/train_neg.csv" ]]; then
     echo "missing ToxinPred CSVs — run detectors/datasets/download_toxinpred.sh first" >&2

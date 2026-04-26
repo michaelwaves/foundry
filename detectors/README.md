@@ -49,7 +49,17 @@ detectors/datasets/download_safeprotein.sh       # → detectors/datasets/safepr
 # emits SafeProtein_Bench.json, safeprotein.fasta, accessions.txt
 ```
 
-**UniProt benigns — the universal negative pool**. Cursor-paginated FASTA download
+**UniProt benigns + PDB cross-refs** — for the RFD3 partial-diffusion pipeline,
+which needs full structures (not just sequences). Same exclusion filters as the
+sequence-only benigns below, plus `database:PDB`. Downloads matching PDBs from
+RCSB and emits a `sources.csv` ready for `tutorials/sae_data_rfd3_partial/`.
+
+```bash
+detectors/datasets/download_uniprot_pdb_benigns.sh                       # 200 default, length 100-400
+detectors/datasets/download_uniprot_pdb_benigns.sh 500 80 600
+```
+
+**UniProt benigns — the universal sequence-only negative pool**. Cursor-paginated FASTA download
 filtered by `reviewed:true NOT keyword:KW-0800 (Toxin) NOT keyword:KW-0843 (Virulence)
 NOT taxonomy_id:10239 (Viruses)` and a length range. Matches SafeBench-Seq's recipe
 (plus the stricter NOT virulence filter).
@@ -66,6 +76,36 @@ ToxinPred's existing negatives) for the negative class.
 
 SafeBench-Seq isn't publicly downloadable yet — see [`plan.md`](plan.md) for backup
 plans (UniProt API, Victors, VFDB).
+
+### Filtering + length-stratified balancing for partial diffusion
+
+After downloading hazards + benigns into a single `sources.csv`, GPU memory and label-
+shortcut concerns motivate trimming the dataset:
+
+- **Drop oversized structures** — RCSB PDBs of binding-partner heterodimers or full
+  cryo-EM complexes can balloon to thousands of residues. Cap at e.g. 300 residues
+  to fit on a 44 GB GPU at `diffusion_batch_size=2`.
+- **Length-stratify the class balance** — naïve filtering tends to leave length
+  trivially separable between hazards and benigns. Per-bin balancing removes that
+  shortcut.
+
+```bash
+# combine hazard + benign sources first
+cat tutorials/sae_data_rfd3_partial/sources.csv \
+    detectors/datasets/uniprot_pdb_benigns/sources.csv \
+    > tutorials/sae_data_rfd3_partial/sources_combined.csv  # de-dupe headers manually
+
+# filter ≤ 300 residues, length-stratify-balance per 50-residue bin
+python tutorials/sae_data_rfd3_partial/balance_sources.py \
+    --input  tutorials/sae_data_rfd3_partial/sources_combined.csv \
+    --output tutorials/sae_data_rfd3_partial/sources.csv \
+    --max-residues 300
+```
+
+Auto-counts residues if the input lacks an `n_residues` column (writes a sidecar
+`<input>_counts.csv` for reuse). Output is a perfectly class-balanced CSV (177
+hazards + 177 benigns at the standard 300-residue cap on the SafeProtein +
+UniProt-benign datasets).
 
 ## Install
 

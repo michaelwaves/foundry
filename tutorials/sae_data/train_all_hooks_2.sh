@@ -9,7 +9,7 @@ for HOOK in token_initializer_outputs block6 block8 block12; do
     saffron train \
         activations_path="$TRAIN_ACTIVATIONS" \
         hook_name="$HOOK" \
-        out_dir="$TRAIN_DIR"
+        out_dir="$TRAIN_DIR" \
         use_wanb=true
 
 done
