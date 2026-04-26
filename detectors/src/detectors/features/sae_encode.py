@@ -22,9 +22,14 @@ class SAEEncodeExtractor:
 
     @torch.no_grad()
     def transform(self, activations: torch.Tensor) -> torch.Tensor:
+        # Top-K SAEs are trained per-token, so we encode tokens, not pooled
+        # vectors — pooling first puts the encoder badly off-distribution and
+        # collapses sparsity (~1% of features fire instead of the trained ~80).
+        # Accept any leading shape (..., dim), encode flat, restore the shape.
         moved = activations.to(self.device).to(next(self.sae.parameters()).dtype)
-        encoded = self.sae.encode(moved)
-        return encoded.cpu().float()
+        leading_shape = moved.shape[:-1]
+        encoded = self.sae.encode(moved.reshape(-1, moved.shape[-1]))
+        return encoded.reshape(*leading_shape, encoded.shape[-1]).cpu().float()
 
     def save(self, directory: Path) -> None:
         directory.mkdir(parents=True, exist_ok=True)

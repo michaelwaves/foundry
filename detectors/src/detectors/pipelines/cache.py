@@ -27,8 +27,9 @@ def build_feature_cache(config: dict, cache_path: Path) -> FeatureCache:
     sample_index_chunks: list[np.ndarray] = []
 
     for design_id, activations in _iter_design_activations(config["activations_path"], config["hook_name"]):
-        pooled = pool_design(torch.from_numpy(activations).float(), pooling)
-        features = extractor.transform(pooled).numpy()
+        encoded = extractor.transform(torch.from_numpy(activations).float())
+        pooled = pool_design(encoded, pooling)
+        features = pooled.numpy()
         n_samples = features.shape[0]
         feature_chunks.append(features)
         design_id_chunks.append([design_id] * n_samples)
