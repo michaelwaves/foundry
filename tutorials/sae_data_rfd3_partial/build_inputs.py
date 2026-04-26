@@ -37,17 +37,25 @@ def main() -> None:
     run_config = _load_or_seed_run_config(Path(args.out), Path(args.hooks_yaml))
 
     payload = {"run_config": run_config}
+    skipped = 0
     for row in rows:
+        path = Path(row["structure_path"]).resolve()
+        reason = _first_aa_missing_ca(path)
+        if reason is not None:
+            print(f"skip {row['name']} ({path.name}): {reason}")
+            skipped += 1
+            continue
         # RFD3's input parser resolves relative `input` paths against the JSON's
         # directory, so a sources.csv with project-relative paths breaks the join.
         # Always emit absolute paths (resolved against CWD if the row was relative).
         payload[row["name"]] = {
-            "input": str(Path(row["structure_path"]).resolve()),
+            "input": str(path),
             "partial_t": float(row.get("partial_t") or args.partial_t),
         }
 
     Path(args.out).write_text(json.dumps(payload, indent=2))
-    print(f"wrote {len(rows)} examples + run_config -> {args.out}")
+    kept = len(rows) - skipped
+    print(f"wrote {kept} examples + run_config -> {args.out} (skipped {skipped})")
 
 
 def _parse_args() -> argparse.Namespace:
@@ -77,6 +85,36 @@ def _load_or_seed_run_config(out_path: Path, hooks_yaml: Path) -> dict:
         if isinstance(existing, dict) and "run_config" in existing:
             return existing["run_config"]
     return {"activation_collection": yaml.safe_load(hooks_yaml.read_text())}
+
+
+# Standard amino acids — RFD3's pipeline expects each as one token with a CA
+# representative. Non-paddable motif residues missing CA crash the encoder.
+_STANDARD_AA = frozenset({
+    "ALA", "ARG", "ASN", "ASP", "CYS", "GLN", "GLU", "GLY", "HIS", "ILE",
+    "LEU", "LYS", "MET", "PHE", "PRO", "SER", "THR", "TRP", "TYR", "VAL",
+})
+
+
+def _first_aa_missing_ca(pdb_path: Path) -> str | None:
+    atoms_by_residue: dict[tuple[str, str, str], set[str]] = {}
+    residue_order: list[tuple[str, str, str]] = []
+    with pdb_path.open() as fh:
+        for line in fh:
+            if not (line.startswith("ATOM") or line.startswith("HETATM")):
+                continue
+            res_name = line[17:20].strip()
+            if res_name not in _STANDARD_AA:
+                continue
+            key = (line[21], line[22:27].strip(), res_name)
+            if key not in atoms_by_residue:
+                atoms_by_residue[key] = set()
+                residue_order.append(key)
+            atoms_by_residue[key].add(line[12:16].strip())
+    for chain, res_seq, res_name in residue_order:
+        atoms = atoms_by_residue[(chain, res_seq, res_name)]
+        if "CA" not in atoms:
+            return f"{res_name} {chain}{res_seq} missing CA (atoms: {sorted(atoms)})"
+    return None
 
 
 if __name__ == "__main__":

@@ -5,5 +5,8 @@ collect_train.sh
  detect labels inputs=/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rf3/label_acts.yaml out_dir=tutorials/sae_data_rf3/labels
 
  # 3 train logistic regression classifier
-
+detect fit  inputs=/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rf3/block12_logistic.yaml out_dir=/mnt/nw/home/m.yu/repos/foundry/outputs/detect/rf3_block12_lr
  
+ # 4 evaluate 
+
+  detect evaluate inputs=tutorials/sae_data_rf3/evaluate_block12.yaml out_dir=outputs/detect/rf3_block12_lr_eval

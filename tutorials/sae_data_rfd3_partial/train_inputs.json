@@ -105,10 +105,6 @@
     "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/3lkx.pdb",
     "partial_t": 5.0
   },
-  "hazard_Q4MV79": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4fk7.pdb",
-    "partial_t": 5.0
-  },
   "benign_Q92564": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/5v89.pdb",
     "partial_t": 5.0
@@ -413,10 +409,6 @@
     "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2ypr.pdb",
     "partial_t": 5.0
   },
-  "hazard_P81637": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1h9p.pdb",
-    "partial_t": 5.0
-  },
   "benign_Q9BQ24": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2rrf.pdb",
     "partial_t": 5.0
@@ -499,10 +491,6 @@
   },
   "hazard_Q939T0": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/4jox.pdb",
-    "partial_t": 5.0
-  },
-  "benign_Q3KRA9": {
-    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/7vjs.pdb",
     "partial_t": 5.0
   },
   "hazard_Q1RP79": {

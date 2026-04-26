@@ -1,0 +1,3634 @@
+{
+  "run_config": {
+    "activation_collection": {
+      "hooks": [
+        {
+          "name": "to_si",
+          "module_path": "diffusion_module.diffusion_conditioning.to_si",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 1
+        },
+        {
+          "name": "block12",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.12.conditioned_transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 50
+        },
+        {
+          "name": "block16",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.16.conditioned_transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 50
+        },
+        {
+          "name": "to_r_update",
+          "module_path": "diffusion_module.atom_attention_decoder.to_r_update",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 50
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "test_pos_789",
+      "components": [
+        {
+          "seq": "QCSPNGGSCSRHFHCCSLYCNKINTGVCIAT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_862",
+      "components": [
+        {
+          "seq": "LSLGTIKKLLQILAQGLKAICNHRDLIAKGCQA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_83",
+      "components": [
+        {
+          "seq": "NGRCCHPACGKNYSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_531",
+      "components": [
+        {
+          "seq": "EFILPAVGRTCCDLTWCDGNCRCCTP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1048",
+      "components": [
+        {
+          "seq": "YKLCHPC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_996",
+      "components": [
+        {
+          "seq": "QNWPSPK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_830",
+      "components": [
+        {
+          "seq": "DECYPPGTFCGIKPGLCCSAICLSFVCISFDF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_622",
+      "components": [
+        {
+          "seq": "QGRPLGPPIPP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_977",
+      "components": [
+        {
+          "seq": "MTLAQFAMTFWHDLAAPILAGIITAAIVGWWRNRK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_734",
+      "components": [
+        {
+          "seq": "CVSPGGVCQHKDECCSDRCEQSAIVSICKQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_448",
+      "components": [
+        {
+          "seq": "DCCGVKLEMCHPCLCDNSCKNYGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1034",
+      "components": [
+        {
+          "seq": "VVSCADILAVAAR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_286",
+      "components": [
+        {
+          "seq": "KAYSMPRCKGGFRAVMCWL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_578",
+      "components": [
+        {
+          "seq": "CTPSGGACYYDYFCCSMTCNFNSKSCV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_287",
+      "components": [
+        {
+          "seq": "FLSLIPHIVSGVASLAKHF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_195",
+      "components": [
+        {
+          "seq": "QSCCSTPPCALLYMEMC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_514",
+      "components": [
+        {
+          "seq": "MAVRGGCCSHPVCNLNNPQMCRGRR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1091",
+      "components": [
+        {
+          "seq": "GCWDSWC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_301",
+      "components": [
+        {
+          "seq": "GCCSYPPCFATNPDCAGGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_636",
+      "components": [
+        {
+          "seq": "YCVPKSGLCTIFQPGKCCSGWCLIYRCT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_203",
+      "components": [
+        {
+          "seq": "GEEEYQKNVGKSKRSRS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_152",
+      "components": [
+        {
+          "seq": "RACCSNPPCAHNNPDC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_677",
+      "components": [
+        {
+          "seq": "PVCTRNGLPVCGETCVGGTCNTPGCTCSW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_967",
+      "components": [
+        {
+          "seq": "DDCLGMFSSCDPNNDKCCPNRVCRVRDQWCKYKLW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_207",
+      "components": [
+        {
+          "seq": "GEDDLQDNQDLIRDKSN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_725",
+      "components": [
+        {
+          "seq": "DCSGSGYGCKNTPCCDGLTCRGPHQGPICL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_890",
+      "components": [
+        {
+          "seq": "GFSSLFKAGAKYLLKQVGKAGAQQLACKAANNC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_648",
+      "components": [
+        {
+          "seq": "TCEPGASPHPQGKCRPELAEFHETMCEV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_419",
+      "components": [
+        {
+          "seq": "ACGSCRKKCKGSGKCINGRCKCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_907",
+      "components": [
+        {
+          "seq": "CTVDSDFCDPGNHNCCSGKCIDEGGSGVCAIIP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1068",
+      "components": [
+        {
+          "seq": "QGWCCKENIACCV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_534",
+      "components": [
+        {
+          "seq": "AGCGGHCLDNSFCPPACSDCSEIYAC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_128",
+      "components": [
+        {
+          "seq": "TNSACCLLNSMTVFIE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_29",
+      "components": [
+        {
+          "seq": "GRCCHPACGQNTSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_192",
+      "components": [
+        {
+          "seq": "GCCDPQWCDAGCYDGCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_817",
+      "components": [
+        {
+          "seq": "QARPPHPPIPP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_3",
+      "components": [
+        {
+          "seq": "INLKAIAAFAKKLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1011",
+      "components": [
+        {
+          "seq": "QCGKHCPTCRHC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_683",
+      "components": [
+        {
+          "seq": "CTAPGGACYAAYTCCSNACNLNTKKCVLS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_500",
+      "components": [
+        {
+          "seq": "CKSTGASCRRTPYDCCTGSCRSGRC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_667",
+      "components": [
+        {
+          "seq": "SCSSGCSDCNSDSCQCTLNQFTNSDSCCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_129",
+      "components": [
+        {
+          "seq": "GCCSVPPCTANHPELC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_392",
+      "components": [
+        {
+          "seq": "ERVCCGYPMSCKSRACKPSYCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_455",
+      "components": [
+        {
+          "seq": "GIKDWIKGAAKKLIKTVASHIANQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_489",
+      "components": [
+        {
+          "seq": "GIGGALLSAGKSALKGLAKGLAEHL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_292",
+      "components": [
+        {
+          "seq": "GCCCNPACGPNYGCGTSCS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_918",
+      "components": [
+        {
+          "seq": "ASCRTPKDCADPCRKETGCPYGKCMNRKCKCNRC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_187",
+      "components": [
+        {
+          "seq": "QECCSYPACNLDHPELC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_165",
+      "components": [
+        {
+          "seq": "AMVSS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_656",
+      "components": [
+        {
+          "seq": "GSPLTYPCHSAQCEQPCKDANMRFGCMN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1041",
+      "components": [
+        {
+          "seq": "FLPIVGKLLSGLF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1003",
+      "components": [
+        {
+          "seq": "CCHPACGQNYSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_224",
+      "components": [
+        {
+          "seq": "HECCKKGFCDPGCDCCDQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_618",
+      "components": [
+        {
+          "seq": "GLGSLLGKAFKFGLKTVGKMMGGAPREE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_597",
+      "components": [
+        {
+          "seq": "KIKWFKTMKSIAKFIAKEQMKKHLKGE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_256",
+      "components": [
+        {
+          "seq": "GYEEGREVAETVRELEEA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_682",
+      "components": [
+        {
+          "seq": "QDCAAGGQFCGFPKIGGPCCSGWCLGVCA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_417",
+      "components": [
+        {
+          "seq": "QRLCCGFPKSCRSRQCKPHRCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_590",
+      "components": [
+        {
+          "seq": "KNCGYAFDACTSDRQCCSGYCVGNVYC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_912",
+      "components": [
+        {
+          "seq": "ACSRGSRCPPQCCMGLRCGRGNPQKCIGAHEDV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_188",
+      "components": [
+        {
+          "seq": "GCCSNPPCYANNQAYCN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_650",
+      "components": [
+        {
+          "seq": "SCNNCPEEPCCAGDQCMPDPGYEPFCGN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_496",
+      "components": [
+        {
+          "seq": "IAMAISSGACCAYPPCFEAYPERCL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_595",
+      "components": [
+        {
+          "seq": "CRSKGAKCSKLMYDCCSGSCSGTVGRC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_377",
+      "components": [
+        {
+          "seq": "TDSEECCLDSRCAGQHQDLCS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_388",
+      "components": [
+        {
+          "seq": "GCPADCPNTCDSSNKCSPGFP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_383",
+      "components": [
+        {
+          "seq": "QGRCCPYGPCRLSMCDPPCCA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_68",
+      "components": [
+        {
+          "seq": "KPPPWVPV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_533",
+      "components": [
+        {
+          "seq": "SCVPIGRPCASNEQCCTRWCTPRRIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_976",
+      "components": [
+        {
+          "seq": "QGWAWPRPQIPP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_142",
+      "components": [
+        {
+          "seq": "GRGRCCHPACGPNYSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_184",
+      "components": [
+        {
+          "seq": "GCCPFPACTHTIICRCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_267",
+      "components": [
+        {
+          "seq": "KCCRPPCAMSCGMARCCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_307",
+      "components": [
+        {
+          "seq": "NCCRAQICC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_80",
+      "components": [
+        {
+          "seq": "NLQILCCKHTPKCCT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_802",
+      "components": [
+        {
+          "seq": "AFCNLLMCQLSCRSLGLLGKCIGDKCECVKH",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1075",
+      "components": [
+        {
+          "seq": "DYCCHRGPCMVWC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_565",
+      "components": [
+        {
+          "seq": "SLWSSIKDMAAAAGRAALNAVNGIVNP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1069",
+      "components": [
+        {
+          "seq": "NCCIYENWCCEWI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_483",
+      "components": [
+        {
+          "seq": "GAWKNFWSSLRKGFYDGEAGRAIRR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_441",
+      "components": [
+        {
+          "seq": "GCVANCQANQTGIDCIKYCGIGI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_859",
+      "components": [
+        {
+          "seq": "GVCCGFKLCHC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_564",
+      "components": [
+        {
+          "seq": "ALWMTLLKKVLKAAAKALNAVLVGANA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_923",
+      "components": [
+        {
+          "seq": "DCTRMFGACRRDSDCCPHLGCKPTSKYCAWDGTI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1009",
+      "components": [
+        {
+          "seq": "FCCFPEHWCCEW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_732",
+      "components": [
+        {
+          "seq": "DCCPVAGMPLWMQPLLWMTSFVIGTSSSNE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_169",
+      "components": [
+        {
+          "seq": "GCCHIIACRMGCSPCCW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_665",
+      "components": [
+        {
+          "seq": "DCLPGWSVYEGRCYKVFNQKTWKAAEKFC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_237",
+      "components": [
+        {
+          "seq": "DAAVEPELYHWGKVWLPN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_997",
+      "components": [
+        {
+          "seq": "WCPPMIPLCSRF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_687",
+      "components": [
+        {
+          "seq": "MGYILPALSQQTCCVRPWCDGACDCCVDP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_390",
+      "components": [
+        {
+          "seq": "RHGCCKGPKGCSSRECRPQHCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_498",
+      "components": [
+        {
+          "seq": "CLGFGEACLMLYSDCCSYCVALVCL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_34",
+      "components": [
+        {
+          "seq": "TGCCWHPACGKNRC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_556",
+      "components": [
+        {
+          "seq": "ITFSKIYRSCKSDSDCGNQKCARGRCV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_240",
+      "components": [
+        {
+          "seq": "GVLSAFKNALPGIMKIIV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_452",
+      "components": [
+        {
+          "seq": "FLPLAVSLAANFLPKLFCKITKKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_762",
+      "components": [
+        {
+          "seq": "CCPNLFYCCPD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_350",
+      "components": [
+        {
+          "seq": "PGVLDIPVKSNSDDDSIFRY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_873",
+      "components": [
+        {
+          "seq": "IDPLTILKILKGGLKSICKHRKYLDKACASIGQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_300",
+      "components": [
+        {
+          "seq": "TWEECCKRPPCRVQHMGHC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_449",
+      "components": [
+        {
+          "seq": "DCCGVKLEMCHPCLCDNSCKKSGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_93",
+      "components": [
+        {
+          "seq": "IMAGCCPRFYQCCYP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1095",
+      "components": [
+        {
+          "seq": "LARFVLRILKYGFK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_55",
+      "components": [
+        {
+          "seq": "ITKWLLNAIKKGFKL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_255",
+      "components": [
+        {
+          "seq": "EECCPNPPCFATNSDICG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_387",
+      "components": [
+        {
+          "seq": "RTGEDFLEECMGGCAFDFCCK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_246",
+      "components": [
+        {
+          "seq": "NVLSSVANGINRALSFFG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_759",
+      "components": [
+        {
+          "seq": "SKCFSPGTFCGIKPGLCCSVRCFSLFCISFE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_238",
+      "components": [
+        {
+          "seq": "NALSSPRNKCDRASSCFG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_75",
+      "components": [
+        {
+          "seq": "KAVCCEVLPGTDCCF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_45",
+      "components": [
+        {
+          "seq": "MLGFLVLP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_399",
+      "components": [
+        {
+          "seq": "FFHHIFRAIVHVGKTIHRLVTG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_379",
+      "components": [
+        {
+          "seq": "GVVEHCCHRPCSNAEFKKFCG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_254",
+      "components": [
+        {
+          "seq": "DPCCSYPACGANHPEICG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_982",
+      "components": [
+        {
+          "seq": "TCSNKGEQCEDDSDCCWHLCCVDNKCAKLILLCNL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_432",
+      "components": [
+        {
+          "seq": "GVSKILHSAGKFGKAFLGEIMKS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_126",
+      "components": [
+        {
+          "seq": "GCCSRPPCIANDPDLC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_47",
+      "components": [
+        {
+          "seq": "TPEHQRYVELFIVVD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_872",
+      "components": [
+        {
+          "seq": "GFCAQKGIKCHDIHCCTNLKCVREGSNRVCRKA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_208",
+      "components": [
+        {
+          "seq": "GCCPYPKCIHVTFCKCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_144",
+      "components": [
+        {
+          "seq": "TLTSFGEWR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_453",
+      "components": [
+        {
+          "seq": "FIGPVLKIAAGILPTAICKIFKKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_148",
+      "components": [
+        {
+          "seq": "VCCPFGGCHELCTADD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_617",
+      "components": [
+        {
+          "seq": "QSAPGNEAIPP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_718",
+      "components": [
+        {
+          "seq": "GAFGNFLKGVAKKAGLKILSIAQCKLSGTC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_894",
+      "components": [
+        {
+          "seq": "DCRALGEYCGLPYVHNSRCCSQLCGFICVPESP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_370",
+      "components": [
+        {
+          "seq": "GLLSKVLGVGKKVLCGVSGLC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1032",
+      "components": [
+        {
+          "seq": "NCPAGCRSQGCCM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_957",
+      "components": [
+        {
+          "seq": "EDCLGWFSRCSPKNDKCCPNYKCSSKDLWCKYKIW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_81",
+      "components": [
+        {
+          "seq": "LRNGVCCGYKLCHPC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_409",
+      "components": [
+        {
+          "seq": "TFDTPKHRCGSEITNSYMDLCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_735",
+      "components": [
+        {
+          "seq": "CQPNGYYCDFEFTPKCCLKCDYNRKYCQPY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_964",
+      "components": [
+        {
+          "seq": "ECLGFGKGCNPSNDQCCKSANLVCSRKHRWCKYEI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_347",
+      "components": [
+        {
+          "seq": "GVVEHCCYRPCSNAEFKKFC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_119",
+      "components": [
+        {
+          "seq": "CCDEEECSSACWPCCW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_325",
+      "components": [
+        {
+          "seq": "ADVPGNYPLNSYGASYYCTI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_332",
+      "components": [
+        {
+          "seq": "GLFTLIKCAYQLIAPTVACN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_702",
+      "components": [
+        {
+          "seq": "NVDFNSESTRRKNKQKEIVDLHNSLRRVD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1085",
+      "components": [
+        {
+          "seq": "CCGR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_241",
+      "components": [
+        {
+          "seq": "VDIHVWSGV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_906",
+      "components": [
+        {
+          "seq": "SRSCSGRDSRCPPVCCMGLMCSRGKCVSIYGEK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_359",
+      "components": [
+        {
+          "seq": "GMASKAGAIAGKIAKVALKAL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_28",
+      "components": [
+        {
+          "seq": "GRCCHPACGKYYSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_966",
+      "components": [
+        {
+          "seq": "DDCLGMFSSCDPKNDKCCPNRVCRSRDQWCKYKLW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_840",
+      "components": [
+        {
+          "seq": "SGCCVIDSNCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1042",
+      "components": [
+        {
+          "seq": "FLPFVGNLLNGLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_638",
+      "components": [
+        {
+          "seq": "TCRSSGRYCRSPYDRRRRYCRRITDACV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_796",
+      "components": [
+        {
+          "seq": "DCVEVDYFCGIPFVFNGLCCSGNCVFVCTPQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_315",
+      "components": [
+        {
+          "seq": "NCCNGGCSSKWCRDAARCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_26",
+      "components": [
+        {
+          "seq": "CCRRCYMGCIPCCF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_938",
+      "components": [
+        {
+          "seq": "CAYGTPCSDCTSAGKVCSVKSGGKGSCGTCVPGA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_162",
+      "components": [
+        {
+          "seq": "GCCSHPACWVNNPHIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_688",
+      "components": [
+        {
+          "seq": "GKPCHKEGQLCDPFLQNCCLGWNCVFVCI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_94",
+      "components": [
+        {
+          "seq": "GRCCHPACGGKYFKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_576",
+      "components": [
+        {
+          "seq": "CCPGKPCCRI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_277",
+      "components": [
+        {
+          "seq": "RDPCCYHPTCNASNPQIC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_492",
+      "components": [
+        {
+          "seq": "GLLDTLKGAAKNVVGSLASKVMEKL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_987",
+      "components": [
+        {
+          "seq": "AANDKASDLMALTVRGCCVYPPCAVNHPDICRGGR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_722",
+      "components": [
+        {
+          "seq": "GVITDTLKGVAKTVAAELLRKAHCKLTNSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_736",
+      "components": [
+        {
+          "seq": "WWEGECYDWLRQCSSPAQCCSGNCGAHSKA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_272",
+      "components": [
+        {
+          "seq": "IRDECCSNPACRWNNHVC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_795",
+      "components": [
+        {
+          "seq": "CTENGDVCDPENHNCCSGSCLDDEDPPVCGF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_849",
+      "components": [
+        {
+          "seq": "VCGSNQPNHPNGKCGSKMADYLEEQCEEEEAA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_166",
+      "components": [
+        {
+          "seq": "GCCGSFACRFGCVPCCV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_4",
+      "components": [
+        {
+          "seq": "LRLKSIVSYAKKVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_394",
+      "components": [
+        {
+          "seq": "ESECPWHPWC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_685",
+      "components": [
+        {
+          "seq": "TCLGKNALCGAPGVGVLVCCSFKCVVVCV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_328",
+      "components": [
+        {
+          "seq": "KDGYLVGNDGCKYSCNTYPK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_491",
+      "components": [
+        {
+          "seq": "VKLIQIRIWIQYVTVLQMFSMKTKQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_457",
+      "components": [
+        {
+          "seq": "FLPVLAGLTPSIVPKLVCLLTKKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_776",
+      "components": [
+        {
+          "seq": "GFLDIIKDTGKEFAVKILNNLKCKLAGGCPP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_65",
+      "components": [
+        {
+          "seq": "CCSRYCWKCIPCCPY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_824",
+      "components": [
+        {
+          "seq": "MSDINATRVPAWLAECPCVGDDISHLLTRGEK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_857",
+      "components": [
+        {
+          "seq": "TYGIYDAKPPFSCAGLRGGCVLPPNLRPKFKE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_96",
+      "components": [
+        {
+          "seq": "GCCSYPPCFATNSGYC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_340",
+      "components": [
+        {
+          "seq": "CCGKPTSACHPCVCNGSCSG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_913",
+      "components": [
+        {
+          "seq": "DDCIKPYGFCSLPILKNGLCCSGACVGVCADLP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_131",
+      "components": [
+        {
+          "seq": "CCRWPCPDSCHGSCCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_323",
+      "components": [
+        {
+          "seq": "DGCPPHPVPGMHPCMCTNTC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_915",
+      "components": [
+        {
+          "seq": "LDKKECTTNGEFCGISVFASFLCCSGLCVFVCI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1081",
+      "components": [
+        {
+          "seq": "ECDNPACGNHTSK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_998",
+      "components": [
+        {
+          "seq": "ILPIRSLIKKLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1",
+      "components": [
+        {
+          "seq": "CFGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1013",
+      "components": [
+        {
+          "seq": "EPNSIWS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_668",
+      "components": [
+        {
+          "seq": "MHVSTFQALMLMLAFGSFIIALLTYIKKK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_640",
+      "components": [
+        {
+          "seq": "SIVLRGKAPFR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_103",
+      "components": [
+        {
+          "seq": "CCDDSECSTSCWPCCY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_851",
+      "components": [
+        {
+          "seq": "AADYKRSDWFAWVIHSCCSNPPCAHVNCRRRR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_386",
+      "components": [
+        {
+          "seq": "KPLWRL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_171",
+      "components": [
+        {
+          "seq": "CCQLFVWCC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_268",
+      "components": [
+        {
+          "seq": "GCCSYPPCFATNPDCAGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_31",
+      "components": [
+        {
+          "seq": "GRCCHPACAKYFSC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_823",
+      "components": [
+        {
+          "seq": "YKLPDAVPIRV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_856",
+      "components": [
+        {
+          "seq": "TANNKATDLMALTVRGCCGNPSCSIHIPYVCN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_7",
+      "components": [
+        {
+          "seq": "INLRAIAALAKKLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_438",
+      "components": [
+        {
+          "seq": "GMWDECCDDPPCRQNNMEHCPAS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_30",
+      "components": [
+        {
+          "seq": "TIINVKCTSPKQCS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_5",
+      "components": [
+        {
+          "seq": "AIPWSIWWHLLFKG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_pos_1083",
+      "components": [
+        {
+          "seq": "ECENPACGQHTSK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_201",
+      "components": [
+        {
+          "seq": "AYSYVSEYKRLPVYNFGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_391",
+      "components": [
+        {
+          "seq": "LKCEWDGLVGTRGEIAKETIER",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_244",
+      "components": [
+        {
+          "seq": "TVQIVTPDGLVYDHHASY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_407",
+      "components": [
+        {
+          "seq": "LWTRDYAGVYEAIRGFDWSQDAK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_620",
+      "components": [
+        {
+          "seq": "MATQGFSCLLLSVSEIDLSMKRQYKQIR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_574",
+      "components": [
+        {
+          "seq": "SFQCELVFAK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_374",
+      "components": [
+        {
+          "seq": "TTVYDAEGSKVDFDGSLRIIV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_206",
+      "components": [
+        {
+          "seq": "EKMTRVRIIGDYLAKRFG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_975",
+      "components": [
+        {
+          "seq": "MEVNIFGLTATALFIIIPTSFLLILYVKTASNQSV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_813",
+      "components": [
+        {
+          "seq": "SITFVLGVLGNGLVIWVAGFRMAHTVTTICYL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_167",
+      "components": [
+        {
+          "seq": "LSQEELDGIVKRTRGGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_45",
+      "components": [
+        {
+          "seq": "EPVKKKDLKKATVPL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_563",
+      "components": [
+        {
+          "seq": "IRVIDWILRRCSGDATIAEETPIGFIP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_928",
+      "components": [
+        {
+          "seq": "MNDQMFVETLIITSSFFAIAAVLVLSVLLIERTG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_238",
+      "components": [
+        {
+          "seq": "ATGSGGMNLVFVGAEMAP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_526",
+      "components": [
+        {
+          "seq": "MLAEVGLVGKAPGRYNLHLGGNRIGT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_274",
+      "components": [
+        {
+          "seq": "AFYAPFGVSAMTSSVNQNW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1067",
+      "components": [
+        {
+          "seq": "STAGDTHLGGEDF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_711",
+      "components": [
+        {
+          "seq": "MKTISRQAYADMFGPTTGDRLRLADTELFL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_236",
+      "components": [
+        {
+          "seq": "KLSYDDKVFENVEFTPRL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_317",
+      "components": [
+        {
+          "seq": "MNKKSIRNVNLKGKRVFDRV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_571",
+      "components": [
+        {
+          "seq": "APRTESLVTSGQISREYGLICHGRLVS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_39",
+      "components": [
+        {
+          "seq": "ANDPDFPYTVQANRP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_87",
+      "components": [
+        {
+          "seq": "PQISRQEYGGLFGPT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_84",
+      "components": [
+        {
+          "seq": "SSEAAPEEKVAILGA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_422",
+      "components": [
+        {
+          "seq": "MVTMVKKWLLLMTFMAGCRGMIY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_532",
+      "components": [
+        {
+          "seq": "NNEAYIEEVRQAGLELFSEENLQILS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_645",
+      "components": [
+        {
+          "seq": "RLEKGRGPVATVLVQNGNLKQGDNILCG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_752",
+      "components": [
+        {
+          "seq": "MLTLFSYFGFLFAALTLALVLFIGLNKIQLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1013",
+      "components": [
+        {
+          "seq": "APNQPSDNMIRF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_940",
+      "components": [
+        {
+          "seq": "PRRRRRSSRPVRRRRRYRRSTVARRRRRVVRRRR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_892",
+      "components": [
+        {
+          "seq": "MNAELIVQLGSLALITVAGPAIIVLLFLKQGNL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_763",
+      "components": [
+        {
+          "seq": "MWRDSLCAAAGYALGAGTRLRSVLSSRKLQP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1102",
+      "components": [
+        {
+          "seq": "SDCACLHALGHVAR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_366",
+      "components": [
+        {
+          "seq": "KESSFDIVSKVDLSEVANAIN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_426",
+      "components": [
+        {
+          "seq": "MQRPRPPRPLSYSRSSEEAFLEA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_770",
+      "components": [
+        {
+          "seq": "MLIQLKIKLLLLLLLYLLYIFYVFLWKQSEF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_597",
+      "components": [
+        {
+          "seq": "VLESKFLELKQKFAQGDVPLPSFWGGY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_19",
+      "components": [
+        {
+          "seq": "ELVSNASDALDKLR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_284",
+      "components": [
+        {
+          "seq": "EMLYAMARAFLQLSVIGFV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_310",
+      "components": [
+        {
+          "seq": "VAGKSFVPIALGRQSKQTPF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_556",
+      "components": [
+        {
+          "seq": "NVVFLNPPQW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_683",
+      "components": [
+        {
+          "seq": "MLYPLSYMLLWTDSIVEQYKKFYLFRFDL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_692",
+      "components": [
+        {
+          "seq": "MAILTLGWVSLLVVFTWSIAMVVWGRNGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_753",
+      "components": [
+        {
+          "seq": "GQLALKQQTVNRLLNKIYSPISDAYSELKQL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_192",
+      "components": [
+        {
+          "seq": "MERQVFIRLRHRLEADP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_693",
+      "components": [
+        {
+          "seq": "GWTLNSAGYLLGPHAIDNHRSFNDKHGLA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_74",
+      "components": [
+        {
+          "seq": "VDPKVYELYKTYKVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_85",
+      "components": [
+        {
+          "seq": "EYPVVFVKGLFPGKG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_553",
+      "components": [
+        {
+          "seq": "MGDCGCSGASSCNCGSGCSCSNCGSK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_336",
+      "components": [
+        {
+          "seq": "AISGLTPCKESKQFAKREKQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_307",
+      "components": [
+        {
+          "seq": "RGSNLTTHPLRNIKDLVVYM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_593",
+      "components": [
+        {
+          "seq": "PAPESSFIRDP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_740",
+      "components": [
+        {
+          "seq": "MITDSQVFIGLVIALVPAILAFKLGLSLYE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_809",
+      "components": [
+        {
+          "seq": "FEQIPNLVIYSSSQQILTDKELPIIPISIEGI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_266",
+      "components": [
+        {
+          "seq": "MKYLAFLIKGKTTHFDVGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_601",
+      "components": [
+        {
+          "seq": "AVAFAKTIDFSIEASELYKGSNCYHMT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_980",
+      "components": [
+        {
+          "seq": "RWKVFKKIEKVGRNIRDGVIKAAPAIEVLGQAKAL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_491",
+      "components": [
+        {
+          "seq": "NLNLTGQAPYKLKIGAPAAVQIQYQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_99",
+      "components": [
+        {
+          "seq": "WSARHLTPVALAVTAV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_631",
+      "components": [
+        {
+          "seq": "GTLPDVSSSKPARDTGAEQTSAPARAGF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_368",
+      "components": [
+        {
+          "seq": "GAIQRVAEENRITREAQLIEA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1072",
+      "components": [
+        {
+          "seq": "NNLDEIK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_146",
+      "components": [
+        {
+          "seq": "EDGQKIPKLEHRNSTQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_826",
+      "components": [
+        {
+          "seq": "MTDVQLQNIVTTFGISMMLLIILYHYLSRPQA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_673",
+      "components": [
+        {
+          "seq": "GIPICGETCTIGTCNTPGCTCSWPVCTRD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_613",
+      "components": [
+        {
+          "seq": "SEKILYEDAFLSKNIIELYADYKEKQG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_850",
+      "components": [
+        {
+          "seq": "DQDEGVSTEPTQVGPAELHNDETCVGPLVYRN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_223",
+      "components": [
+        {
+          "seq": "MPDPAKTAPKKKSKKAVT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_204",
+      "components": [
+        {
+          "seq": "AKTENKTVTVRQTASPIK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_986",
+      "components": [
+        {
+          "seq": "MEALVYTFLLVSTLGIIFFAIFFREPPRISTKKMK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_971",
+      "components": [
+        {
+          "seq": "TEQNIVIGGISGCIGPLIGYAAMANALPMQAWVMF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_691",
+      "components": [
+        {
+          "seq": "MDIITFGWVAVAAFFALSIAFVVWGRNGM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_704",
+      "components": [
+        {
+          "seq": "GVAFDDGSYTGIREINFEYNRETAIGGQV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_255",
+      "components": [
+        {
+          "seq": "LAKTVPLNDGTNFPIFGG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_982",
+      "components": [
+        {
+          "seq": "GHNKKDKKMQKK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1020",
+      "components": [
+        {
+          "seq": "GLEETYCSMKIK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_874",
+      "components": [
+        {
+          "seq": "QDNPAHPILVFSKSEEEEILIPFLHVFVGELNL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_78",
+      "components": [
+        {
+          "seq": "IWVGISYKIHSLYFQ",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_619",
+      "components": [
+        {
+          "seq": "FNKNIGITVEGTEVTVTRPNDSKEMKTI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_687",
+      "components": [
+        {
+          "seq": "GLPICGETCFTGKCYTPGCTCSYPICKKN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_319",
+      "components": [
+        {
+          "seq": "DVNGGGHTLPQPLYQTTVVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_342",
+      "components": [
+        {
+          "seq": "RDVDVGSFLPKSPSDPSMVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_179",
+      "components": [
+        {
+          "seq": "ILITLIILLLSIMVLFI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_135",
+      "components": [
+        {
+          "seq": "TKATEGEFLAEGGGVR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_174",
+      "components": [
+        {
+          "seq": "AGLFAQPRL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_406",
+      "components": [
+        {
+          "seq": "SIPASQKANLGNQMIMAVACYQN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_453",
+      "components": [
+        {
+          "seq": "MQTLPKERRY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_126",
+      "components": [
+        {
+          "seq": "YDRWYESAKIIGIDIR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_789",
+      "components": [
+        {
+          "seq": "MFTIITYFGLLLAALALAVVLFVGLSKIELI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_17",
+      "components": [
+        {
+          "seq": "DPSFNSWG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_807",
+      "components": [
+        {
+          "seq": "NRNNRDWWHFADYGCYCGYGGSGTPVDELDRC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1063",
+      "components": [
+        {
+          "seq": "QGGGPQWAVGHFM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_594",
+      "components": [
+        {
+          "seq": "MPFKLFDVSKPIPERKEHTYVKHCGDP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_919",
+      "components": [
+        {
+          "seq": "MLKMSGWQRQSQNNSRNLRRECSRRKCIFIHHHT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1001",
+      "components": [
+        {
+          "seq": "MEALVYTFLLVSTLGILFFAIFFREPPRVTPKGGK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_445",
+      "components": [
+        {
+          "seq": "MPARALIDLQALRHNYQLAAEVIG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_867",
+      "components": [
+        {
+          "seq": "FHTLQYKGLVNQIIDRKWVGLKINELLVVEYYS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_172",
+      "components": [
+        {
+          "seq": "AKNYPTVSAEYSAVEKA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_755",
+      "components": [
+        {
+          "seq": "MSVFLGYIIFLAAFFGLATGLFLGLKAIKLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_451",
+      "components": [
+        {
+          "seq": "FLPMLAGLAASMVPKFVCLITKKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_535",
+      "components": [
+        {
+          "seq": "MSPQTETKAKVGFQAGVKDYKLTYYT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_884",
+      "components": [
+        {
+          "seq": "MYDPPFLEALMITASFFAIFIIIVVSVLLLEGD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_394",
+      "components": [
+        {
+          "seq": "EALHQELEARIAALSDSVANAS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_735",
+      "components": [
+        {
+          "seq": "PLPTTRGNPTGPKESKKEVESKTETDPFAW",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_131",
+      "components": [
+        {
+          "seq": "LSAGPNGGSIAKLSVK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_57",
+      "components": [
+        {
+          "seq": "DPPFAPRM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1077",
+      "components": [
+        {
+          "seq": "SYAMEHFRWGKPV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_925",
+      "components": [
+        {
+          "seq": "MINWQVLGQLIATGTIMLAGPAVIVLLALKKGNL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_414",
+      "components": [
+        {
+          "seq": "AVSLVLPQLK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1019",
+      "components": [
+        {
+          "seq": "MDTIEPVSVAIS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_816",
+      "components": [
+        {
+          "seq": "LHTKGSVPLDTITFYKVIPKHKFVLVKFDTQY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_425",
+      "components": [
+        {
+          "seq": "AIIGNPEHPEVIGINGWCNNEAY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_443",
+      "components": [
+        {
+          "seq": "FLPAIAGMAAKFLPKIFCAISKKC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_300",
+      "components": [
+        {
+          "seq": "PQRGEGGRAGNLLREEQEI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_215",
+      "components": [
+        {
+          "seq": "IREHERSEV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_939",
+      "components": [
+        {
+          "seq": "MIIIFIELCRIADSLLWIPKSWRRTSSISTYLIL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_775",
+      "components": [
+        {
+          "seq": "MPTITSYFGFLLAALTITSALFIGLSKIRLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_741",
+      "components": [
+        {
+          "seq": "LSFSGGMVGIWMIVVVHICRIRSFTRGMVI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1000",
+      "components": [
+        {
+          "seq": "PAASESGFRRDP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_304",
+      "components": [
+        {
+          "seq": "AAILQDEYLSGGVVPYVFG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_832",
+      "components": [
+        {
+          "seq": "KAAPEVEQLALSVPDNGGVYLVPAFAGLGAPH",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1068",
+      "components": [
+        {
+          "seq": "MPKRGLFVGRFQP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1015",
+      "components": [
+        {
+          "seq": "GLLDGLLGGLGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_661",
+      "components": [
+        {
+          "seq": "MKWAAPIVSEICVGMEVTSYESAEIDTFN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1021",
+      "components": [
+        {
+          "seq": "FIYHSYK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1022",
+      "components": [
+        {
+          "seq": "QDYWDRQGCALL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_449",
+      "components": [
+        {
+          "seq": "MSWTKPAYTDLRIGFEVTMYFASR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_20",
+      "components": [
+        {
+          "seq": "YCEQVGAKTIIRGL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_697",
+      "components": [
+        {
+          "seq": "MRSFDQGSTRAPARERCRRQRPEGRSAQR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_652",
+      "components": [
+        {
+          "seq": "MSSLWWCFVWLISIPVICLTFTFVMRLL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_660",
+      "components": [
+        {
+          "seq": "NEGKAKCGNTAGSKLTFKSADECTKTGQK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_73",
+      "components": [
+        {
+          "seq": "MKKAWWKEGVVYQIY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1076",
+      "components": [
+        {
+          "seq": "ALFEESTVSAEPR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_527",
+      "components": [
+        {
+          "seq": "YIQGYSGDVR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_320",
+      "components": [
+        {
+          "seq": "DLVFYCPKCTAERQTACPKL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_777",
+      "components": [
+        {
+          "seq": "GFLSTVKNLATNVAGTVLDTIRCKVTGGCRP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_603",
+      "components": [
+        {
+          "seq": "RKANPQDKVHPIKSEFIRAKYQMLAFV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_964",
+      "components": [
+        {
+          "seq": "LNRDDDSDLHSPRYSFSEDTKCDDGWFVGTSRRTK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_136",
+      "components": [
+        {
+          "seq": "VPSSFRTTITDAQLRG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1058",
+      "components": [
+        {
+          "seq": "YLINLCGMDFPIK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_81",
+      "components": [
+        {
+          "seq": "TQVTVEYVNEGGAMV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_461",
+      "components": [
+        {
+          "seq": "LTNKTARFLVNGTSIPEVDFDVGE",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_268",
+      "components": [
+        {
+          "seq": "SFYLSRQTVVAARRPAMAR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_616",
+      "components": [
+        {
+          "seq": "GEVEQEEEDPYANMTEAEIRRARTDRMI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_32",
+      "components": [
+        {
+          "seq": "TIVIIGGGPGGYEAA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_678",
+      "components": [
+        {
+          "seq": "EYPEAPISLGT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_330",
+      "components": [
+        {
+          "seq": "VKSTGRADDDLAVKTKYLPP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_305",
+      "components": [
+        {
+          "seq": "ADGSDPAGGEFLAEGGGVR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_944",
+      "components": [
+        {
+          "seq": "MEALVYTFLLVSTLGIIFFAIFFREPPKVPTKKN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_761",
+      "components": [
+        {
+          "seq": "SPATMGFAGVR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1035",
+      "components": [
+        {
+          "seq": "TCLKNVFSVLLIF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_783",
+      "components": [
+        {
+          "seq": "GIIPCGESCVFIPCITSIVGCSCKSKVCYKN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1086",
+      "components": [
+        {
+          "seq": "ATVEVRNNPGYVVA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1029",
+      "components": [
+        {
+          "seq": "LESLRSAMQEEGI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_69",
+      "components": [
+        {
+          "seq": "FFKA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_186",
+      "components": [
+        {
+          "seq": "MEPDPTPLPRRRLKLFR",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1061",
+      "components": [
+        {
+          "seq": "HEKLTSFPRHNGA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_157",
+      "components": [
+        {
+          "seq": "DDAVADGEHAISGVVDS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_423",
+      "components": [
+        {
+          "seq": "QGERQMAADNKSLGRFILDGIEP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1097",
+      "components": [
+        {
+          "seq": "AVPDKIDRRESGYV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_856",
+      "components": [
+        {
+          "seq": "LGHYLGMDTHDTGGNPNYADKDPKFKYLRLRGP",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_988",
+      "components": [
+        {
+          "seq": "DTLYSVCKHRGFYRPSEGIVDQCCTNICSRNQLLT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_796",
+      "components": [
+        {
+          "seq": "MEISTTQISIILLIALIPAFFSLKLGKELYK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_479",
+      "components": [
+        {
+          "seq": "PDMQSMKGIGYKEVLFYLNGDISLD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_42",
+      "components": [
+        {
+          "seq": "MKRGYEVVRDPHLNK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1",
+      "components": [
+        {
+          "seq": "MSSSHIFIGETIGT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_373",
+      "components": [
+        {
+          "seq": "AVGDDTPQLY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1039",
+      "components": [
+        {
+          "seq": "RFRFRVKCSKGTY",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_522",
+      "components": [
+        {
+          "seq": "MLLNKTKWVSEKLISLEQGVVVLIKK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_682",
+      "components": [
+        {
+          "seq": "GWTLNSAGYLLGPHAVDNHRSLNDKHGLA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1011",
+      "components": [
+        {
+          "seq": "AEKLEPVLPLIV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_537",
+      "components": [
+        {
+          "seq": "LTYAAPVWKVLNEKRKAGHRILFEGA",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_621",
+      "components": [
+        {
+          "seq": "APAPSGGGSAPLAKIYPRGSHWAVGHLM",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_836",
+      "components": [
+        {
+          "seq": "NILDGYVREGAWLLSRIYLDEVEGRDVVYYRT",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_787",
+      "components": [
+        {
+          "seq": "GFDIPEPYVWDESFRVFYDLLDDEHKGLFQG",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_786",
+      "components": [
+        {
+          "seq": "MPTLTSYFGFLLVALTITLVLFISLSKIRLI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_128",
+      "components": [
+        {
+          "seq": "NPKVPSNILNSLSNVL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_261",
+      "components": [
+        {
+          "seq": "CKQSCSFGPFTFVCDGNTK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_490",
+      "components": [
+        {
+          "seq": "GADAILCVSPYYNRPTQQGLFEHYK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_588",
+      "components": [
+        {
+          "seq": "MSKNTKSKNNGIRKYNAKTEVKLVYFK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_685",
+      "components": [
+        {
+          "seq": "MLSKSNNTLFNHDCSLSFCKEKVYSKLLV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_114",
+      "components": [
+        {
+          "seq": "QLARVVEVFRYLAALF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_289",
+      "components": [
+        {
+          "seq": "FLSLIPHAINAISAIADHF",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_1008",
+      "components": [
+        {
+          "seq": "GGNTECFWKYCV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_168",
+      "components": [
+        {
+          "seq": "GVHGTIVGVDFDLCIAD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_311",
+      "components": [
+        {
+          "seq": "MKCNKMNRVQLKEGSVSMTL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_723",
+      "components": [
+        {
+          "seq": "SFSVNPAVEILQHRYMEKVAQNNRNFLNRV",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_843",
+      "components": [
+        {
+          "seq": "LLKVIDNPMQDVPMLSLLISPIIGLSAEELTD",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_955",
+      "components": [
+        {
+          "seq": "KDALEHTGFAPK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_792",
+      "components": [
+        {
+          "seq": "MLAIVAYIGFLALFTGIAAGLLFGLRSAKIL",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_97",
+      "components": [
+        {
+          "seq": "PGGGIVSLFMLSSGKK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_208",
+      "components": [
+        {
+          "seq": "FEDAKKVRFFKSNSETIK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_965",
+      "components": [
+        {
+          "seq": "GHAKKDKKIQKK",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_67",
+      "components": [
+        {
+          "seq": "DSGSSRDPGASSGGC",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_272",
+      "components": [
+        {
+          "seq": "LKVIATDPSTRRDIPKFCN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_664",
+      "components": [
+        {
+          "seq": "SKYESEGVARSEELQEVHQAFADAGRKPI",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_216",
+      "components": [
+        {
+          "seq": "GAMGHQKRDCFDRPRKSN",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_710",
+      "components": [
+        {
+          "seq": "ITPEMSADNGAMDMGEGIKLSLNTNTLSTS",
+          "chain_id": "A"
+        }
+      ]
+    },
+    {
+      "name": "test_neg_400",
+      "components": [
+        {
+          "seq": "IDAFQDTLYTHTLRTYLGRPWK",
+          "chain_id": "A"
+        }
+      ]
+    }
+  ]
+}

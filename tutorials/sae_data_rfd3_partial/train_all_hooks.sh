@@ -1,6 +1,6 @@
 RUN_ROOT=/mnt/nw/home/m.yu/repos/foundry/outputs/sae/$(date +%Y-%m-%d_%H-%M-%S)
-DATA_DIR=/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data
-TRAIN_ACTIVATIONS=$DATA_DIR/train_activations_2/activations/activations.h5
+DATA_DIR=/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial
+TRAIN_ACTIVATIONS=$DATA_DIR/train_activations/activations/activations.h5
 
 #IMPORTANT: these hook names must exist in the TRAIN_ACTIVATIONS activations.h5 file
 for HOOK in token_initializer_outputs block6 block8 block12; do
