@@ -24,9 +24,12 @@ import yaml
 
 HERE = Path(__file__).parent
 ROOT = HERE.parent.parent
-OUTPUT_ROOT = ROOT / "outputs" / "classifiers"
 DEVICE = os.environ.get("CLASSIFIER_DEVICE", "cuda:0")
 N_FOLDS = int(os.environ.get("CLASSIFIER_N_FOLDS", "5"))
+RUN_TAG = os.environ.get("CLASSIFIER_RUN_TAG", "")
+_SUFFIX = f"_{RUN_TAG}" if RUN_TAG else ""
+CONFIGS_ROOT = HERE / f"configs{_SUFFIX}"
+OUTPUT_ROOT = ROOT / f"outputs/classifiers{_SUFFIX}"
 
 DATASETS = {
     "rfd3_safeprotein": {
@@ -74,7 +77,7 @@ def main() -> None:
                 for fold in range(N_FOLDS):
                     _emit_fit(dataset_name, dataset, hook_name, hook_spec, extractor, fold)
                     _emit_eval(dataset_name, dataset, hook_name, extractor, fold)
-    print(f"done (n_folds={N_FOLDS})")
+    print(f"done (n_folds={N_FOLDS}, tag={RUN_TAG or '<none>'})")
 
 
 def _emit_score(name: str, dataset: dict, hook: str, hook_spec: dict, extractor: str) -> None:
@@ -89,14 +92,14 @@ def _emit_score(name: str, dataset: dict, hook: str, hook_spec: dict, extractor:
         "top_k": 50,
         "p_value_top_k": 200,
     }
-    _write(f"configs/{name}/score_{hook}_{extractor}.yaml", config)
+    _write(f"{name}/score_{hook}_{extractor}.yaml", config)
 
 
 def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict,
               extractor: str, fold: int) -> None:
     config = {
         "activations_path": str(dataset["activations"]),
-        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_train.csv"),
+        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_train{_SUFFIX}.csv"),
         "hook_name": hook,
         "extractor": _extractor_block(dataset, hook, hook_spec, extractor),
         "pooling": "last_step",
@@ -106,7 +109,7 @@ def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict,
     }
     if extractor == "sae_encode":
         config["select_top_k"] = 50
-    _write(f"configs/{name}/fit_{hook}_{extractor}__fold{fold}.yaml", config)
+    _write(f"{name}/fit_{hook}_{extractor}__fold{fold}.yaml", config)
 
 
 def _emit_eval(name: str, dataset: dict, hook: str, extractor: str, fold: int) -> None:
@@ -115,9 +118,9 @@ def _emit_eval(name: str, dataset: dict, hook: str, extractor: str, fold: int) -
     config = {
         "bundle_path": str(OUTPUT_ROOT / name / "fit" / cell),
         "activations_path": str(test_activations),
-        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_test.csv"),
+        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_test{_SUFFIX}.csv"),
     }
-    _write(f"configs/{name}/eval_{hook}_{extractor}__fold{fold}.yaml", config)
+    _write(f"{name}/eval_{hook}_{extractor}__fold{fold}.yaml", config)
 
 
 def _extractor_block(dataset: dict, hook: str, hook_spec: dict, extractor: str) -> dict:
@@ -131,7 +134,7 @@ def _extractor_block(dataset: dict, hook: str, hook_spec: dict, extractor: str) 
 
 
 def _write(rel_path: str, config: dict) -> None:
-    path = HERE / rel_path
+    path = CONFIGS_ROOT / rel_path
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(yaml.safe_dump(config, sort_keys=False))
 

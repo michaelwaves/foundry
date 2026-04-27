@@ -13,6 +13,7 @@ Usage:
 """
 import argparse
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -20,6 +21,8 @@ import pandas as pd
 
 
 GROUP_COLS = ("dataset", "model", "hook", "extractor")
+RUN_TAG = os.environ.get("CLASSIFIER_RUN_TAG", "")
+_SUFFIX = f"_{RUN_TAG}" if RUN_TAG else ""
 
 
 def main() -> None:
@@ -44,10 +47,12 @@ def main() -> None:
 
 
 def _parse_args() -> argparse.Namespace:
+    here = Path(__file__).parent
+    root = here.parent.parent
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sweep-root", required=True,
+    parser.add_argument("--sweep-root", default=str(root / f"outputs/classifiers{_SUFFIX}"),
                         help="root dir containing <dataset>/{score,fit,eval}/<cell>/...")
-    parser.add_argument("--out", required=True)
+    parser.add_argument("--out", default=str(here / f"results{_SUFFIX}"))
     parser.add_argument("--top-k", type=int, default=20,
                         help="rows per (dataset, hook) in the attribution table")
     return parser.parse_args()
@@ -70,6 +75,10 @@ def _aggregate_folds(per_fold: pd.DataFrame) -> pd.DataFrame:
                    and pd.api.types.is_numeric_dtype(per_fold[c])]
     rows = []
     for keys, group in per_fold.groupby(list(GROUP_COLS), dropna=False):
+        # If any fold-tagged runs exist for this group, drop stale single-split
+        # rows (fold is None) so they don't average into the CV result.
+        if group["fold"].notna().any():
+            group = group[group["fold"].notna()]
         row = dict(zip(GROUP_COLS, keys))
         row["n_folds"] = len(group)
         for col in metric_cols:

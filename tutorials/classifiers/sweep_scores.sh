@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-# Run detect score for every configs/<dataset>/score_<hook>_<extractor>.yaml.
-# Outputs land at outputs/classifiers/<dataset>/score/<model>_<hook>_<extractor>/.
+# Run detect score for every configs<_tag>/<dataset>/score_<hook>_<extractor>.yaml.
+# CLASSIFIER_RUN_TAG (e.g. "cluster") routes to configs_<tag>/ and
+# outputs/classifiers_<tag>/ so multiple runs can coexist.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
-OUT_ROOT="$ROOT/outputs/classifiers"
+SUFFIX="${CLASSIFIER_RUN_TAG:+_$CLASSIFIER_RUN_TAG}"
+CONFIGS_DIR="$HERE/configs${SUFFIX}"
+OUT_ROOT="$ROOT/outputs/classifiers${SUFFIX}"
 
 shopt -s nullglob
-for cfg in "$HERE"/configs/*/score_*.yaml; do
+for cfg in "$CONFIGS_DIR"/*/score_*.yaml; do
     dataset="$(basename "$(dirname "$cfg")")"
     model="${dataset%%_*}"
     cell="$(basename "$cfg" .yaml)"

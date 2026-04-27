@@ -1,23 +1,24 @@
 #!/usr/bin/env bash
-# Run detect fit + detect evaluate for every configs/<dataset>/fit_*.yaml.
-# Outputs:
-#   outputs/classifiers/<dataset>/fit/<model>_<hook>_<extractor>/   (bundle, train metrics)
-#   outputs/classifiers/<dataset>/eval/<model>_<hook>_<extractor>/  (held-out metrics)
+# Run detect fit + detect evaluate for every configs<_tag>/<dataset>/fit_*.yaml.
+# CLASSIFIER_RUN_TAG (e.g. "cluster") routes to configs_<tag>/ and
+# outputs/classifiers_<tag>/ so multiple runs can coexist.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
-OUT_ROOT="$ROOT/outputs/classifiers"
+SUFFIX="${CLASSIFIER_RUN_TAG:+_$CLASSIFIER_RUN_TAG}"
+CONFIGS_DIR="$HERE/configs${SUFFIX}"
+OUT_ROOT="$ROOT/outputs/classifiers${SUFFIX}"
 
 shopt -s nullglob
-for fit_cfg in "$HERE"/configs/*/fit_*.yaml; do
+for fit_cfg in "$CONFIGS_DIR"/*/fit_*.yaml; do
     dataset="$(basename "$(dirname "$fit_cfg")")"
     model="${dataset%%_*}"
     cell="$(basename "$fit_cfg" .yaml)"
     cell="${cell#fit_}"
     fit_out="$OUT_ROOT/$dataset/fit/${model}_${cell}"
     eval_out="$OUT_ROOT/$dataset/eval/${model}_${cell}"
-    eval_cfg="$HERE/configs/$dataset/eval_${cell}.yaml"
+    eval_cfg="$CONFIGS_DIR/$dataset/eval_${cell}.yaml"
 
     echo "=== detect fit: $dataset / ${model}_${cell} ==="
     detect fit inputs="$fit_cfg" out_dir="$fit_out"
