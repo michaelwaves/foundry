@@ -22,7 +22,6 @@ saffron steer model=rfd3 \
 
 # Null-steer regression check (alpha=0 must reproduce saffron collect bit-for-bit)
 saffron steer model=rfd3 \
-  inputs=tutorials/steering/configs/steer_block12_f639.json \
-  out_dir=outputs/steering/runs/null_check \
-  +run_config.steering.block12.0.alpha=0
+  inputs=tutorials/steering/configs/null_block12_f639.json \
+  out_dir=outputs/steering/runs/null_check
 ```

@@ -126,11 +126,14 @@ def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict,
 
 
 def _emit_eval(name: str, dataset: dict, hook: str, extractor: str, fold: int) -> None:
-    test_activations = dataset.get("test_activations") or dataset["activations"]
+    # K-fold splits live in labels_foldN_{train,test}.csv against the SAME h5,
+    # so we always point at dataset["activations"] — the upstream-pretrained
+    # test_activations.h5 (e.g. ToxinPred3's official test split) has different
+    # design_ids and would yield zero matched designs.
     cell = f"{dataset['model']}_{hook}_{extractor}__fold{fold}"
     config = {
         "bundle_path": str(OUTPUT_ROOT / name / "fit" / cell),
-        "activations_path": str(test_activations),
+        "activations_path": str(dataset["activations"]),
         "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_test{_LABELS_SUFFIX}.csv"),
     }
     _write(f"{name}/eval_{hook}_{extractor}__fold{fold}.yaml", config)
