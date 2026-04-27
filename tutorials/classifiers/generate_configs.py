@@ -2,14 +2,16 @@
 """Emit detect score/fit/evaluate yaml configs for the full sweep.
 
 One source-of-truth datasets dict declares each labelled cell (activations.h5,
-labels CSVs, SAE checkpoints per hook, raw activation_dim per hook). The
-generator stamps out yaml configs for every (hook x extractor) combination so
-that adding a hook or a new label set is a one-entry edit.
+labels CSV + per-fold splits, SAE checkpoints per hook, raw activation_dim per
+hook). Fit/eval are emitted per fold so the sweep produces N_FOLDS bundles per
+(hook x extractor); aggregate_metrics.py averages metrics across folds. Score
+stays one-per-cell — it's univariate per-feature attribution against the full
+labels file, no train/test split needed.
 
 Outputs:
   configs/<dataset>/score_<hook>_<extractor>.yaml
-  configs/<dataset>/fit_<hook>_<extractor>.yaml
-  configs/<dataset>/eval_<hook>_<extractor>.yaml
+  configs/<dataset>/fit_<hook>_<extractor>__fold<k>.yaml
+  configs/<dataset>/eval_<hook>_<extractor>__fold<k>.yaml
 
 Usage:
   python generate_configs.py
@@ -24,14 +26,13 @@ HERE = Path(__file__).parent
 ROOT = HERE.parent.parent
 OUTPUT_ROOT = ROOT / "outputs" / "classifiers"
 DEVICE = os.environ.get("CLASSIFIER_DEVICE", "cuda:0")
+N_FOLDS = int(os.environ.get("CLASSIFIER_N_FOLDS", "5"))
 
 DATASETS = {
     "rfd3_safeprotein": {
         "model": "rfd3",
         "activations": ROOT / "tutorials/sae_data_rfd3_partial/train_activations/activations/activations.h5",
-        "labels": HERE / "rfd3_safeprotein/labels.csv",
-        "labels_train": HERE / "rfd3_safeprotein/labels_train.csv",
-        "labels_test": HERE / "rfd3_safeprotein/labels_test.csv",
+        "labels_dir": HERE / "rfd3_safeprotein",
         "sae_root": ROOT / "outputs/sae/2026-04-26_15-38-55/train",
         "hooks": {
             "block6":  {"activation_dim": 768},
@@ -42,9 +43,7 @@ DATASETS = {
     "rf3_toxinpred3": {
         "model": "rf3",
         "activations": ROOT / "tutorials/sae_data_rf3/train_activations/activations/activations.h5",
-        "labels": HERE / "rf3_toxinpred3/labels.csv",
-        "labels_train": HERE / "rf3_toxinpred3/labels_train.csv",
-        "labels_test": HERE / "rf3_toxinpred3/labels_test.csv",
+        "labels_dir": HERE / "rf3_toxinpred3",
         "test_activations": ROOT / "tutorials/sae_data_rf3/test_activations/activations/activations.h5",
         "sae_root": ROOT / "outputs/sae/2026-04-26_15-23-45/train",
         "hooks": {
@@ -55,9 +54,7 @@ DATASETS = {
     "rf3_safeprotein": {
         "model": "rf3",
         "activations": ROOT / "tutorials/sae_data_rf3/uniprot/train_activations/activations/activations.h5",
-        "labels": HERE / "rf3_safeprotein/labels.csv",
-        "labels_train": HERE / "rf3_safeprotein/labels_train.csv",
-        "labels_test": HERE / "rf3_safeprotein/labels_test.csv",
+        "labels_dir": HERE / "rf3_safeprotein",
         "sae_root": ROOT / "outputs/sae/2026-04-26_22-03-07/train",
         "hooks": {
             "block12": {"activation_dim": 768},
@@ -74,15 +71,16 @@ def main() -> None:
         for hook_name, hook_spec in dataset["hooks"].items():
             for extractor in EXTRACTORS:
                 _emit_score(dataset_name, dataset, hook_name, hook_spec, extractor)
-                _emit_fit(dataset_name, dataset, hook_name, hook_spec, extractor)
-                _emit_eval(dataset_name, dataset, hook_name, extractor)
-    print("done")
+                for fold in range(N_FOLDS):
+                    _emit_fit(dataset_name, dataset, hook_name, hook_spec, extractor, fold)
+                    _emit_eval(dataset_name, dataset, hook_name, extractor, fold)
+    print(f"done (n_folds={N_FOLDS})")
 
 
 def _emit_score(name: str, dataset: dict, hook: str, hook_spec: dict, extractor: str) -> None:
     config = {
         "activations_path": str(dataset["activations"]),
-        "labels_path": str(dataset["labels"]),
+        "labels_path": str(dataset["labels_dir"] / "labels.csv"),
         "hook_name": hook,
         "extractor": _extractor_block(dataset, hook, hook_spec, extractor),
         "pooling": "last_step",
@@ -94,10 +92,11 @@ def _emit_score(name: str, dataset: dict, hook: str, hook_spec: dict, extractor:
     _write(f"configs/{name}/score_{hook}_{extractor}.yaml", config)
 
 
-def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict, extractor: str) -> None:
+def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict,
+              extractor: str, fold: int) -> None:
     config = {
         "activations_path": str(dataset["activations"]),
-        "labels_path": str(dataset["labels_train"]),
+        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_train.csv"),
         "hook_name": hook,
         "extractor": _extractor_block(dataset, hook, hook_spec, extractor),
         "pooling": "last_step",
@@ -107,17 +106,18 @@ def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict, extractor: s
     }
     if extractor == "sae_encode":
         config["select_top_k"] = 50
-    _write(f"configs/{name}/fit_{hook}_{extractor}.yaml", config)
+    _write(f"configs/{name}/fit_{hook}_{extractor}__fold{fold}.yaml", config)
 
 
-def _emit_eval(name: str, dataset: dict, hook: str, extractor: str) -> None:
+def _emit_eval(name: str, dataset: dict, hook: str, extractor: str, fold: int) -> None:
     test_activations = dataset.get("test_activations") or dataset["activations"]
+    cell = f"{dataset['model']}_{hook}_{extractor}__fold{fold}"
     config = {
-        "bundle_path": str(OUTPUT_ROOT / name / "fit" / f"{dataset['model']}_{hook}_{extractor}"),
+        "bundle_path": str(OUTPUT_ROOT / name / "fit" / cell),
         "activations_path": str(test_activations),
-        "labels_path": str(dataset["labels_test"]),
+        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_test.csv"),
     }
-    _write(f"configs/{name}/eval_{hook}_{extractor}.yaml", config)
+    _write(f"configs/{name}/eval_{hook}_{extractor}__fold{fold}.yaml", config)
 
 
 def _extractor_block(dataset: dict, hook: str, hook_spec: dict, extractor: str) -> dict:

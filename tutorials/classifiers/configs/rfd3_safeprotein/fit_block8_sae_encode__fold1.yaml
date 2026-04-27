@@ -1,0 +1,15 @@
+activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/train_activations/activations/activations.h5
+labels_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/classifiers/rfd3_safeprotein/labels_fold1_train.csv
+hook_name: block8
+extractor:
+  kind: sae_encode
+  checkpoint_path: /mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-38-55/train/block8/final.pt
+  device: cuda:0
+pooling: last_step
+aggregation: mean
+classifier: logistic
+classifier_kwargs:
+  epochs: 300
+  lr: 0.05
+  weight_decay: 0.0001
+select_top_k: 50

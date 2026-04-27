@@ -87,20 +87,6 @@ class ActivationBuffer:
 
         self._hooks.append(module.register_forward_hook(hook))
 
-
-def _apply_steering(out: torch.Tensor, edit: tuple[Optional[torch.Tensor], Optional[str]]) -> torch.Tensor:
-    direction, kind = edit
-    if direction is None:
-        return out
-    v = direction.to(device=out.device, dtype=out.dtype)
-    if kind == "add":
-        return out + v
-    if kind == "ablate":
-        norm_sq = v.dot(v).clamp_min(1e-12)
-        projection_scalar = (out @ v) / norm_sq      # (..., 1) scalar per row
-        return out - projection_scalar.unsqueeze(-1) * v
-    raise ValueError(f"unknown steering kind: {kind}")
-
     def _flush(self, name: str):
         if not self._buffers[name]:
             return
@@ -156,3 +142,17 @@ def _apply_steering(out: torch.Tensor, edit: tuple[Optional[torch.Tensor], Optio
 
     def __exit__(self, *args):
         self.close()
+
+
+def _apply_steering(out: torch.Tensor, edit: tuple[Optional[torch.Tensor], Optional[str]]) -> torch.Tensor:
+    direction, kind = edit
+    if direction is None:
+        return out
+    v = direction.to(device=out.device, dtype=out.dtype)
+    if kind == "add":
+        return out + v
+    if kind == "ablate":
+        norm_sq = v.dot(v).clamp_min(1e-12)
+        projection_scalar = (out @ v) / norm_sq      # (..., 1) scalar per row
+        return out - projection_scalar.unsqueeze(-1) * v
+    raise ValueError(f"unknown steering kind: {kind}")

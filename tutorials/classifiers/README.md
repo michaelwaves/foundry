@@ -60,6 +60,20 @@ bash tutorials/sae_data_rf3/uniprot/train_all_hooks.sh
 # then add an "rf3_safeprotein" entry to DATASETS in generate_configs.py
 ```
 
+## MMSeq2 (optional)
+
+used to do homology clustering
+
+  MMseqs2 ships a precompiled static Linux binary on GitHub
+  releases. Drop it in your home dir, point at it:
+
+  mkdir -p ~/tools && cd ~/tools
+  wget https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz
+  tar -xzf mmseqs-linux-avx2.tar.gz
+  ~/tools/mmseqs/bin/mmseqs --help   
+
+
+
 ## Re-run a single cell
 
 ```bash
