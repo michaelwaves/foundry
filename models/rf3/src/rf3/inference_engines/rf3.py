@@ -257,6 +257,7 @@ class RF3InferenceEngine(BaseInferenceEngine):
         metrics_cfg: dict | OmegaConf | MetricManager | str | None = "default",
         # SAE activation collection (saffron-collect integration)
         activation_collection: dict | None = None,
+        steering: dict | None = None,
         **kwargs,
     ):
         """Initialize inference engine and load model.
@@ -347,6 +348,7 @@ class RF3InferenceEngine(BaseInferenceEngine):
 
         # SAE activation collection (None = disabled)
         self.activation_collection = activation_collection
+        self.steering = steering
 
     def initialize(self):
         # Log checkpoint path on first init (base class logger may be suppressed in quiet mode)
@@ -384,14 +386,25 @@ class RF3InferenceEngine(BaseInferenceEngine):
     @contextmanager
     def _maybe_activation_buffer(self, out_dir):
         """Yield an SAE ActivationBuffer with hooks registered, or None if disabled."""
-        if self.activation_collection is None or out_dir is None:
+        if (self.activation_collection is None and getattr(self, "steering", None) is None) or out_dir is None:
             yield None
             return
         from sae import ActivationBuffer, HookConfig, HookType
+        from sae.steering import build_callbacks, parse_specs
 
+        if self.activation_collection is None:
+            raise ValueError(
+                "steering requires activation_collection.hooks to declare each "
+                "hook to attach. Set collect_every_n_steps to a large number if "
+                "you only want to steer (no activations stored)."
+            )
+        steering_callbacks = build_callbacks(parse_specs(getattr(self, "steering", None)))
         activations_dir = Path(out_dir) / "activations"
         activations_dir.mkdir(parents=True, exist_ok=True)
-        with ActivationBuffer(self._get_shadow_model(), str(activations_dir)) as buf:
+        with ActivationBuffer(
+            self._get_shadow_model(), str(activations_dir),
+            steering_callbacks=steering_callbacks,
+        ) as buf:
             for spec in self.activation_collection["hooks"]:
                 buf.register(HookConfig(
                     name=spec["name"],

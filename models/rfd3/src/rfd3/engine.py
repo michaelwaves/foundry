@@ -169,6 +169,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         align_trajectory_structures: bool,
         low_memory_mode: bool,
         activation_collection: dict | None = None,
+        steering: dict | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -197,6 +198,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         self.dump_trajectories = dump_trajectories
         self.align_trajectory_structures = align_trajectory_structures
         self.activation_collection = activation_collection
+        self.steering = steering
         if not cleanup_guideposts:
             ranked_logger.warning(
                 "Guideposts will not be cleaned up. This is intended for debugging purposes."
@@ -224,6 +226,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         n_batches = run_config.get("n_batches", n_batches)
         if "activation_collection" in run_config:
             self.activation_collection = run_config["activation_collection"]
+        if "steering" in run_config:
+            self.steering = run_config["steering"]
         design_specifications = self._multiply_specifications(
             inputs=inputs,
             n_batches=n_batches,
@@ -294,14 +298,25 @@ class RFD3InferenceEngine(BaseInferenceEngine):
 
     @contextmanager
     def _maybe_activation_buffer(self):
-        if self.activation_collection is None:
+        if self.activation_collection is None and getattr(self, "steering", None) is None:
             yield None
             return
         from sae import ActivationBuffer, HookConfig, HookType
+        from sae.steering import build_callbacks, parse_specs
 
+        if self.activation_collection is None:
+            raise ValueError(
+                "steering requires activation_collection.hooks to declare each "
+                "hook to attach. Set collect_every_n_steps to a large number if "
+                "you only want to steer (no activations stored)."
+            )
+        steering_callbacks = build_callbacks(parse_specs(getattr(self, "steering", None)))
         activations_dir = self.out_dir / "activations"
         activations_dir.mkdir(parents=True, exist_ok=True)
-        with ActivationBuffer(self._get_shadow_model(), str(activations_dir)) as buf:
+        with ActivationBuffer(
+            self._get_shadow_model(), str(activations_dir),
+            steering_callbacks=steering_callbacks,
+        ) as buf:
             for spec in self.activation_collection["hooks"]:
                 buf.register(
                     HookConfig(

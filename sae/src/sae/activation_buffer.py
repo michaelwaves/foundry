@@ -4,12 +4,20 @@ import h5py
 import pickle
 from enum import Enum
 from dataclasses import dataclass, field
+from typing import Callable, Optional
 
 
 class HookType(Enum):
     STATIC = "static"    # fires once per design (token_initializer)
     # fires once per denoising step (diffusion_module)
     DYNAMIC = "dynamic"
+
+
+# A steering callback is invoked at every hook call with the current step index
+# and returns (direction_tensor_of_shape_C, kind) where kind is "add" or
+# "ablate", or (None, None) to skip steering at this step. The buffer broadcasts
+# the (C,) direction across (..., C) outputs and casts to the layer's dtype.
+SteeringCallback = Callable[[int], tuple[Optional[torch.Tensor], Optional[str]]]
 
 
 @dataclass
@@ -26,11 +34,13 @@ class ActivationBuffer:
     def __init__(
         self, model: nn.Module,  # e.g. RFD3 class
         out_dir: str,
-        flush_every_n_collected: int = 10  # flush to disk every 10 tensors collected
+        flush_every_n_collected: int = 10,  # flush to disk every 10 tensors collected
+        steering_callbacks: dict[str, SteeringCallback] | None = None,
     ):
         self.model = model
         self.flush_every_n_collected = flush_every_n_collected
         self.out_dir = out_dir
+        self._steering_callbacks = steering_callbacks or {}
 
         self._hooks = []
         self._buffers = {}        # {name: [tensors]}
@@ -50,9 +60,14 @@ class ActivationBuffer:
         for k, v in cfg.metadata.items():
             grp.attrs[k] = v
 
+        steering_cb = self._steering_callbacks.get(cfg.name)
+
         def hook(m, inp, out):
             count = self._step_counts[cfg.name]
             self._step_counts[cfg.name] += 1
+
+            if steering_cb is not None:
+                out = _apply_steering(out, steering_cb(count))
 
             if cfg.hook_type == HookType.STATIC:
                 # Always collect, always just one call per design
@@ -68,7 +83,23 @@ class ActivationBuffer:
             if len(self._buffers[cfg.name]) >= self.flush_every_n_collected:
                 self._flush(cfg.name)
 
+            return out
+
         self._hooks.append(module.register_forward_hook(hook))
+
+
+def _apply_steering(out: torch.Tensor, edit: tuple[Optional[torch.Tensor], Optional[str]]) -> torch.Tensor:
+    direction, kind = edit
+    if direction is None:
+        return out
+    v = direction.to(device=out.device, dtype=out.dtype)
+    if kind == "add":
+        return out + v
+    if kind == "ablate":
+        norm_sq = v.dot(v).clamp_min(1e-12)
+        projection_scalar = (out @ v) / norm_sq      # (..., 1) scalar per row
+        return out - projection_scalar.unsqueeze(-1) * v
+    raise ValueError(f"unknown steering kind: {kind}")
 
     def _flush(self, name: str):
         if not self._buffers[name]:

@@ -4,7 +4,7 @@ hook_name: block12
 extractor:
   kind: sae_encode
   checkpoint_path: /mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-23-45/train/block12/final.pt
-  device: cpu
+  device: cuda:0
 pooling: last_step
 aggregation: mean
 classifier: logistic

@@ -52,6 +52,18 @@ DATASETS = {
             "block16": {"activation_dim": 768},
         },
     },
+    "rf3_safeprotein": {
+        "model": "rf3",
+        "activations": ROOT / "tutorials/sae_data_rf3/uniprot/train_activations/activations/activations.h5",
+        "labels": HERE / "rf3_safeprotein/labels.csv",
+        "labels_train": HERE / "rf3_safeprotein/labels_train.csv",
+        "labels_test": HERE / "rf3_safeprotein/labels_test.csv",
+        "sae_root": ROOT / "outputs/sae/2026-04-26_22-03-07/train",
+        "hooks": {
+            "block12": {"activation_dim": 768},
+            "block16": {"activation_dim": 768},
+        },
+    },
 }
 
 EXTRACTORS = ("identity", "sae_encode")

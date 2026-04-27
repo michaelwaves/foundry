@@ -1,0 +1,33 @@
+{
+  "run_config": {
+    "activation_collection": {
+      "hooks": [
+        {
+          "name": "block12",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.12.transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 5
+        }
+      ]
+    },
+    "steering": {
+      "block12": [
+        {
+          "mode": "sae_feature",
+          "sae_path": "/mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-38-55/train/block12/final.pt",
+          "feature_id": 639,
+          "alpha": 5.0,
+          "apply_at_steps": "all"
+        }
+      ]
+    }
+  },
+  "benign_O00287": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2kw3.pdb",
+    "partial_t": 5.0
+  },
+  "benign_A6NI73": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_pdb_benigns/pdbs/2d3v.pdb",
+    "partial_t": 5.0
+  }
+}

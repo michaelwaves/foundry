@@ -24,6 +24,8 @@ def collect(overrides: list[str]) -> None:
     embedded_run_config = _maybe_unpack_examples_json(cfg)
     if embedded_run_config and "activation_collection" in embedded_run_config:
         cfg.activation_collection = OmegaConf.create(embedded_run_config["activation_collection"])
+    if embedded_run_config and "steering" in embedded_run_config:
+        cfg.steering = OmegaConf.create(embedded_run_config["steering"])
 
     if hooks_path is not None:
         cfg.activation_collection = OmegaConf.create(yaml.safe_load(Path(hooks_path).read_text()))

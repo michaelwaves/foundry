@@ -4,7 +4,7 @@ hook_name: block8
 extractor:
   kind: sae_encode
   checkpoint_path: /mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-38-55/train/block8/final.pt
-  device: cpu
+  device: cuda:0
 pooling: last_step
 scorer: auroc
 aggregation: mean

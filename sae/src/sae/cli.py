@@ -50,6 +50,33 @@ def screen(ctx: typer.Context) -> None:
     detect_screen(ctx)
 
 
+@app.command(context_settings=_EXTRA_ARGS)
+def steer(ctx: typer.Context) -> None:
+    """Run a model's inference with steering directions added to chosen hooks.
+
+    Same dispatch as `saffron collect` — the inputs JSON's run_config carries a
+    `steering` block alongside `activation_collection`. Each engine reads it
+    and wires steering callbacks into the activation buffer.
+    """
+    model, overrides = _split_model_override(ctx.args)
+    from sae.collectors import dispatch
+
+    dispatch(model, overrides)
+
+
+@app.command(name="compute_steering_vector", context_settings=_EXTRA_ARGS)
+def compute_steering_vector(ctx: typer.Context) -> None:
+    """Compute mean(positives) - mean(negatives) per hook from two h5s.
+
+    Outputs one <hook>.pt per hook plus a meta.json. Used by raw_diff steering;
+    sae_feature steering doesn't need this step.
+    """
+    cfg = _build_config(_CONFIG_DIR, "compute_steering_vector", ctx.args)
+    from sae.steering.compute_diff import run_compute_diff
+
+    run_compute_diff(cfg)
+
+
 def _build_config(config_dir: str, config_name: str, raw_args: list[str]) -> DictConfig:
     overrides, inputs_path = _split_inputs_override(raw_args)
     with initialize_config_dir(config_dir=config_dir, version_base="1.3"):

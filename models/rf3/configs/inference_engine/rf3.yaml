@@ -35,3 +35,7 @@ metrics_cfg:
 # SAE activation collection (saffron-collect). Populated at runtime by the rf3
 # collector from the embedded run_config in the inputs JSON, or via `hooks=...`.
 activation_collection: null
+
+# Activation steering during inference (saffron-steer). Populated at runtime
+# from the embedded run_config in the inputs JSON.
+steering: null
