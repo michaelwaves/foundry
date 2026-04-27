@@ -27,7 +27,18 @@ ROOT = HERE.parent.parent
 DEVICE = os.environ.get("CLASSIFIER_DEVICE", "cuda:0")
 N_FOLDS = int(os.environ.get("CLASSIFIER_N_FOLDS", "5"))
 RUN_TAG = os.environ.get("CLASSIFIER_RUN_TAG", "")
+# Labels tag is decoupled from the run tag — lets you e.g. run "stop_overfitting"
+# experiments against the existing random labels (LABELS_TAG="") rather than
+# requiring labels_*_stop_overfitting.csv files to exist. Defaults to RUN_TAG
+# for backwards compatibility with the cluster-split workflow.
+LABELS_TAG = os.environ.get("CLASSIFIER_LABELS_TAG", RUN_TAG)
+WEIGHT_DECAY = float(os.environ.get("CLASSIFIER_WEIGHT_DECAY", "1e-4"))
+EPOCHS = int(os.environ.get("CLASSIFIER_EPOCHS", "300"))
+# When set, applies select_top_k to BOTH extractors. When unset, preserves the
+# original asymmetric default (50 for sae_encode, none for identity).
+SELECT_TOP_K_BOTH = os.environ.get("CLASSIFIER_SELECT_TOP_K")
 _SUFFIX = f"_{RUN_TAG}" if RUN_TAG else ""
+_LABELS_SUFFIX = f"_{LABELS_TAG}" if LABELS_TAG else ""
 CONFIGS_ROOT = HERE / f"configs{_SUFFIX}"
 OUTPUT_ROOT = ROOT / f"outputs/classifiers{_SUFFIX}"
 
@@ -99,15 +110,17 @@ def _emit_fit(name: str, dataset: dict, hook: str, hook_spec: dict,
               extractor: str, fold: int) -> None:
     config = {
         "activations_path": str(dataset["activations"]),
-        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_train{_SUFFIX}.csv"),
+        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_train{_LABELS_SUFFIX}.csv"),
         "hook_name": hook,
         "extractor": _extractor_block(dataset, hook, hook_spec, extractor),
         "pooling": "last_step",
         "aggregation": "mean",
         "classifier": "logistic",
-        "classifier_kwargs": {"epochs": 300, "lr": 0.05, "weight_decay": 1.0e-4},
+        "classifier_kwargs": {"epochs": EPOCHS, "lr": 0.05, "weight_decay": WEIGHT_DECAY},
     }
-    if extractor == "sae_encode":
+    if SELECT_TOP_K_BOTH is not None:
+        config["select_top_k"] = int(SELECT_TOP_K_BOTH)
+    elif extractor == "sae_encode":
         config["select_top_k"] = 50
     _write(f"{name}/fit_{hook}_{extractor}__fold{fold}.yaml", config)
 
@@ -118,7 +131,7 @@ def _emit_eval(name: str, dataset: dict, hook: str, extractor: str, fold: int) -
     config = {
         "bundle_path": str(OUTPUT_ROOT / name / "fit" / cell),
         "activations_path": str(test_activations),
-        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_test{_SUFFIX}.csv"),
+        "labels_path": str(dataset["labels_dir"] / f"labels_fold{fold}_test{_LABELS_SUFFIX}.csv"),
     }
     _write(f"{name}/eval_{hook}_{extractor}__fold{fold}.yaml", config)
 
