@@ -6,11 +6,20 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
-TOP_FEATURES_CSV="$HERE/results/top_features.csv"
+# CLASSIFIER_RUN_TAG controls (a) which results_<tag>/top_features.csv we read
+# from (falls back to results/ if missing) and (b) which subfolder under
+# outputs/classifiers/viz/ we write to (variant subfolder if set).
+SUFFIX="${CLASSIFIER_RUN_TAG:+_$CLASSIFIER_RUN_TAG}"
+SUBFOLDER="${CLASSIFIER_RUN_TAG:+$CLASSIFIER_RUN_TAG/}"
+TOP_FEATURES_CSV="${TOP_FEATURES_CSV:-$HERE/results${SUFFIX}/top_features.csv}"
+[[ -f "$TOP_FEATURES_CSV" ]] || TOP_FEATURES_CSV="$HERE/results/top_features.csv"
 TOP_N="${TOP_N:-5}"             # features per (dataset, hook) to render
 TOP_DESIGNS="${TOP_DESIGNS:-3}"  # designs per feature
 TOP_RESIDUES="${TOP_RESIDUES:-5}"
 DEVICE="${DEVICE:-cpu}"
+export TOP_FEATURES_CSV TOP_N
+echo "reading top features from: $TOP_FEATURES_CSV"
+echo "writing PNGs to: $ROOT/outputs/classifiers/viz/${SUBFOLDER}<dataset>_<hook>/"
 
 # Map dataset -> (activations_h5, metadata_dir, sae_root)
 declare -A ACT
@@ -39,7 +48,7 @@ PY
 
 while IFS=$'\t' read -r ds hook feats; do
     echo "=== $ds / $hook : features $feats ==="
-    out="$ROOT/outputs/classifiers/viz/${ds}_${hook}"
+    out="$ROOT/outputs/classifiers/viz/${SUBFOLDER}${ds}_${hook}"
     python "$HERE/visualize_features.py" \
         --checkpoint "${SAE[$ds]}/$hook/final.pt" \
         --activations "${ACT[$ds]}" \

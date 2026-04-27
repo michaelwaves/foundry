@@ -38,13 +38,21 @@ The train-eval gap chart shows the same story from the other angle: clustering e
 
 ![Overfitting gap](../results_cluster_stop_overfit/figures/02_train_vs_eval_gap.png)
 
-### 2. SAE generalizes better than raw under cluster splits
+### 2. SAE wins on RFD3 block12 (the strongest cell), and the gap grows under cluster
 
-When you make the test set genuinely different from training (cluster split), SAE features hold up better than raw activations:
+Across the sweep, only RFD3 block12 shows SAE solidly beating raw. The SAE advantage *grows* under homology-clustered splits (+0.014 random → +0.054 cluster). For the other four cells, raw activations match or slightly beat SAE under both split types.
 
 ![SAE vs raw delta](../results_cluster_stop_overfit/figures/03_sae_vs_raw_delta.png)
 
-For RFD3 block12, raw drops 0.10 from random to cluster, SAE only 0.06. The SAE-vs-raw delta on the cluster split is +0.054 in SAE's favor for block12. This is the strongest evidence we have that SAE features capture transferable structure rather than family-specific noise.
+| cell | identity | sae_encode | SAE − raw under cluster |
+|---|---|---|---|
+| **rfd3 block12** | 0.763 | 0.817 | **+0.054** SAE wins |
+| rfd3 block6 | 0.592 | 0.599 | +0.007 (within noise) |
+| rfd3 block8 | 0.718 | 0.699 | −0.019 raw wins |
+| rf3 block16 | 0.776 | 0.758 | −0.018 raw wins |
+| rf3 block12 | 0.738 | 0.706 | −0.032 raw wins |
+
+So the SAE-vs-raw story isn't a clean "SAE generalizes better" claim. The honest read is: where SAE wins, it wins more when generalization is harder. This is consistent with the SAE filtering out family-specific noise that raw activations rely on, but only at a layer that already carries clean toxicity-relevant signal. At earlier or shallower layers, neither representation has enough discriminative structure for the SAE bottleneck to help.
 
 ---
 
