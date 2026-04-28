@@ -46,6 +46,25 @@ def filter_by_length(
     ]
 
 
+def populate_residue_stats(rows: list[SourceRow]) -> list[SourceRow]:
+    """Fill `n_residues` / `min_residue` on every row that has a `structure_path`."""
+    from .pdb_utils import count_residues
+
+    enriched: list[SourceRow] = []
+    for row in rows:
+        if row.structure_path is None or (row.n_residues is not None and row.min_residue is not None):
+            enriched.append(row)
+            continue
+        n_residues, min_residue = count_residues(row.structure_path)
+        enriched.append(SourceRow(
+            name=row.name, label=row.label, sequence=row.sequence,
+            structure_path=row.structure_path,
+            n_residues=row.n_residues if row.n_residues is not None else n_residues,
+            min_residue=row.min_residue if row.min_residue is not None else min_residue,
+        ))
+    return enriched
+
+
 def _row_from_dict(row: dict[str, str]) -> SourceRow:
     structure_path = row.get("structure_path") or None
     return SourceRow(

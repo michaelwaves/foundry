@@ -1,6 +1,7 @@
-"""PDB parsing helpers used by the activation-collection input builders."""
+"""PDB / mmCIF parsing helpers shared across the dataset utilities."""
 from __future__ import annotations
 
+import gzip
 from pathlib import Path
 
 
@@ -29,7 +30,7 @@ def extract_chain_sequence(pdb_path: Path) -> str:
 
 
 def first_missing_ca(pdb_path: Path) -> str | None:
-    """Return a description of the first standard-AA residue missing a CA atom."""
+    """Describe the first standard-AA residue without a CA atom (RFD3 chokes on these)."""
     atoms_by_residue: dict[tuple[str, str, str], set[str]] = {}
     order: list[tuple[str, str, str]] = []
     with pdb_path.open() as handle:
@@ -49,6 +50,33 @@ def first_missing_ca(pdb_path: Path) -> str | None:
             chain, res_seq, res_name = key
             return f"{res_name} {chain}{res_seq} missing CA"
     return None
+
+
+def count_residues(structure_path: Path) -> tuple[int | None, int | None]:
+    """Return (n_residues, min_residue_index) for a PDB or mmCIF file."""
+    if not structure_path.exists():
+        return None, None
+    opener = gzip.open if structure_path.name.endswith(".gz") else open
+    is_cif = ".cif" in structure_path.name
+    col_chain = 6 if is_cif else 4
+    col_resi = 8 if is_cif else 5
+    residues: set[tuple[str, str]] = set()
+    min_idx: int | None = None
+    with opener(structure_path, "rt") as handle:
+        for line in handle:
+            if not line.startswith(("ATOM", "HETATM")):
+                continue
+            cols = line.split()
+            if len(cols) <= col_resi:
+                continue
+            chain, resi_str = cols[col_chain], cols[col_resi]
+            residues.add((chain, resi_str))
+            try:
+                idx = int(resi_str)
+            except ValueError:
+                continue
+            min_idx = idx if min_idx is None else min(min_idx, idx)
+    return len(residues), min_idx
 
 
 _THREE_TO_ONE: dict[str, str] = {

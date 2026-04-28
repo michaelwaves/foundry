@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Thin wrapper around the unified collector. Override any field on the CLI:
-#   ./collect_train.sh subsample=200
-set -euo pipefail
-cd "$(dirname "$0")/../.."
-exec python -m tutorials.sae_collect.run_collect \
-    --config-name=rf3_toxinpred3 "$@"
