@@ -1,0 +1,8 @@
+defaults:
+  - _base
+  - _self_
+
+model: rf3
+sources: tutorials/sae_data_rfd3_partial/sources.csv
+hooks_yaml: tutorials/sae_collect/hooks/rf3.yaml
+out_dir: tutorials/sae_data_rf3/uniprot/train_activations

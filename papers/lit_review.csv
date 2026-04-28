@@ -262,3 +262,41 @@ Baker Lab,2025,foundry,"@misc{bakerlab2025foundry,
   journal = {bioRxiv},
   year = {2025}
 }","Baker Lab open-source framework bundling RFdiffusion3, AtomWorks, and RF3 with unified configs, training recipes, and evaluation pipelines for atomistic biomolecular modeling and generative design. Ships the DiffusionTransformer and StructureLocalAtomTransformerBlock definitions the user is probing.","Source repository for the RFD3 model weights, inference code, and Hydra configs; the SAE collector (saffron) hooks into the DiffusionTransformer residual stream inside this codebase at block 12 of 18.","rf3/model/diffusion_transformer.py, rf3/model/blocks.py (StructureLocalAtomTransformerBlock), configs/",code_repo,https://github.com/RosettaCommons/foundry
+Garg and Gupta,2008-02,VirulentPred: A SVM Based Prediction Method for Virulent Proteins in Bacterial Pathogens,"@article{garg2008virulentpred,
+  author = {Garg, Aarti and Gupta, Dinesh},
+  title = {{VirulentPred}: a {SVM} based prediction method for virulent proteins in bacterial pathogens},
+  journal = {BMC Bioinformatics},
+  volume = {9},
+  pages = {62},
+  year = {2008},
+  doi = {10.1186/1471-2105-9-62}
+}","Bi-layer cascade SVM trained on amino-acid composition, dipeptide composition, higher-order dipeptide composition, and PSI-BLAST PSSMs. Reports 81.8% accuracy and AUROC 0.86 on an independent virulent-protein benchmark.","Long-standing handcrafted-feature SVM baseline; the canonical reference AUROC (0.86) for bacterial-VF classification and a baseline in the SOTA comparison plot.","Sec. 'Methods - Cascade SVM', Sec. 'Results - ROC analysis'",virulence_baseline,https://doi.org/10.1186/1471-2105-9-62
+Singh et al.,2024-01,VF-Pred: Predicting Virulence Factor Using Sequence Alignment Percentage and Ensemble Learning Models,"@article{singh2024vfpred,
+  author = {Singh, Shreya and Le, Nguyen Quoc Khanh and Wang, Cheng},
+  title = {{VF-Pred}: predicting virulence factor using sequence alignment percentage and ensemble learning models},
+  journal = {Computers in Biology and Medicine},
+  volume = {168},
+  pages = {107662},
+  year = {2024},
+  doi = {10.1016/j.compbiomed.2023.107662}
+}","Stacked ensemble of classical ML classifiers fed sequence-alignment-percentage features alongside standard sequence descriptors. Reports accuracy 83.5% and AUROC 0.84 on the bacterial-VF benchmark.","Pre-PLM ensemble baseline that DTVF and the RFD3-SAE probe both compare against; anchors the lower end of the SOTA bar chart.","Sec. 'Methods', Table 'Performance Comparison'",virulence_baseline,https://doi.org/10.1016/j.compbiomed.2023.107662
+Sun et al.,2024-09,DTVF: A User-Friendly Tool for Virulence Factor Prediction Based on ProtT5 and Deep Transfer Learning Models,"@article{sun2024dtvf,
+  author = {Sun, Jiawei and Yin, Hongbo and Ju, Chenxiao and Wang, Yongheng and Yang, Zhiyuan},
+  title = {{DTVF}: a user-friendly tool for virulence factor prediction based on {ProtT5} and deep transfer learning models},
+  journal = {Genes},
+  volume = {15},
+  number = {9},
+  pages = {1170},
+  year = {2024},
+  doi = {10.3390/genes15091170}
+}","Combines ProtT5 sequence embeddings with a dual-channel CNN+LSTM head and an attention mechanism to predict bacterial virulence factors. Reports 84.55% accuracy and AUROC 0.9208 on the benchmark dataset, an 8.57% AUROC improvement over VF-Pred.","Current published SOTA absolute AUROC (0.92) for sequence-only VF classification; direct upper-bound baseline for the RFD3-SAE virulence probe.","Sec. 'Model Architecture', Sec. 'Comparison with VF-Pred'",virulence_baseline,https://www.mdpi.com/2073-4425/15/9/1170
+Chen et al.,2025-06,VirulentHunter: Deep Learning-Based Virulence Factor Predictor Illuminates Pathogenicity in Diverse Microbial Contexts,"@article{chen2025virulenthunter,
+  author = {Chen, Chen and Xu, Yong and Ouyang, Jian and Xiong, Xiangyi and {\L}abaj, Pawe{\l} P. and Chmielarczyk, Agnieszka and R\'{o}\.{z}a\'{n}ska, Anna and Zhang, Hao and Liu, Keyang and Shi, Tieliu and Wu, Jun},
+  title = {{VirulentHunter}: deep learning-based virulence factor predictor illuminates pathogenicity in diverse microbial contexts},
+  journal = {Briefings in Bioinformatics},
+  volume = {26},
+  number = {3},
+  pages = {bbaf271},
+  year = {2025},
+  doi = {10.1093/bib/bbaf271}
+}","Fine-tunes ESM-2 for joint identification and functional classification of bacterial VFs from sequence alone. Independent validation on 3,048 VFs and 3,021 non-VFs; reports relative AUC improvements of 47.76% over MP4 and 68.37% over DeepVF but no absolute AUROC for VirulentHunter itself. Applied to IBD metagenomes to surface dysbiosis signals.","Most recent published VF-classifier SOTA; conceptual sibling (PLM fine-tune) to our probe-on-RFD3 approach. Cited as a baseline reference even though absolute AUROC is unreported.","Sec. 'Performance comparison', Sec. 'IBD metagenome analysis'",virulence_baseline,https://doi.org/10.1093/bib/bbaf271

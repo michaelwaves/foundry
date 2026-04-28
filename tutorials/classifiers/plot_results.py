@@ -20,6 +20,15 @@ RANDOM_CSV = HERE / "results_stop_overfitting" / "probes.csv"
 CLUSTER_CSV = HERE / "results_cluster_stop_overfit" / "probes.csv"
 TOP_FEATURES_CSV = HERE / "results" / "top_features.csv"
 
+# Published absolute AUROCs on bacterial-VF benchmarks. Our score is RFD3 block12
+# sae_encode under the random split (results_stop_overfitting/probes.csv).
+SOTA_AUROC = (
+    ("VF-Pred (Singh+, 2024)", 0.84, "#999999"),
+    ("VirulentPred 1.0 (Garg & Gupta, 2008)", 0.86, "#999999"),
+    ("RFD3 block12 SAE (ours)", 0.877, "#dd8452"),
+    ("DTVF (Sun+, 2024)", 0.92, "#999999"),
+)
+
 
 def main() -> None:
     RESULTS.mkdir(parents=True, exist_ok=True)
@@ -38,7 +47,8 @@ def main() -> None:
     _plot_overfitting_gap(random_df, cluster_df, RESULTS / "02_train_vs_eval_gap.png")
     _plot_sae_vs_raw_delta(random_df, cluster_df, RESULTS / "03_sae_vs_raw_delta.png")
     _plot_top_features(TOP_FEATURES_CSV, RESULTS / "04_top_hazard_features.png")
-    print(f"wrote 4 figures to {RESULTS}")
+    _plot_sota_comparison(RESULTS / "05_sota_comparison.png")
+    print(f"wrote 5 figures to {RESULTS}")
 
 
 def _load_probes(random_path: Path, cluster_path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -175,6 +185,29 @@ def _plot_top_features(parquet_csv: Path, out_path: Path) -> None:
     # Hide the empty 6th slot
     axes.flat[len(cells)].set_visible(False)
     fig.suptitle("Top hazard-firing SAE features per (model, hook) — BH-FDR corrected", fontsize=13, y=1.00)
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=160, bbox_inches="tight")
+    plt.close(fig)
+
+
+def _plot_sota_comparison(out_path: Path) -> None:
+    fig, ax = plt.subplots(figsize=(9, 5))
+    labels, scores, colors = zip(*SOTA_AUROC)
+    x = np.arange(len(labels))
+    bars = ax.bar(x, scores, color=colors, edgecolor="white", linewidth=0.5, width=0.6)
+    for bar, score in zip(bars, scores):
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.005,
+                f"{score:.2f}", ha="center", va="bottom", fontsize=10)
+    ax.axhline(0.5, color="gray", linestyle="--", linewidth=0.8, alpha=0.6)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=20, ha="right")
+    ax.set_ylim(0.4, 1.0)
+    ax.set_ylabel("Eval AUROC")
+    ax.set_title("Virulence Factor Classification: Ours vs Published SOTA")
+    fig.text(0.5, -0.02,
+             "VirulentHunter (Chen+, 2025) reports relative AUC gains over MP4/DeepVF "
+             "but no absolute AUROC, so it is omitted from this chart.",
+             ha="center", fontsize=8, color="dimgray")
     fig.tight_layout()
     fig.savefig(out_path, dpi=160, bbox_inches="tight")
     plt.close(fig)

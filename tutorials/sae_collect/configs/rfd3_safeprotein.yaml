@@ -1,0 +1,9 @@
+defaults:
+  - _base
+  - _self_
+
+model: rfd3
+sources: tutorials/sae_data_rfd3_partial/sources.csv
+hooks_yaml: tutorials/sae_collect/hooks/rfd3_partial.yaml
+out_dir: tutorials/sae_data_rfd3_partial/train_activations
+partial_t: 5.0
