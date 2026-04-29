@@ -1,22 +1,22 @@
-"""Build a saffron-collect inputs JSON from a unified sources.csv.
+"""Build a saffron-collect inputs JSON from a sources.csv or HF dataset.
+
+Source providers (mutually exclusive):
+- `--sources path.csv`: read a local SourceRow CSV.
+- `--hf-dataset NAME`: pull from a HuggingFace dataset; if rows carry
+  `pdb_bytes`, materialise them to `--pdb-cache-dir` so RFD3 can find PDB paths.
 
 Dispatches on `--model`:
 - `rfd3` requires `structure_path`; emits dict-of-name with `input` + `partial_t`.
 - `rf3` accepts `sequence` directly or extracts it from `structure_path` (chain A).
 
-Decoupled from `saffron collect` — run that yourself afterwards:
+Run `saffron collect` separately afterwards:
 
   python -m data_pipelines.build_inputs \\
-      --sources data_pipelines/safeprotein/sources.csv \\
-      --out tutorials/sae_data_rfd3_partial/train_inputs.json \\
-      --model rfd3 \\
-      --hooks-yaml data_pipelines/hooks/rfd3_partial.yaml \\
-      --partial-t 5.0
+      --hf-dataset baker-lab/foundry-safeprotein \\
+      --out train_inputs.json --model rfd3 \\
+      --hooks-yaml data_pipelines/hooks/rfd3_partial.yaml
 
-  saffron collect \\
-      model=rfd3 \\
-      inputs=tutorials/sae_data_rfd3_partial/train_inputs.json \\
-      out_dir=tutorials/sae_data_rfd3_partial/train_activations
+  saffron collect model=rfd3 inputs=train_inputs.json out_dir=...
 """
 from __future__ import annotations
 
@@ -30,9 +30,17 @@ import yaml
 from .pdb_utils import extract_chain_sequence, first_missing_ca
 from .sources import SourceRow, read_sources
 
+DEFAULT_PDB_CACHE = Path("~/.cache/foundry/pdbs").expanduser()
+
 
 @click.command()
-@click.option("--sources", type=click.Path(exists=True, path_type=Path), required=True)
+@click.option("--sources", type=click.Path(exists=True, path_type=Path), default=None,
+              help="local SourceRow CSV (mutually exclusive with --hf-dataset)")
+@click.option("--hf-dataset", type=str, default=None,
+              help="HuggingFace dataset NAME (e.g. baker-lab/foundry-safeprotein)")
+@click.option("--hf-split", type=str, default="train", show_default=True)
+@click.option("--pdb-cache-dir", type=click.Path(path_type=Path), default=DEFAULT_PDB_CACHE,
+              show_default=True, help="where to write PDB bytes pulled from HF")
 @click.option("--out", type=click.Path(path_type=Path), required=True)
 @click.option("--model", type=click.Choice(["rfd3", "rf3"]), required=True)
 @click.option("--hooks-yaml", type=click.Path(exists=True, path_type=Path), required=True)
@@ -42,10 +50,13 @@ from .sources import SourceRow, read_sources
               help="if set, randomly take this many rows")
 @click.option("--seed", type=int, default=0)
 def main(
-    sources: Path, out: Path, model: str, hooks_yaml: Path,
+    sources: Path | None, hf_dataset: str | None, hf_split: str,
+    pdb_cache_dir: Path, out: Path, model: str, hooks_yaml: Path,
     partial_t: float, subsample: int | None, seed: int,
 ) -> None:
-    rows = read_sources(sources)
+    if (sources is None) == (hf_dataset is None):
+        raise click.UsageError("provide exactly one of --sources or --hf-dataset")
+    rows = read_sources(sources) if sources else _load_from_hf(hf_dataset, hf_split, pdb_cache_dir)
     if subsample is not None and subsample < len(rows):
         rows = random.Random(seed).sample(rows, subsample)
     run_config = _load_or_seed_run_config(out, hooks_yaml)
@@ -55,6 +66,35 @@ def main(
     for line in skipped:
         click.echo(f"skip {line}")
     click.echo(f"wrote {kept} examples + run_config -> {out} (skipped {len(skipped)})")
+
+
+def _load_from_hf(name: str, split: str, cache_dir: Path) -> list[SourceRow]:
+    from datasets import load_dataset    # lazy: HF dep is optional
+
+    dataset = load_dataset(name, split=split)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    rows: list[SourceRow] = []
+    for record in dataset:
+        structure_path = _materialise_pdb(record, cache_dir)
+        rows.append(SourceRow(
+            name=record["name"], label=record["label"],
+            sequence=record.get("sequence"),
+            structure_path=structure_path,
+            n_residues=record.get("n_residues"),
+            min_residue=record.get("min_residue"),
+        ))
+    return rows
+
+
+def _materialise_pdb(record: dict, cache_dir: Path) -> Path | None:
+    pdb_bytes = record.get("pdb_bytes")
+    if not pdb_bytes:
+        return None
+    filename = record.get("pdb_filename") or f"{record['name']}.pdb"
+    path = cache_dir / filename
+    if not path.exists():
+        path.write_bytes(pdb_bytes)
+    return path.resolve()
 
 
 def _build_payload(

@@ -1,12 +1,13 @@
 import json
 import os
 from pathlib import Path
+import torch
 
 import typer
 import yaml
 from hydra import compose, initialize_config_dir
 from omegaconf import DictConfig, OmegaConf
-
+torch.set_float32_matmul_precision('high')
 app = typer.Typer(add_completion=False)
 
 _CONFIG_DIR = str(Path(__file__).parent / "configs")

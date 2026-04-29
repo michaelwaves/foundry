@@ -52,6 +52,9 @@ dependencies = [
     "pyqt5>=5.15.11",
     "h5py>=3.16.0",
     "biopython>=1.87",
+    # ... data pipelines (HF push/pull)
+    "datasets>=2.14",
+    "huggingface_hub>=0.20",
 ]
 
 

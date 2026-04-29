@@ -1,5 +1,7 @@
 """Smoke tests for the unified data_pipelines pipeline."""
 import json
+import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -9,6 +11,7 @@ from data_pipelines.attach_pdbs import main as attach_pdbs_cli
 from data_pipelines.build_inputs import main as build_inputs_cli
 from data_pipelines.fasta_to_sources import main as fasta_to_sources_cli
 from data_pipelines.filter_pdbs import main as filter_pdbs_cli
+from data_pipelines.push_to_hub import main as push_to_hub_cli
 from data_pipelines.pdb_utils import (
     count_residues,
     extract_chain_sequence,
@@ -187,3 +190,79 @@ def test_attach_pdbs_matches_rf3_fold_layout(tmp_path: Path) -> None:
     assert rows["haz_a"].structure_path == (rf3_layout / "haz_a_model.cif").resolve()
     assert rows["haz_b"].structure_path is None
     assert rows["haz_c"].structure_path == (pdb_dir / "haz_c.pdb").resolve()
+
+
+@pytest.fixture
+def fake_hf_datasets(monkeypatch):
+    """Stub out the `datasets` module so push/load run without HF installed."""
+    state: dict = {"pushed": [], "stored_records": []}
+
+    class _Dataset:
+        def __init__(self, records: list[dict]):
+            self.records = records
+        @classmethod
+        def from_list(cls, records):
+            state["stored_records"] = records
+            return cls(records)
+        def push_to_hub(self, repo, split="train", private=False):
+            state["pushed"].append({"repo": repo, "split": split, "private": private})
+        def __iter__(self):
+            return iter(self.records)
+
+    def _load_dataset(name, split="train"):
+        return state["loadable"][name]
+
+    fake = types.ModuleType("datasets")
+    fake.Dataset = _Dataset
+    fake.load_dataset = _load_dataset
+    monkeypatch.setitem(sys.modules, "datasets", fake)
+    return state
+
+
+def test_push_to_hub_serialises_rows_and_optional_pdb_bytes(
+    tmp_path: Path, fake_hf_datasets
+) -> None:
+    pdb = tmp_path / "1abc.pdb"
+    pdb.write_text("ATOM\n")
+    sources = tmp_path / "sources.csv"
+    write_sources(sources, [
+        SourceRow(name="haz_seq", label=1, sequence="MK", n_residues=2),
+        SourceRow(name="haz_pdb", label=1, sequence="MK", structure_path=pdb, n_residues=2),
+    ])
+    result = CliRunner().invoke(push_to_hub_cli, [
+        "--sources", str(sources), "--hf-repo", "foo/bar", "--include-pdb-bytes",
+    ])
+    assert result.exit_code == 0, result.output
+    assert fake_hf_datasets["pushed"] == [{"repo": "foo/bar", "split": "train", "private": False}]
+    records = {r["name"]: r for r in fake_hf_datasets["stored_records"]}
+    assert "pdb_bytes" not in records["haz_seq"]
+    assert records["haz_pdb"]["pdb_bytes"] == b"ATOM\n"
+    assert records["haz_pdb"]["pdb_filename"] == "1abc.pdb"
+
+
+def test_build_inputs_pulls_from_hf_dataset(tmp_path: Path, fake_hf_datasets) -> None:
+    fake_hf_datasets["loadable"] = {
+        "foo/bar": [
+            {"name": "haz_a", "label": 1, "sequence": "MKLAG",
+             "n_residues": 5, "min_residue": None,
+             "pdb_bytes": b"ATOM\n", "pdb_filename": "1abc.pdb"},
+            {"name": "haz_b", "label": 1, "sequence": "AAGGCC",
+             "n_residues": 6, "min_residue": None,
+             "pdb_bytes": None, "pdb_filename": None},
+        ],
+    }
+    hooks = tmp_path / "hooks.yaml"
+    hooks.write_text("hooks:\n  - name: block12\n    module_path: x\n")
+
+    out = tmp_path / "rfd3.json"
+    cache = tmp_path / "pdb_cache"
+    result = CliRunner().invoke(build_inputs_cli, [
+        "--hf-dataset", "foo/bar",
+        "--pdb-cache-dir", str(cache),
+        "--out", str(out), "--model", "rfd3", "--hooks-yaml", str(hooks),
+    ])
+    assert result.exit_code == 0, result.output
+    payload = json.loads(out.read_text())
+    assert "haz_a" in payload                      # had pdb_bytes -> structure_path materialised
+    assert "haz_b" not in payload                  # no pdb_bytes, skipped for rfd3
+    assert (cache / "1abc.pdb").read_bytes() == b"ATOM\n"
