@@ -38,3 +38,35 @@ saffron steer model=rfd3 \
   inputs=tutorials/steering/configs/null_block12_f639.json \
   out_dir=outputs/steering/runs/null_check
 ```
+
+
+## Vaxigen!
+     abels_for_steering.csv
+
+● Good. Here's the corrected workflow — all three commands should now work:
+
+  # Step 1 — collect RFD3 activations (partial noising on 59 structures)
+  saffron collect model=rfd3 \
+    inputs=data_pipelines/vaxijen/rfd3_inputs_all.json \
+    out_dir=outputs/vaxijen/collect_all
+
+  # Step 2 — compute pos-minus-neg steering vector across block6/8/12
+  saffron compute_steering_vector \
+    inputs=tutorials/steering/configs/vaxijen/diff_pos_minus_neg.yaml \
+    out_dir=outputs/vaxijen/steering_vectors/pos_minus_neg
+
+  # Step 3 — steer a new design run with block12 vector (coeff=3)
+  # Add your test inputs as per-design entries in steer_block12_alpha3.json
+  # alongside the existing run_config, then:
+  saffron steer model=rfd3 \
+    inputs=tutorials/steering/configs/vaxijen/steer_block12_alpha3.json \
+    out_dir=outputs/vaxijen/steer_block12_alpha3
+
+  Two things to note:
+  - 65 positives are dropped (viral proteins with no PDB) — 28 pos + 31 neg = 59
+  examples for vector training. That's slightly imbalanced but workable;
+  compute_steering_vector just computes per-class means so unequal counts are
+  fine.
+  - Step 3 test inputs: add your target PDB entries to steer_block12_alpha3.json
+  in the same {"design_key": {"input": "...", "partial_t": 5.0}} format alongside
+   the run_config.

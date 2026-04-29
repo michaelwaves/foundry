@@ -1,0 +1,267 @@
+{
+  "run_config": {
+    "activation_collection": {
+      "hooks": [
+        {
+          "name": "token_initializer_outputs",
+          "module_path": "token_initializer.process_s_init",
+          "hook_type": "static"
+        },
+        {
+          "name": "block6",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.6.transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 5
+        },
+        {
+          "name": "block8",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.8.transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 5
+        },
+        {
+          "name": "block12",
+          "module_path": "diffusion_module.diffusion_transformer.blocks.12.transition_block",
+          "hook_type": "dynamic",
+          "collect_every_n_steps": 5
+        }
+      ]
+    }
+  },
+  "vax_pos_O50917": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O50917.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P17739": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P17739.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P70854": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P70854.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q07337": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q07337.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P0A470": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P0A470.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P15453": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P15453.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q45321": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q45321.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q9RM68": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q9RM68.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q400Z7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q400Z7.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q24797": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q24797.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P08191": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P08191.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P0AFZ6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P0AFZ6.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q93V32": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q93V32.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P10324": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P10324.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q9ZMJ1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q9ZMJ1.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P0A0R3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P0A0R3.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q48427": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q48427.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q9Z374": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q9Z374.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q48900": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q48900.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_O50430": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O50430.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P96943": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P96943.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_O30527": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O30527.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q8ZP50": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8ZP50.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P0A0L2": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P0A0L2.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P16665": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P16665.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_Q87L97": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q87L97.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P26948": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P26948.pdb",
+    "partial_t": 5.0
+  },
+  "vax_pos_P03129": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P03129.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q7VWV9": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q7VWV9.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O51043": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O51043.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O51240": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O51240.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q05051": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q05051.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O67996": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O67996.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q5HWX1": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q5HWX1.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_P26826": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P26826.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q8XMI8": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8XMI8.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q4VWW3": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q4VWW3.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q8X930": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8X930.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_P43802": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P43802.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O25798": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O25798.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q3S3S0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q3S3S0.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q9ZM64": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q9ZM64.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q8GK72": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8GK72.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_P00552": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P00552.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_P20440": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P20440.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q5ZRT6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q5ZRT6.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_P0A4H5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P0A4H5.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q8Y652": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8Y652.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q7TXM7": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q7TXM7.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_P23181": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/P23181.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q8ZLK5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8ZLK5.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q326M5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q326M5.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q6G7I5": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q6G7I5.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O07341": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O07341.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q97R89": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q97R89.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O33754": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O33754.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_O83814": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/O83814.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q87S20": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q87S20.pdb",
+    "partial_t": 5.0
+  },
+  "vax_neg_Q8ZF61": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/vaxijen/pdbs/Q8ZF61.pdb",
+    "partial_t": 5.0
+  }
+}
