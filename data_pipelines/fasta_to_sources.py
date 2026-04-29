@@ -5,10 +5,10 @@ produces FASTA, and this CLI materialises a sources.csv conforming to the
 unified schema. Filters out non-canonical residues and optionally caps length.
 
 Usage:
-  python -m datasets.fasta_to_sources \\
-      --fasta datasets/vfdb/VFDB_setA_pro.fas \\
+  python -m data_pipelines.fasta_to_sources \\
+      --fasta data_pipelines/vfdb/VFDB_setA_pro.fas \\
       --label 1 --name-prefix vf \\
-      --out datasets/vfdb/sources.csv \\
+      --out data_pipelines/vfdb/sources.csv \\
       --min-length 50 --max-length 300
 """
 from __future__ import annotations

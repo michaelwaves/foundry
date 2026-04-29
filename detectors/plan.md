@@ -40,7 +40,7 @@ entirely and ship the feature ranking as the deliverable.
 ```
 detectors/
   plan.md
-  datasets/
+  data_pipelines/
     lit_review.csv
     labels/                    # per-source label CSVs (design_id -> label)
   src/detectors/
@@ -124,7 +124,7 @@ closed-form across all features in one pass — fast enough for full SAE diction
 ## Data flow
 
 1. **Label** — given a hazard list (e.g. SafeBench-Seq UniProt accessions), produce a
-   per-design CSV `design_id,label,source`. Lives in `datasets/labels/`.
+   per-design CSV `design_id,label,source`. Lives in `data_pipelines/labels/`.
 2. **Score** *(optional, but the interpretability deliverable)* — extract features, run
    scorer against labels, write `feature_scores.parquet` + a top-K markdown report.
    Independent of fit; can run on its own.
@@ -167,7 +167,7 @@ consistency with the rest of the foundry CLI surface, e.g. RFD3 design passthrou
    its own as "which SAE features fire on toxic designs?"
 3. Add `SAEEncodeExtractor` over the four trained hooks; compare LR-on-SAE vs LR-on-raw,
    plus `TopFeatureThresholdDetector` baseline.
-4. Add ToxinPred2 / SafeBench-Seq label loaders under `datasets/labels/`.
+4. Add ToxinPred2 / SafeBench-Seq label loaders under `data_pipelines/labels/`.
 5. Per-token reporting (which features fire on hazardous residues) — reuse
    `feature_stats.top_firing_tokens` from `sae/evaluation` plus the existing PyMOL viz.
 6. Optional: spearman / lift scorers, MLP head, multi-hook fusion if marginal.

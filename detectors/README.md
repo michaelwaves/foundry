@@ -4,7 +4,7 @@ Toxic/viral classifiers over RFD3 SAE features. Three orthogonal axes:
 **FeatureExtractor** (raw or SAE-encoded) × **Scorer** (AUROC) × **Detector** (logistic / top-feature threshold).
 
 See [`plan.md`](plan.md) for the full design. Lit review of toxic/viral datasets in
-[`datasets/lit_review.csv`](datasets/lit_review.csv).
+[`data_pipelines/lit_review.csv`](data_pipelines/lit_review.csv).
 
 ## Datasets
 
@@ -12,8 +12,8 @@ See [`plan.md`](plan.md) for the full design. Lit review of toxic/viral datasets
 ~265 KB total). One sequence per line, no header.
 
 ```bash
-datasets/download_toxinpred.sh                    # → datasets/toxinpred3/
-datasets/download_toxinpred.sh /custom/dest       # custom location
+data_pipelines/download_toxinpred.sh                    # → data_pipelines/toxinpred3/
+data_pipelines/download_toxinpred.sh /custom/dest       # custom location
 ```
 
 **ToxinPred 2 — proteins** (3 splits × pos/neg, ~17 MB total). Real FASTA format.
@@ -21,23 +21,23 @@ The `realistic` split has a heavily unbalanced negative pool (1,924 pos / 19,240
 and is closest to deployment conditions.
 
 ```bash
-datasets/download_toxinpred2.sh                   # → datasets/toxinpred2/
-datasets/download_toxinpred2.sh /custom/dest
+data_pipelines/download_toxinpred2.sh                   # → data_pipelines/toxinpred2/
+data_pipelines/download_toxinpred2.sh /custom/dest
 ```
 
 **VFDB — bacterial virulence factors**. Set A is the experimentally verified core
 (~4,600 proteins, 1.3 MB gz); Set B is the full set including predictions (~5.6 MB gz).
 
 ```bash
-datasets/download_vfdb.sh              # core (set A) → datasets/vfdb/
-datasets/download_vfdb.sh full         # full (set B)
+data_pipelines/download_vfdb.sh              # core (set A) → data_pipelines/vfdb/
+data_pipelines/download_vfdb.sh full         # full (set B)
 ```
 
 **NCBI viral RefSeq — all curated viral proteins** (~106 MB compressed). The canonical
 viral protein resource. For taxon/host filtering, use NCBI's `datasets` CLI instead.
 
 ```bash
-datasets/download_ncbi_viral.sh        # → datasets/ncbi_viral/
+data_pipelines/download_ncbi_viral.sh        # → data_pipelines/ncbi_viral/
 ```
 
 **SafeProtein hazard set** — the positive class used by SafeBench-Seq. 429 hazardous
@@ -45,7 +45,7 @@ proteins with full sequences + PDB metadata + conservation scores. Sequences are
 distributed directly (so no UniProt round-trip needed for positives).
 
 ```bash
-datasets/download_safeprotein.sh       # → datasets/safeprotein/
+data_pipelines/download_safeprotein.sh       # → data_pipelines/safeprotein/
 # emits SafeProtein_Bench.json, safeprotein.fasta, accessions.txt
 ```
 
@@ -55,8 +55,8 @@ sequence-only benigns below, plus `database:PDB`. Downloads matching PDBs from
 RCSB and emits a `sources.csv` ready for `tutorials/sae_data_rfd3_partial/`.
 
 ```bash
-datasets/download_uniprot_pdb_benigns.sh                       # 200 default, length 100-400
-datasets/download_uniprot_pdb_benigns.sh 500 80 600
+data_pipelines/download_uniprot_pdb_benigns.sh                       # 200 default, length 100-400
+data_pipelines/download_uniprot_pdb_benigns.sh 500 80 600
 ```
 
 **UniProt benigns — the universal sequence-only negative pool**. Cursor-paginated FASTA download
@@ -65,9 +65,9 @@ NOT taxonomy_id:10239 (Viruses)` and a length range. Matches SafeBench-Seq's rec
 (plus the stricter NOT virulence filter).
 
 ```bash
-datasets/download_uniprot_benigns.sh                        # default 10000, length 1-2000
-datasets/download_uniprot_benigns.sh 1500 50 600            # 1500 benigns, length 50-600
-datasets/download_uniprot_benigns.sh 1500 50 600 /dest      # custom dest
+data_pipelines/download_uniprot_benigns.sh                        # default 10000, length 1-2000
+data_pipelines/download_uniprot_benigns.sh 1500 50 600            # 1500 benigns, length 50-600
+data_pipelines/download_uniprot_benigns.sh 1500 50 600 /dest      # custom dest
 ```
 
 Use any positive set as RFD3 scaffold inputs to generate labelled designs — the design's
@@ -95,7 +95,7 @@ shortcut concerns motivate trimming the dataset:
 ```bash
 # combine hazard + benign sources first
 cat tutorials/sae_data_rfd3_partial/sources.csv \
-    datasets/uniprot_pdb_benigns/sources.csv \
+    data_pipelines/uniprot_pdb_benigns/sources.csv \
     > tutorials/sae_data_rfd3_partial/sources_combined.csv  # de-dupe headers manually
 
 # filter ≤ 300 residues, length-stratify-balance per 50-residue bin
@@ -131,7 +131,7 @@ Every command takes exactly two flags: `inputs=<config.yaml|json>` and `out_dir=
 The config carries everything else (extractor, scorer, classifier, paths, hooks).
 
 ```bash
-detect labels   inputs=detectors/src/detectors/configs/labels_safeprotein.yaml    out_dir=datasets/labels/safeprotein
+detect labels   inputs=detectors/src/detectors/configs/labels_safeprotein.yaml    out_dir=data_pipelines/labels/safeprotein
 detect score    inputs=detectors/src/detectors/configs/score_block8.yaml          out_dir=outputs/detect/score_block8
 detect fit      inputs=detectors/src/detectors/configs/fit_block8_logistic.yaml   out_dir=outputs/detect/block8_lr
 detect screen   inputs=detectors/src/detectors/configs/screen_block8.yaml         out_dir=outputs/detect/screen_block8

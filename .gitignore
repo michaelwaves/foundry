@@ -227,8 +227,9 @@ logs/
 **/benchmarks/
 **/hbplus/
 **/*activations*/
-**/datasets/**/pdbs/
+**/data_pipelines/**/pdbs/
 tutorials/sae_data_rfd3_partial/pdbs
+
 
 # macOS
 .DS_Store

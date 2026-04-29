@@ -1,6 +1,6 @@
 
 positives:                                                                               
-  - /mnt/nw/home/m.yu/repos/foundry/datasets/toxinpred3/test_pos.csv
+  - /mnt/nw/home/m.yu/repos/foundry/data_pipelines/toxinpred3/test_pos.csv
 negatives:                                                                               
-  - /mnt/nw/home/m.yu/repos/foundry/datasets/toxinpred3/test_neg.csv
+  - /mnt/nw/home/m.yu/repos/foundry/data_pipelines/toxinpred3/test_neg.csv
 activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rf3/test_activations/activations/activations.h5                                                                     
