@@ -60,6 +60,12 @@ class RFD3InferenceConfig:
     # "collect_every_n_steps"}, ...]}
     activation_collection: Optional[dict] = None
 
+    # foldSAE-style block ablation on diffusion_module.diffusion_transformer.blocks.
+    # Each listed index has its forward replaced with a passthrough — the block's
+    # residual contribution is dropped while the stream keeps flowing. Used to
+    # localize where a target property is encoded.
+    layers_to_ablate: Optional[List[int]] = None
+
     # Saving args
     cleanup_guideposts: bool = True
     cleanup_virtual_atoms: bool = True
@@ -170,6 +176,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         low_memory_mode: bool,
         activation_collection: dict | None = None,
         steering: dict | None = None,
+        layers_to_ablate: List[int] | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -199,6 +206,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         self.align_trajectory_structures = align_trajectory_structures
         self.activation_collection = activation_collection
         self.steering = steering
+        self.layers_to_ablate = layers_to_ablate
         if not cleanup_guideposts:
             ranked_logger.warning(
                 "Guideposts will not be cleaned up. This is intended for debugging purposes."
@@ -228,6 +236,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             self.activation_collection = run_config["activation_collection"]
         if "steering" in run_config:
             self.steering = run_config["steering"]
+        if "layers_to_ablate" in run_config:
+            self.layers_to_ablate = run_config["layers_to_ablate"]
         design_specifications = self._multiply_specifications(
             inputs=inputs,
             n_batches=n_batches,
@@ -275,7 +285,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         # ==============================================================================
         # Evaluate, using `validation_step`
         # ==============================================================================
-        with self._maybe_activation_buffer() as activation_buffer:
+        with self._maybe_activation_buffer() as activation_buffer, \
+                self._maybe_layer_ablation():
             outputs = {}
             for batch in loader:
                 pipeline_output = batch[0]
@@ -328,6 +339,21 @@ class RFD3InferenceEngine(BaseInferenceEngine):
                     )
                 )
             yield buf
+
+    @contextmanager
+    def _maybe_layer_ablation(self):
+        if not self.layers_to_ablate:
+            yield
+            return
+        from sae.ablation import LayerAblationConfig, ablate_layers
+
+        cfg = LayerAblationConfig(
+            module_list_path="diffusion_module.diffusion_transformer.blocks",
+            indices=list(self.layers_to_ablate),
+        )
+        ranked_logger.info(f"Ablating diffusion_transformer blocks: {cfg.indices}")
+        with ablate_layers(self._get_shadow_model(), cfg):
+            yield
 
     def _get_shadow_model(self):
         model = self.trainer.state["model"]
