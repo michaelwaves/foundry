@@ -141,30 +141,28 @@ def test_build_inputs_emits_rfd3_dict_and_rf3_examples(tmp_path: Path, tiny_pdb:
         SourceRow(name="haz_1", label=1, sequence="MKL"),                       # rf3-only
         SourceRow(name="haz_2", label=1, structure_path=tiny_pdb),              # rfd3-eligible
     ])
-    hooks = tmp_path / "hooks.yaml"
-    hooks.write_text("hooks:\n  - name: block12\n    module_path: x\n")
 
     rfd3_out = tmp_path / "rfd3.json"
     result = CliRunner().invoke(build_inputs_cli, [
         "--sources", str(sources), "--out", str(rfd3_out),
-        "--model", "rfd3", "--hooks-yaml", str(hooks), "--partial-t", "5.0",
+        "--model", "rfd3", "--partial-t", "5.0",
     ])
     assert result.exit_code == 0, result.output
     rfd3_payload = json.loads(rfd3_out.read_text())
-    assert "run_config" in rfd3_payload and "haz_2" in rfd3_payload
+    assert "haz_2" in rfd3_payload
     assert rfd3_payload["haz_2"] == {"input": str(tiny_pdb.resolve()), "partial_t": 5.0}
     assert "haz_1" not in rfd3_payload    # skipped (no structure_path)
 
     rf3_out = tmp_path / "rf3.json"
     result = CliRunner().invoke(build_inputs_cli, [
         "--sources", str(sources), "--out", str(rf3_out),
-        "--model", "rf3", "--hooks-yaml", str(hooks),
+        "--model", "rf3",
     ])
     assert result.exit_code == 0, result.output
     rf3_payload = json.loads(rf3_out.read_text())
-    names = [ex["name"] for ex in rf3_payload["examples"]]
+    names = [ex["name"] for ex in rf3_payload]
     assert names == ["haz_1", "haz_2"]    # haz_2's sequence comes from chain A of tiny_pdb
-    assert rf3_payload["examples"][1]["components"][0]["seq"] == "AGV"
+    assert rf3_payload[1]["components"][0]["seq"] == "AGV"
 
 
 def test_attach_pdbs_matches_rf3_fold_layout(tmp_path: Path) -> None:
@@ -251,15 +249,12 @@ def test_build_inputs_pulls_from_hf_dataset(tmp_path: Path, fake_hf_datasets) ->
              "pdb_bytes": None, "pdb_filename": None},
         ],
     }
-    hooks = tmp_path / "hooks.yaml"
-    hooks.write_text("hooks:\n  - name: block12\n    module_path: x\n")
-
     out = tmp_path / "rfd3.json"
     cache = tmp_path / "pdb_cache"
     result = CliRunner().invoke(build_inputs_cli, [
         "--hf-dataset", "foo/bar",
         "--pdb-cache-dir", str(cache),
-        "--out", str(out), "--model", "rfd3", "--hooks-yaml", str(hooks),
+        "--out", str(out), "--model", "rfd3",
     ])
     assert result.exit_code == 0, result.output
     payload = json.loads(out.read_text())

@@ -1,0 +1,7 @@
+activations_h5: outputs/vaxijen/collect_all/activations.h5
+labels_csv: data_pipelines/vaxijen/labels_for_steering.csv
+positive_label: 1
+negative_label: 0
+hooks: [to_si, block12, block16, to_r_update]
+normalize: unit
+out_dir: outputs/vaxijen/steering_vectors/pos_minus_neg

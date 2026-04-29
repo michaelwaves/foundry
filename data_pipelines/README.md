@@ -43,12 +43,11 @@ which consumes the same JSON shape as `saffron collect` so we can build the
 inputs once and reuse them.
 
 ```bash
-# build the rf3-fold inputs JSON
+# build the rf3-fold inputs JSON (just the per-design list — no hooks here)
 python -m data_pipelines.build_inputs \
     --sources data_pipelines/safeprotein/sources.csv \
     --out data_pipelines/safeprotein/rf3_inputs.json \
-    --model rf3 \
-    --hooks-yaml data_pipelines/hooks/rf3.yaml
+    --model rf3
 
 # fold (project's own CLI; supports skip_existing for resumability)
 rf3 fold \
@@ -93,19 +92,23 @@ python -m data_pipelines.build_inputs \
     --sources data_pipelines/safeprotein/sources_filtered.csv \
     --out tutorials/sae_data_rfd3_partial/train_inputs.json \
     --model rfd3 \
-    --hooks-yaml data_pipelines/hooks/rfd3_partial.yaml \
     --partial-t 5.0
 ```
 
-For RF3, swap `--model rf3 --hooks-yaml data_pipelines/hooks/rf3.yaml`.
-RF3 takes `sequence` directly; if a row has `structure_path` but no `sequence`,
-the chain-A sequence is extracted from the PDB.
+For RF3, swap `--model rf3` (no `--partial-t`). RF3 takes `sequence`
+directly; if a row has `structure_path` but no `sequence`, the chain-A
+sequence is extracted from the PDB.
 
-## 6. Run `saffron collect` (original interface)
+## 6. Run `saffron collect`
+
+Hooks come from a Hydra config group at `sae/src/sae/configs/hooks/`
+(`rf3_default`, `rfd3_partial`). Steering, when wanted, comes from
+`sae/src/sae/configs/steering/`.
 
 ```bash
 saffron collect \
     model=rfd3 \
+    hooks=rfd3_partial \
     inputs=tutorials/sae_data_rfd3_partial/train_inputs.json \
     out_dir=tutorials/sae_data_rfd3_partial/train_activations
 ```

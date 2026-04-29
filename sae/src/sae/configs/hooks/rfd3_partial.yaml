@@ -1,3 +1,4 @@
+# @package activation_collection
 # RFD3 partial-diffusion activation hooks. Same module paths as the trained
 # SAEs at outputs/sae/2026-04-20_05-38-45/, so we can reuse them directly via
 # `extractor: sae_encode` in the detector configs.

@@ -1,0 +1,9 @@
+# @package steering
+# Raw mean(positive) - mean(negative) direction at block12, computed offline
+# by `saffron compute_steering_vector`. Persona-vectors-style steering.
+
+block12:
+  - mode: raw_diff
+    vector_path: ${oc.env:FOUNDRY_ROOT,${hydra:runtime.cwd}}/outputs/steering/vectors/haz_minus_ben/block12.pt
+    coeff: 3.0
+    apply_at_steps: all

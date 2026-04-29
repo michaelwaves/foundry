@@ -55,9 +55,11 @@ def screen(ctx: typer.Context) -> None:
 def steer(ctx: typer.Context) -> None:
     """Run a model's inference with steering directions added to chosen hooks.
 
-    Same dispatch as `saffron collect` — the inputs JSON's run_config carries a
-    `steering` block alongside `activation_collection`. Each engine reads it
-    and wires steering callbacks into the activation buffer.
+    Same dispatch as `saffron collect`. Steering and hook specs come from
+    Hydra config groups under sae/src/sae/configs/{hooks,steering}/, e.g.::
+
+        saffron steer model=rfd3 hooks=rfd3_partial steering=sae_block12_f639 \\
+            inputs=designs.json out_dir=...
     """
     model, overrides = _split_model_override(ctx.args)
     from sae.collectors import dispatch

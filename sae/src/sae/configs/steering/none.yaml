@@ -1,0 +1,5 @@
+# @package _global_
+# Null pass-through. Use as the default when activation collection is on but
+# no steering is wanted: `saffron collect ... steering=none`.
+
+steering: null

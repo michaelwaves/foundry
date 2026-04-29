@@ -1,26 +1,4 @@
 {
-  "run_config": {
-    "activation_collection": {
-      "hooks": [
-        {
-          "name": "block12",
-          "module_path": "diffusion_module.diffusion_transformer.blocks.12.transition_block",
-          "hook_type": "dynamic",
-          "collect_every_n_steps": 5
-        }
-      ]
-    },
-    "steering": {
-      "block12": [
-        {
-          "mode": "raw_diff",
-          "vector_path": "/mnt/nw/home/m.yu/repos/foundry/outputs/steering/vectors/haz_minus_ben/block12.pt",
-          "coeff": 3.0,
-          "apply_at_steps": "all"
-        }
-      ]
-    }
-  },
   "benign_O00287": {
     "input": "/mnt/nw/home/m.yu/repos/foundry/data_pipelines/uniprot_pdb_benigns/pdbs/2kw3.pdb",
     "partial_t": 5.0

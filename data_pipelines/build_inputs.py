@@ -9,14 +9,11 @@ Dispatches on `--model`:
 - `rfd3` requires `structure_path`; emits dict-of-name with `input` + `partial_t`.
 - `rf3` accepts `sequence` directly or extracts it from `structure_path` (chain A).
 
-Run `saffron collect` separately afterwards:
+The output JSON contains only per-design entries. Hooks and steering are
+supplied at run time via Hydra config groups:
 
-  python -m data_pipelines.build_inputs \\
-      --hf-dataset baker-lab/foundry-safeprotein \\
-      --out train_inputs.json --model rfd3 \\
-      --hooks-yaml data_pipelines/hooks/rfd3_partial.yaml
-
-  saffron collect model=rfd3 inputs=train_inputs.json out_dir=...
+  saffron collect model=rf3 hooks=rf3_default steering=none \\
+      inputs=data_pipelines/vaxijen/rf3_inputs_positives.json
 """
 from __future__ import annotations
 
@@ -25,7 +22,6 @@ import random
 from pathlib import Path
 
 import click
-import yaml
 
 from .pdb_utils import extract_chain_sequence, first_missing_ca
 from .sources import SourceRow, read_sources
@@ -43,7 +39,6 @@ DEFAULT_PDB_CACHE = Path("~/.cache/foundry/pdbs").expanduser()
               show_default=True, help="where to write PDB bytes pulled from HF")
 @click.option("--out", type=click.Path(path_type=Path), required=True)
 @click.option("--model", type=click.Choice(["rfd3", "rf3"]), required=True)
-@click.option("--hooks-yaml", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--partial-t", type=float, default=5.0, show_default=True,
               help="rfd3 only: Å of noise for partial diffusion")
 @click.option("--subsample", type=int, default=None,
@@ -51,7 +46,7 @@ DEFAULT_PDB_CACHE = Path("~/.cache/foundry/pdbs").expanduser()
 @click.option("--seed", type=int, default=0)
 def main(
     sources: Path | None, hf_dataset: str | None, hf_split: str,
-    pdb_cache_dir: Path, out: Path, model: str, hooks_yaml: Path,
+    pdb_cache_dir: Path, out: Path, model: str,
     partial_t: float, subsample: int | None, seed: int,
 ) -> None:
     if (sources is None) == (hf_dataset is None):
@@ -59,13 +54,12 @@ def main(
     rows = read_sources(sources) if sources else _load_from_hf(hf_dataset, hf_split, pdb_cache_dir)
     if subsample is not None and subsample < len(rows):
         rows = random.Random(seed).sample(rows, subsample)
-    run_config = _load_or_seed_run_config(out, hooks_yaml)
-    payload, kept, skipped = _build_payload(rows, model, run_config, partial_t)
+    payload, kept, skipped = _build_payload(rows, model, partial_t)
 
     out.write_text(json.dumps(payload, indent=2))
     for line in skipped:
         click.echo(f"skip {line}")
-    click.echo(f"wrote {kept} examples + run_config -> {out} (skipped {len(skipped)})")
+    click.echo(f"wrote {kept} examples -> {out} (skipped {len(skipped)})")
 
 
 def _load_from_hf(name: str, split: str, cache_dir: Path) -> list[SourceRow]:
@@ -98,13 +92,13 @@ def _materialise_pdb(record: dict, cache_dir: Path) -> Path | None:
 
 
 def _build_payload(
-    rows: list[SourceRow], model: str, run_config: dict, partial_t: float,
-) -> tuple[dict, int, list[str]]:
+    rows: list[SourceRow], model: str, partial_t: float,
+) -> tuple[dict | list, int, list[str]]:
     if model == "rfd3":
         body, skipped = _build_rfd3_payload(rows, partial_t)
-        return {"run_config": run_config, **body}, len(body), skipped
+        return body, len(body), skipped
     examples, skipped = _build_rf3_payload(rows)
-    return {"run_config": run_config, "examples": examples}, len(examples), skipped
+    return examples, len(examples), skipped
 
 
 def _build_rfd3_payload(rows: list[SourceRow], partial_t: float) -> tuple[dict, list[str]]:
@@ -135,14 +129,6 @@ def _build_rf3_payload(rows: list[SourceRow]) -> tuple[list[dict], list[str]]:
             continue
         examples.append({"name": row.name, "components": [{"seq": sequence, "chain_id": "A"}]})
     return examples, skipped
-
-
-def _load_or_seed_run_config(out_json: Path, hooks_yaml: Path) -> dict:
-    if out_json.exists():
-        existing = json.loads(out_json.read_text())
-        if isinstance(existing, dict) and "run_config" in existing:
-            return existing["run_config"]
-    return {"activation_collection": yaml.safe_load(hooks_yaml.read_text())}
 
 
 if __name__ == "__main__":

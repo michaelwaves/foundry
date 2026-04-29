@@ -1,5 +1,6 @@
-# RF3 activation hooks for toxic/non-toxic ToxinPred 3 peptide folding.
-# Loaded by the rf3 saffron collector via `hooks=path/to/this/file`.
+# @package activation_collection
+# RF3 activation hooks for toxic/non-toxic peptide folding.
+# Composed via `saffron collect model=rf3 hooks=rf3_default ...`
 #
 # `to_si` runs once per recycle (~10x per design); the others fire per diffusion
 # step inside the recycle (~500x per design at default settings). collect_every_n_steps

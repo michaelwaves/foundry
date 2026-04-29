@@ -1,0 +1,11 @@
+# @package steering
+# Single-feature SAE steer along RFD3 block12 feature #639 (top hazard
+# direction in the corrected sweep, AUROC 0.815). Adds alpha · W_dec[639] to
+# the residual stream at every diffusion step.
+
+block12:
+  - mode: sae_feature
+    sae_path: ${oc.env:FOUNDRY_ROOT,${hydra:runtime.cwd}}/outputs/sae/2026-04-26_15-38-55/train/block12/final.pt
+    feature_id: 639
+    alpha: 5.0
+    apply_at_steps: all
