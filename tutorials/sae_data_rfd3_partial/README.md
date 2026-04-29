@@ -1,11 +1,11 @@
 
   # 1. positives (429 hazards, ~50 MB of PDBs)
-  detectors/datasets/download_safeprotein.sh
+  datasets/download_safeprotein.sh
   tutorials/sae_data_rfd3_partial/fetch_safeprotein_pdbs.sh
 
   # 2. benigns (~200 length-matched, ~5–20 MB of PDBs)
 
-  detectors/datasets/download_uniprot_pdb_benigns.sh 500 100 300
+  datasets/download_uniprot_pdb_benigns.sh 500 100 300
   //n_pdbs, min_len, max_len
 
 

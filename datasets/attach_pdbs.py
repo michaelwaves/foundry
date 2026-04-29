@@ -9,7 +9,7 @@ predictions to `<out_dir>/<sample_idx>/<example_id>/<example_id>_model.cif`.
 
 Usage:
   rf3 fold inputs=rf3_inputs.json out_dir=pdbs/ skip_existing=True
-  python -m detectors.datasets.attach_pdbs \\
+  python -m datasets.attach_pdbs \\
       --sources sources.csv --pdb-dir pdbs/ --out sources_with_pdbs.csv
 """
 from __future__ import annotations

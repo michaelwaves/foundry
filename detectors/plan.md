@@ -124,7 +124,7 @@ closed-form across all features in one pass — fast enough for full SAE diction
 ## Data flow
 
 1. **Label** — given a hazard list (e.g. SafeBench-Seq UniProt accessions), produce a
-   per-design CSV `design_id,label,source`. Lives in `detectors/datasets/labels/`.
+   per-design CSV `design_id,label,source`. Lives in `datasets/labels/`.
 2. **Score** *(optional, but the interpretability deliverable)* — extract features, run
    scorer against labels, write `feature_scores.parquet` + a top-K markdown report.
    Independent of fit; can run on its own.

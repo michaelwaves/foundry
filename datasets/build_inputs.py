@@ -6,11 +6,11 @@ Dispatches on `--model`:
 
 Decoupled from `saffron collect` — run that yourself afterwards:
 
-  python -m detectors.datasets.build_inputs \\
-      --sources detectors/datasets/safeprotein/sources.csv \\
+  python -m datasets.build_inputs \\
+      --sources datasets/safeprotein/sources.csv \\
       --out tutorials/sae_data_rfd3_partial/train_inputs.json \\
       --model rfd3 \\
-      --hooks-yaml detectors/datasets/hooks/rfd3_partial.yaml \\
+      --hooks-yaml datasets/hooks/rfd3_partial.yaml \\
       --partial-t 5.0
 
   saffron collect \\

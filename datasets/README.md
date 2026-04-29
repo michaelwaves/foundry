@@ -8,7 +8,7 @@ download → fasta_to_sources → [rf3 fold → attach_pdbs] → [filter_pdbs] �
 
 Every step reads / writes the same `SourceRow` schema
 (`name, label, sequence, structure_path, n_residues, min_residue`)
-defined at `detectors/src/detectors/datasets/sources.py`. Square-bracketed
+defined at `datasets/sources.py`. Square-bracketed
 steps are optional and only needed for RFD3 (which requires PDB inputs).
 
 ## 1. Download (FASTA only)
@@ -26,10 +26,10 @@ steps are optional and only needed for RFD3 (which requires PDB inputs).
 ## 2. FASTA → sources.csv
 
 ```bash
-python -m detectors.datasets.fasta_to_sources \
-    --fasta detectors/datasets/vfdb/VFDB_setA_pro.fas \
+python -m datasets.fasta_to_sources \
+    --fasta datasets/vfdb/VFDB_setA_pro.fas \
     --label 1 --name-prefix vf \
-    --out detectors/datasets/vfdb/sources.csv \
+    --out datasets/vfdb/sources.csv \
     --min-length 50 --max-length 300
 ```
 
@@ -44,23 +44,23 @@ inputs once and reuse them.
 
 ```bash
 # build the rf3-fold inputs JSON
-python -m detectors.datasets.build_inputs \
-    --sources detectors/datasets/safeprotein/sources.csv \
-    --out detectors/datasets/safeprotein/rf3_inputs.json \
+python -m datasets.build_inputs \
+    --sources datasets/safeprotein/sources.csv \
+    --out datasets/safeprotein/rf3_inputs.json \
     --model rf3 \
-    --hooks-yaml detectors/datasets/hooks/rf3.yaml
+    --hooks-yaml datasets/hooks/rf3.yaml
 
 # fold (project's own CLI; supports skip_existing for resumability)
 rf3 fold \
-    inputs=detectors/datasets/safeprotein/rf3_inputs.json \
-    out_dir=detectors/datasets/safeprotein/pdbs \
+    inputs=datasets/safeprotein/rf3_inputs.json \
+    out_dir=datasets/safeprotein/pdbs \
     skip_existing=True
 
 # pair sources.csv rows with the predicted CIFs
-python -m detectors.datasets.attach_pdbs \
-    --sources detectors/datasets/safeprotein/sources.csv \
-    --pdb-dir detectors/datasets/safeprotein/pdbs \
-    --out detectors/datasets/safeprotein/sources_with_pdbs.csv
+python -m datasets.attach_pdbs \
+    --sources datasets/safeprotein/sources.csv \
+    --pdb-dir datasets/safeprotein/pdbs \
+    --out datasets/safeprotein/sources_with_pdbs.csv
 ```
 
 `attach_pdbs` recursively walks `--pdb-dir` and matches each row's `name` to a
@@ -76,7 +76,7 @@ this whole step.
 ```bash
 cat hazards.csv <(tail -n +2 benigns.csv) > combined.csv
 
-python -m detectors.datasets.filter_pdbs \
+python -m datasets.filter_pdbs \
     --sources combined.csv \
     --out filtered.csv \
     --bin-size 50
@@ -89,15 +89,15 @@ isn't a probe shortcut feature.
 ## 5. Build saffron inputs JSON
 
 ```bash
-python -m detectors.datasets.build_inputs \
-    --sources detectors/datasets/safeprotein/sources_filtered.csv \
+python -m datasets.build_inputs \
+    --sources datasets/safeprotein/sources_filtered.csv \
     --out tutorials/sae_data_rfd3_partial/train_inputs.json \
     --model rfd3 \
-    --hooks-yaml detectors/datasets/hooks/rfd3_partial.yaml \
+    --hooks-yaml datasets/hooks/rfd3_partial.yaml \
     --partial-t 5.0
 ```
 
-For RF3, swap `--model rf3 --hooks-yaml detectors/datasets/hooks/rf3.yaml`.
+For RF3, swap `--model rf3 --hooks-yaml datasets/hooks/rf3.yaml`.
 RF3 takes `sequence` directly; if a row has `structure_path` but no `sequence`,
 the chain-A sequence is extracted from the PDB.
 

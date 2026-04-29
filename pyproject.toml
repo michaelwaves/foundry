@@ -137,6 +137,10 @@ packages = [
 "models/rfd3/configs" = "rfd3/configs"
 "models/rf3/configs" = "rf3/configs"
 
+# Test configuration ------------------------------------------------------------------
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 # Formatting & linting settings -------------------------------------------------------
 [tool.ruff]
 line-length = 88

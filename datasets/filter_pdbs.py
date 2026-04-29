@@ -12,9 +12,9 @@ Assumes `n_residues` is already populated (set by `fasta_to_sources`).
 neg-index filter is skipped (a no-op for the RF3 path).
 
 Usage:
-  python -m detectors.datasets.filter_pdbs \\
-      --sources detectors/datasets/safeprotein/sources_combined.csv \\
-      --out detectors/datasets/safeprotein/sources_filtered.csv \\
+  python -m datasets.filter_pdbs \\
+      --sources datasets/safeprotein/sources_combined.csv \\
+      --out datasets/safeprotein/sources_filtered.csv \\
       --bin-size 50
 """
 from __future__ import annotations

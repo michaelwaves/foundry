@@ -1,20 +1,20 @@
-"""Smoke tests for the unified detectors.datasets pipeline."""
+"""Smoke tests for the unified datasets pipeline."""
 import json
 from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
 
-from detectors.datasets.attach_pdbs import main as attach_pdbs_cli
-from detectors.datasets.build_inputs import main as build_inputs_cli
-from detectors.datasets.fasta_to_sources import main as fasta_to_sources_cli
-from detectors.datasets.filter_pdbs import main as filter_pdbs_cli
-from detectors.datasets.pdb_utils import (
+from datasets.attach_pdbs import main as attach_pdbs_cli
+from datasets.build_inputs import main as build_inputs_cli
+from datasets.fasta_to_sources import main as fasta_to_sources_cli
+from datasets.filter_pdbs import main as filter_pdbs_cli
+from datasets.pdb_utils import (
     count_residues,
     extract_chain_sequence,
     first_missing_ca,
 )
-from detectors.datasets.sources import (
+from datasets.sources import (
     SourceRow,
     filter_by_length,
     populate_residue_stats,

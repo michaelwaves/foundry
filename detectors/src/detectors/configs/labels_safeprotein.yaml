@@ -1,5 +1,5 @@
 positives:
-  - /mnt/nw/home/m.yu/repos/foundry/detectors/datasets/safeprotein/safeprotein.fasta
+  - /mnt/nw/home/m.yu/repos/foundry/datasets/safeprotein/safeprotein.fasta
 negatives:
-  - /mnt/nw/home/m.yu/repos/foundry/detectors/datasets/uniprot_benigns/benigns.fasta
+  - /mnt/nw/home/m.yu/repos/foundry/datasets/uniprot_benigns/benigns.fasta
 activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data/train_activations_2/activations/activations.h5
