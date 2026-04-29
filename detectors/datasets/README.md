@@ -3,15 +3,13 @@
 Single path:
 
 ```
-download → fasta_to_sources → [fetch_pdbs] → [filter_pdbs] → build_inputs → saffron collect
+download → fasta_to_sources → [rf3 fold → attach_pdbs] → [filter_pdbs] → build_inputs → saffron collect
 ```
 
 Every step reads / writes the same `SourceRow` schema
 (`name, label, sequence, structure_path, n_residues, min_residue`)
 defined at `detectors/src/detectors/datasets/sources.py`. Square-bracketed
-steps are optional: `fetch_pdbs` is RFD3-only, and `filter_pdbs` is only
-needed if you care about RFD3-compatibility filtering and cross-class
-length-stratification.
+steps are optional and only needed for RFD3 (which requires PDB inputs).
 
 ## 1. Download (FASTA only)
 
@@ -38,31 +36,40 @@ python -m detectors.datasets.fasta_to_sources \
 Filters by length, drops non-canonical residues, sets `n_residues = len(sequence)`.
 This is the **RF3-ready** form — RF3 takes `sequence` directly, no folding needed.
 
-## 3. (RFD3 only) attach `structure_path`
+## 3. (RFD3 only) fold sequences with `rf3 fold`, then attach paths
 
-RFD3 needs PDBs. Two paths:
-
-**(a) RCSB cross-references**, when the source dataset already maps accessions
-to PDB IDs (SafeProtein ships these in its JSON):
+RFD3 needs PDBs. The project already ships its own batch folder, `rf3 fold`,
+which consumes the same JSON shape as `saffron collect` so we can build the
+inputs once and reuse them.
 
 ```bash
-python -m detectors.datasets.fetch_pdbs \
+# build the rf3-fold inputs JSON
+python -m detectors.datasets.build_inputs \
     --sources detectors/datasets/safeprotein/sources.csv \
-    --safeprotein-json detectors/datasets/safeprotein/SafeProtein_Bench.json \
-    --strip-prefix hazard_ \
+    --out detectors/datasets/safeprotein/rf3_inputs.json \
+    --model rf3 \
+    --hooks-yaml detectors/datasets/hooks/rf3.yaml
+
+# fold (project's own CLI; supports skip_existing for resumability)
+rf3 fold \
+    inputs=detectors/datasets/safeprotein/rf3_inputs.json \
+    out_dir=detectors/datasets/safeprotein/pdbs \
+    skip_existing=True
+
+# pair sources.csv rows with the predicted CIFs
+python -m detectors.datasets.attach_pdbs \
+    --sources detectors/datasets/safeprotein/sources.csv \
     --pdb-dir detectors/datasets/safeprotein/pdbs \
     --out detectors/datasets/safeprotein/sources_with_pdbs.csv
 ```
 
-For arbitrary mappings (any dataset), pass `--pdb-map mapping.json` instead,
-where `mapping.json` is `{row_name: pdb_id, ...}`.
+`attach_pdbs` recursively walks `--pdb-dir` and matches each row's `name` to a
+file with one of: `<name>_model.cif` (rf3 fold output), `<name>.pdb`,
+`<name>.cif`, `<name>.cif.gz`. Rows with no match pass through.
 
-**(b) Fold from sequence** when no experimental structure exists (e.g. VFDB).
-No bundled folder — install ESMFold separately, run it on the FASTA, write
-`structure_path` into the sources CSV with whatever script you prefer.
-
-`download_uniprot_pdb_benigns.sh` writes a sources.csv with `structure_path`
-already populated, so it can skip this step.
+`download_uniprot_pdb_benigns.sh` already writes a sources.csv with
+`structure_path` populated from RCSB experimental structures, so it can skip
+this whole step.
 
 ## 4. (Optional) RFD3-compatibility filter + class balance
 
@@ -109,7 +116,7 @@ Output: `<out_dir>/activations/activations.h5`.
 
 1. Write `download_<name>.sh` (FASTA → disk).
 2. Run `fasta_to_sources` to produce `sources.csv` (RF3-ready).
-3. (For RFD3) run `fetch_pdbs` or fold separately to attach `structure_path`.
+3. (For RFD3) `build_inputs --model rf3` → `rf3 fold` → `attach_pdbs`.
 4. (Optional) merge per-class CSVs and run `filter_pdbs`.
-5. Run `build_inputs` to produce a saffron inputs JSON.
+5. Run `build_inputs --model rfd3` to produce a saffron inputs JSON.
 6. Run `saffron collect` against that JSON.

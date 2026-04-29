@@ -2,14 +2,12 @@
 
 This is the standard "first hop" after any download script: the downloader
 produces FASTA, and this CLI materialises a sources.csv conforming to the
-unified schema (name, label, sequence). Filters out non-canonical residues and
-optionally caps length.
+unified schema. Filters out non-canonical residues and optionally caps length.
 
 Usage:
   python -m detectors.datasets.fasta_to_sources \\
       --fasta detectors/datasets/vfdb/VFDB_setA_pro.fas \\
-      --label 1 \\
-      --name-prefix hazard \\
+      --label 1 --name-prefix vf \\
       --out detectors/datasets/vfdb/sources.csv \\
       --min-length 50 --max-length 300
 """

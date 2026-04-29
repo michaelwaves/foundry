@@ -5,10 +5,9 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
-from detectors.datasets import fetch_pdbs as fetch_pdbs_mod
+from detectors.datasets.attach_pdbs import main as attach_pdbs_cli
 from detectors.datasets.build_inputs import main as build_inputs_cli
 from detectors.datasets.fasta_to_sources import main as fasta_to_sources_cli
-from detectors.datasets.fetch_pdbs import main as fetch_pdbs_cli
 from detectors.datasets.filter_pdbs import main as filter_pdbs_cli
 from detectors.datasets.pdb_utils import (
     count_residues,
@@ -165,37 +164,26 @@ def test_build_inputs_emits_rfd3_dict_and_rf3_examples(tmp_path: Path, tiny_pdb:
     assert rf3_payload["examples"][1]["components"][0]["seq"] == "AGV"
 
 
-def test_fetch_pdbs_safeprotein_json(tmp_path: Path, monkeypatch) -> None:
+def test_attach_pdbs_matches_rf3_fold_layout(tmp_path: Path) -> None:
+    """rf3 fold writes <out_dir>/<sample_idx>/<name>/<name>_model.cif. We should find it."""
     sources = tmp_path / "sources.csv"
     write_sources(sources, [
-        SourceRow(name="hazard_P00001", label=1, sequence="MK"),
-        SourceRow(name="hazard_NOMATCH", label=1, sequence="MK"),
+        SourceRow(name="haz_a", label=1, sequence="MK"),
+        SourceRow(name="haz_b", label=1, sequence="MK"),     # no PDB
+        SourceRow(name="haz_c", label=1, sequence="MK"),     # bare .pdb in flat dir
     ])
-    safeprotein_json = tmp_path / "SafeProtein_Bench.json"
-    safeprotein_json.write_text(json.dumps({
-        "P00001": {"PDB": {"1ABC": {}, "2XYZ": {}}},
-        "P99999": {"PDB": {"9XXX": {}}},
-    }))
     pdb_dir = tmp_path / "pdbs"
-
-    fetched: list[str] = []
-    def _fake_fetch(pdb_id: str, dest: Path) -> Path:
-        fetched.append(pdb_id)
-        path = dest / f"{pdb_id}.pdb"
-        path.write_text("ATOM\n")
-        return path
-    monkeypatch.setattr(fetch_pdbs_mod, "fetch_one_pdb", _fake_fetch)
+    rf3_layout = pdb_dir / "0" / "haz_a"
+    rf3_layout.mkdir(parents=True)
+    (rf3_layout / "haz_a_model.cif").write_text("loop_\n")
+    (pdb_dir / "haz_c.pdb").write_text("ATOM\n")
 
     out = tmp_path / "out.csv"
-    result = CliRunner().invoke(fetch_pdbs_cli, [
-        "--sources", str(sources), "--out", str(out),
-        "--pdb-dir", str(pdb_dir),
-        "--safeprotein-json", str(safeprotein_json),
-        "--strip-prefix", "hazard_",
+    result = CliRunner().invoke(attach_pdbs_cli, [
+        "--sources", str(sources), "--out", str(out), "--pdb-dir", str(pdb_dir),
     ])
     assert result.exit_code == 0, result.output
-    assert fetched == ["1abc"]   # sorted PDB-ID list, lower-cased; only matched accession
-
     rows = {r.name: r for r in read_sources(out)}
-    assert rows["hazard_P00001"].structure_path is not None
-    assert rows["hazard_NOMATCH"].structure_path is None
+    assert rows["haz_a"].structure_path == (rf3_layout / "haz_a_model.cif").resolve()
+    assert rows["haz_b"].structure_path is None
+    assert rows["haz_c"].structure_path == (pdb_dir / "haz_c.pdb").resolve()
