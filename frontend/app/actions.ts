@@ -8,12 +8,6 @@ export async function submitJob(formData: FormData): Promise<{ job_id: string }>
   return res.json()
 }
 
-export async function pollJob(jobId: string): Promise<{ status: string; error?: string }> {
-  const res = await fetch(`${API_URL}/jobs/${jobId}`)
-  if (!res.ok) throw new Error(await res.text())
-  return res.json()
-}
-
 export async function downloadOutput(jobId: string): Promise<{ data: string; filename: string }> {
   const res = await fetch(`${API_URL}/jobs/${jobId}/output`)
   if (!res.ok) throw new Error(await res.text())

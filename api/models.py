@@ -15,3 +15,4 @@ class Job:
     status: JobStatus = field(default=JobStatus.pending)
     output_path: str | None = None
     error: str | None = None
+    logs: list[str] = field(default_factory=list)

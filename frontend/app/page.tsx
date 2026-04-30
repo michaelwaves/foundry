@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
-import { submitJob, pollJob, downloadOutput } from './actions'
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { submitJob, downloadOutput } from './actions'
 
 type Status = 'idle' | 'submitting' | 'pending' | 'running' | 'done' | 'failed'
 
@@ -11,28 +11,52 @@ export default function Home() {
   const [status, setStatus] = useState<Status>('idle')
   const [jobId, setJobId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [logs, setLogs] = useState<string[]>([])
+  const esRef = useRef<EventSource | null>(null)
+  const logEndRef = useRef<HTMLDivElement>(null)
+  const terminalRef = useRef(false)
 
-  const stopPolling = useCallback(() => {
-    if (pollRef.current) clearInterval(pollRef.current)
+  const closeStream = useCallback(() => {
+    esRef.current?.close()
+    esRef.current = null
   }, [])
 
-  const startPolling = useCallback((id: string) => {
-    pollRef.current = setInterval(async () => {
-      const data = await pollJob(id)
+  const openStream = useCallback((id: string) => {
+    closeStream()
+    terminalRef.current = false
+    const es = new EventSource(`/api/jobs/${id}/stream`)
+    esRef.current = es
+    es.addEventListener('status', (e) => {
+      const data = JSON.parse(e.data)
       setStatus(data.status as Status)
       if (data.status === 'done' || data.status === 'failed') {
-        stopPolling()
+        terminalRef.current = true
+        es.close()
         if (data.status === 'failed') setError(data.error ?? 'job failed')
       }
-    }, 3000)
-  }, [stopPolling])
+    })
+    es.addEventListener('log', (e) => {
+      setLogs((prev) => [...prev, JSON.parse(e.data)])
+    })
+    es.onerror = () => {
+      es.close()
+      if (!terminalRef.current) {
+        setStatus('failed')
+        setError('stream connection lost')
+      }
+    }
+  }, [closeStream])
+
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [logs])
 
   const submit = useCallback(async () => {
-    stopPolling()
+    closeStream()
     setStatus('submitting')
     setJobId(null)
     setError(null)
+    setLogs([])
     const form = new FormData()
     form.append('alpha', String(alpha))
     if (motif) form.append('motif', motif)
@@ -40,12 +64,12 @@ export default function Home() {
       const { job_id } = await submitJob(form)
       setJobId(job_id)
       setStatus('pending')
-      startPolling(job_id)
+      openStream(job_id)
     } catch (e) {
       setStatus('failed')
       setError(String(e))
     }
-  }, [alpha, motif, stopPolling, startPolling])
+  }, [alpha, motif, closeStream, openStream])
 
   const download = useCallback(async () => {
     if (!jobId) return
@@ -118,6 +142,15 @@ export default function Home() {
                 : 'font-medium text-zinc-900 dark:text-zinc-100'
               }>{status}</span>
             </span>
+          </div>
+        )}
+
+        {logs.length > 0 && (
+          <div className="rounded-lg border border-zinc-100 dark:border-zinc-800 bg-zinc-950 p-3 max-h-56 overflow-y-auto">
+            <pre className="text-xs text-zinc-300 whitespace-pre-wrap break-all leading-5">
+              {logs.join('\n')}
+            </pre>
+            <div ref={logEndRef} />
           </div>
         )}
 

@@ -41,7 +41,7 @@ async def launch(job: Job, alpha: float, motif_bytes: bytes | None) -> None:
         out_dir.mkdir()
         if alpha != 0.0:
             steering_name = _write_steering_yaml(job.id, alpha)
-        await _run_saffron(inputs_path, steering_name, out_dir)
+        await _run_saffron(inputs_path, steering_name, out_dir, job)
         job.output_path = str(_find_cif(out_dir))
         job.status = JobStatus.done
     except Exception as exc:
@@ -77,7 +77,7 @@ def _delete_steering_yaml(job_id: str) -> None:
 
 
 async def _run_saffron(
-    inputs_path: Path, steering_name: str | None, out_dir: Path
+    inputs_path: Path, steering_name: str | None, out_dir: Path, job: "Job"
 ) -> None:
     cmd = [
         "saffron", "steer", "model=rfd3",
@@ -92,9 +92,18 @@ async def _run_saffron(
         stderr=asyncio.subprocess.PIPE,
         cwd=str(FOUNDRY_ROOT),
     )
-    _, stderr = await proc.communicate()
+
+    async def drain(stream: asyncio.StreamReader) -> None:
+        async for raw in stream:
+            line = raw.decode().rstrip()
+            if line:
+                job.logs.append(line)
+                save(job)
+
+    await asyncio.gather(drain(proc.stdout), drain(proc.stderr))
+    await proc.wait()
     if proc.returncode != 0:
-        raise RuntimeError(f"saffron failed:\n{stderr.decode()}")
+        raise RuntimeError(f"saffron exited {proc.returncode}")
 
 
 def _find_cif(out_dir: Path) -> Path:
