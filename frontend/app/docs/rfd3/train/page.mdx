@@ -1,0 +1,22 @@
+---
+title: Train
+---
+
+# Train — RFD3
+
+Same as RF3. Run once per hook.
+
+```bash
+saffron train \
+  activations_path=outputs/collect/rfd3_train/activations/activations.h5 \
+  hook_name=block12 \
+  steps=20000 \
+  use_wandb=true
+```
+
+To train on all hooks in parallel:
+
+```bash
+./tutorials/sae_data_rfd3_partial/train_all_hooks.sh \
+  outputs/collect/rfd3_train/activations/activations.h5
+```

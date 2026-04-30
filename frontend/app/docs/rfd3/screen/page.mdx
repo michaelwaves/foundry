@@ -1,0 +1,17 @@
+---
+title: Screen
+---
+
+# Screen — RFD3
+
+Run a trained detector on new PDB structures.
+
+```bash
+saffron screen model=rfd3 \
+  hooks=rfd3_partial \
+  inputs=my_structures.json \
+  detector=outputs/detectors/rfd3_block12/bundle.pt \
+  out_dir=outputs/screen/my_structures
+```
+
+Inputs JSON: same format as `saffron collect` for RFD3.

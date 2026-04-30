@@ -1,0 +1,23 @@
+---
+title: Train
+---
+
+# Train — RF3
+
+```bash
+saffron train \
+  activations_path=outputs/collect/vfdb_rf3/activations/activations.h5 \
+  hook_name=block12 \
+  steps=20000 \
+  use_wandb=true
+```
+
+Checkpoint written to `outputs/train/matryoshka_batch_top_k/block12/<timestamp>/final.pt`.
+
+| Parameter | Default | Notes |
+|---|---|---|
+| `hook_name` | — | One of the hooks declared in the collect step |
+| `steps` | `20000` | |
+| `batch_size` | `4096` | |
+| `architecture` | `matryoshka_batch_top_k` | |
+| `device` | `cuda:0` | |

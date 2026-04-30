@@ -1,0 +1,7 @@
+{
+  "index": "Pipeline",
+  "collect": "Collect",
+  "train": "Train",
+  "eval": "Eval",
+  "screen": "Screen"
+}

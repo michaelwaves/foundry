@@ -1,0 +1,139 @@
+---
+title: CLI Reference
+---
+
+import { Callout } from 'nextra/components'
+
+# CLI Reference
+
+All commands are Hydra-configured. Key-value overrides (`key=value`) are passed directly on the CLI.
+
+```bash
+saffron <command> [overrides...]
+```
+
+---
+
+## collect
+
+Runs model inference with forward hooks attached. Writes activations to `<out_dir>/activations/activations.h5`.
+
+```bash
+saffron collect model=<rf3|rfd3> \
+  hooks=<group> \
+  inputs=<path/to/inputs.json> \
+  out_dir=<output_dir>
+```
+
+| Override | Required | Description |
+|---|---|---|
+| `model` | ✓ | `rf3` or `rfd3` |
+| `hooks` | — | Hook config group: `rf3_default`, `rfd3_partial` |
+| `steering` | — | Steering config group: `none`, `sae_block12_f639`, … |
+| `inputs` | ✓ | Path to inputs JSON (per-design list) |
+| `out_dir` | ✓ | Output directory |
+| `inference_engine` | — | Override the Hydra inference engine config |
+
+<Callout type="info">
+`hooks=` and `steering=` resolve from `sae/src/sae/configs/{hooks,steering}/`. Identical mechanism to `inference_engine=`.
+</Callout>
+
+---
+
+## train
+
+Trains a Matryoshka BatchTopK SAE on collected activations.
+
+```bash
+saffron train \
+  activations_path=<path/to/activations.h5> \
+  hook_name=<block6|block8|block12|…> \
+  [steps=20000] [batch_size=4096]
+```
+
+| Override | Default | Description |
+|---|---|---|
+| `activations_path` | ✓ | HDF5 file from `saffron collect` |
+| `hook_name` | ✓ | Which hook's activations to train on |
+| `architecture` | `matryoshka_batch_top_k` | SAE architecture |
+| `steps` | `20000` | Training steps |
+| `batch_size` | `4096` | Batch size |
+| `device` | `cuda:0` | Torch device |
+| `use_wandb` | `false` | Enable W&B logging |
+| `out_dir` | auto-timestamped | Checkpoint output directory |
+
+---
+
+## eval
+
+Scores SAE features: activation frequency, top residues, per-feature AUROC.
+
+```bash
+saffron eval \
+  checkpoint_path=<path/to/final.pt> \
+  activations_path=<path/to/activations.h5> \
+  hook_name=<block12> \
+  [metadata_dir=<dir>]
+```
+
+| Override | Default | Description |
+|---|---|---|
+| `checkpoint_path` | ✓ | SAE checkpoint `.pt` |
+| `activations_path` | ✓ | HDF5 activations file |
+| `hook_name` | ✓ | Hook to evaluate |
+| `metadata_dir` | — | Dir with per-design labels (for AUROC) |
+| `num_features` | `12` | Features to display per analysis |
+| `top_residues` | `5` | Top residues per feature |
+| `eval_batch_size` | `4096` | Eval batch size |
+
+---
+
+## screen
+
+Runs a trained detector bundle on new sequences or structures. Alias for `detect screen`.
+
+```bash
+saffron screen model=<rf3|rfd3> \
+  inputs=<path/to/inputs.json> \
+  detector=<path/to/detector_bundle.pt> \
+  out_dir=<output_dir>
+```
+
+---
+
+## steer
+
+Identical dispatch to `collect`. Adds or ablates directions in activation space at each diffusion step.
+
+```bash
+saffron steer model=<rf3|rfd3> \
+  hooks=<group> \
+  steering=<group> \
+  inputs=<path/to/inputs.json> \
+  out_dir=<output_dir>
+```
+
+See [Steering](/docs/steering) for steering config group reference.
+
+---
+
+## compute\_steering\_vector
+
+Computes `mean(positives) − mean(negatives)` per hook from two activation sets. Outputs one `.pt` per hook.
+
+```bash
+saffron compute_steering_vector \
+  inputs=<path/to/diff_config.yaml>
+```
+
+**diff\_config.yaml schema:**
+
+```yaml
+activations_h5: outputs/collect/train/activations/activations.h5
+labels_csv: data_pipelines/vaxijen/labels.tsv
+positive_label: 1
+negative_label: 0
+hooks: [block6, block8, block12]
+normalize: unit          # unit | none
+out_dir: outputs/steering/vectors/haz_minus_ben
+```
