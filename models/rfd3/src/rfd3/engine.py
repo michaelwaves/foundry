@@ -60,6 +60,10 @@ class RFD3InferenceConfig:
     # "collect_every_n_steps"}, ...]}
     activation_collection: Optional[dict] = None
 
+    # Optional steering directions (requires the `sae` extra installed).
+    # Shape: {"block12": [{"mode": "sae_feature", "sae_path": ..., "feature_id": ..., "alpha": ...}]}
+    steering: Optional[dict] = None
+
     # foldSAE-style block ablation on diffusion_module.diffusion_transformer.blocks.
     # Each listed index has its forward replaced with a passthrough — the block's
     # residual contribution is dropped while the stream keeps flowing. Used to

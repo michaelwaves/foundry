@@ -1,0 +1,30 @@
+{
+  "hazard_P49121": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1s8g.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q06ZW0": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2h5f.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P82950": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/2aoz.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P01538": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1okh.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q805F6": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/3c05.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_P82287": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1qll.pdb",
+    "partial_t": 5.0
+  },
+  "hazard_Q90121": {
+    "input": "/mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/pdbs/1kpt.pdb",
+    "partial_t": 5.0
+  }
+}

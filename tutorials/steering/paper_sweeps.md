@@ -1,107 +1,74 @@
-What you already have:
-  - hazard_inputs_ablate_f639 — ablation of feature 639 on 2
-  hazard designs (P00626, P11407), 8 samples each
-  - benign_inputs_diff_alpha3 — raw_diff steer on 2 benign
-  designs
-  - benign_inputs_f639_alpha5 — SAE feature steer on 2 benign
-  designs
+# Paper Sweeps
 
-  What's missing:
+## C4 — Steering generation sweep
 
-  Step 1 — Null baseline run (unsteered hazard inputs)
+Ablate SAE feature 639 (top hazard feature, block12) from 10 hazard inputs at
+increasing α. Score steered outputs with DTVF. No activation collection needed.
 
-  You need the same hazard inputs with zero steering to compare
-  against:
-  saffron collect model=rfd3 \
-    inputs=tutorials/steering/configs/null_block12_f639.json \
-    hooks=rfd3_partial \
-    out_dir=outputs/steering/sweep/alpha0
+### Inputs
+`tutorials/steering/configs/hazard_10.json` — 10 hazard designs from SafeProtein.
 
-  Step 2 — α sweep on hazard inputs with ablation
+### Commands
 
-  Create 3 new steering configs for different strengths (copy
-  ablate_block12_f639.yaml, change alpha):
+```bash
+source .venv/bin/activate
 
-  ┌──────────┬───────┐
-  │   run    │ alpha │
-  ├──────────┼───────┤
-  │ existing │ 1.0   │
-  ├──────────┼───────┤
-  │ new      │ 2.0   │
-  ├──────────┼───────┤
-  │ new      │ 4.0   │
-  ├──────────┼───────┤
-  │ new      │ 8.0   │
-  └──────────┴───────┘
+# null baseline (no steering)
+saffron collect model=rfd3 \
+  inputs=tutorials/steering/configs/hazard_10.json \
+  hooks=rfd3_partial \
+  out_dir=outputs/steering/sweep/alpha0
 
-  for alpha in 2.0 4.0 8.0; do
-    saffron steer model=rfd3 \
-      inputs=tutorials/steering/configs/ablate_block12_f639.json
-  \
-      "steering.block12[0].alpha=$alpha" \
-      out_dir=outputs/steering/sweep/alpha${alpha}
-  done
-  (Check first whether Hydra override syntax works for nested
-  list keys — if not, create 3 separate YAML configs.)
+# alpha = 1
+saffron steer model=rfd3 \
+  inputs=tutorials/steering/configs/hazard_10.json \
+  hooks=rfd3_partial \
+  steering=ablate_block12_f639 \
+  out_dir=outputs/steering/sweep/alpha1
 
-  Step 3 — Collect activations for each run
+# alpha = 2
+saffron steer model=rfd3 \
+  inputs=tutorials/steering/configs/hazard_10.json \
+  hooks=rfd3_partial \
+  steering=ablate_block12_f639_alpha2 \
+  out_dir=outputs/steering/sweep/alpha2
 
-  Each saffron steer run should also collect activations so you
-  can score them with the probe. Add hooks=rfd3_partial to every
-  steer command above.
+# alpha = 4
+saffron steer model=rfd3 \
+  inputs=tutorials/steering/configs/hazard_10.json \
+  hooks=rfd3_partial \
+  steering=ablate_block12_f639_alpha4 \
+  out_dir=outputs/steering/sweep/alpha4
 
-  Step 4 — Screen each run with the probe
+# alpha = 8
+saffron steer model=rfd3 \
+  inputs=tutorials/steering/configs/hazard_10.json \
+  hooks=rfd3_partial \
+  steering=ablate_block12_f639_alpha8 \
+  out_dir=outputs/steering/sweep/alpha8
+```
 
-  for alpha in 0 1.0 2.0 4.0 8.0; do
-    saffron screen \
-      bundle_path=<your_trained_detector_bundle.pkl> \
-      activations_path=outputs/steering/sweep/alpha${alpha}/activ
-  ations/activations.h5 \
-      out_dir=outputs/steering/sweep/alpha${alpha}/screen
-  done
+### Outputs
+Each run: 10 designs × 8 samples = 80 CIFs + sidecar JSONs with structural metrics.
+```
+outputs/steering/sweep/
+  alpha0/    # baseline
+  alpha1/
+  alpha2/
+  alpha4/
+  alpha8/
+```
 
-  Step 5 — Extract structural metrics
+### Evaluation
+1. Extract sequences from steered CIFs
+2. Score with DTVF — compare virulence probability vs alpha
+3. Parse sidecar JSONs for structural quality metrics
 
-  The per-design JSONs already have what you need — no RF3
-  folding required:
-  import json, glob, pandas as pd
+### Plots
+- DTVF virulence score vs alpha (mean ± std across 10 designs × 8 samples)
+- Structural quality vs alpha: `max_ca_deviation`, `helix_fraction + sheet_fraction`
+- Tradeoff scatter: DTVF score (x) vs `max_ca_deviation` (y), alpha as color
 
-  rows = []
-  for path in
-  glob.glob("outputs/steering/sweep/*/ablate_*.json"):
-      alpha = path.split("/alpha")[1].split("/")[0]
-      m = json.load(open(path))["metrics"]
-      rows.append({
-          "alpha": float(alpha),
-          "design_id": path.split("/")[-1].replace(".json",""),
-          "max_ca_deviation": m["max_ca_deviation"],
-          "n_chainbreaks": m["n_chainbreaks"],
-          "helix_fraction": m["helix_fraction"],
-          "sheet_fraction": m["sheet_fraction"],
-      })
-  df = pd.DataFrame(rows)
-
-  ---
-  3 plots to make:
-
-  1. Hazard probe score vs α — mean ± std across designs and
-  samples. Should go down as α increases. This is the headline
-  result.
-  2. Structural quality vs α — max_ca_deviation and
-  helix_fraction + sheet_fraction (secondary structure content)
-  vs α. Shows the tradeoff: at what α does structure start to
-  degrade?
-  3. Combined tradeoff scatter — x: probe score, y:
-  max_ca_deviation, one point per (design, α). α as color. Shows
-  the Pareto frontier of safety vs quality.
-
-  The key claim to verify: probe score drops before structure
-  degrades. If you can show that α=2 cuts hazard probability by
-  ~30% with minimal structural impact, that's a publishable
-  result regardless of AUROC.
-
-  Two things to check before running the sweep: (1) does the
-  null_block12_f639.json config actually disable steering
-  (coeff=0 or steering block absent), and (2) do you have a
-  trained detector bundle saved somewhere to pass to saffron
-  screen?
+### Key claim to verify
+DTVF score drops before structure degrades. If alpha=2 cuts virulence probability
+meaningfully with minimal structural impact, that is the headline result.
