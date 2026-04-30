@@ -29,14 +29,14 @@ def create_job() -> Job:
     return job
 
 
-async def launch(job: Job, alpha: float, motif_bytes: bytes | None) -> None:
+async def launch(job: Job, alpha: float, partial_t: float, motif_bytes: bytes | None) -> None:
     job.status = JobStatus.running
     save(job)
     steering_name = None
     try:
         work_dir = JOBS_DIR / job.id
         work_dir.mkdir(parents=True, exist_ok=True)
-        inputs_path = _write_inputs(work_dir, job.id, motif_bytes)
+        inputs_path = _write_inputs(work_dir, job.id, motif_bytes, partial_t)
         out_dir = work_dir / "out"
         out_dir.mkdir()
         if alpha != 0.0:
@@ -53,11 +53,15 @@ async def launch(job: Job, alpha: float, motif_bytes: bytes | None) -> None:
         save(job)
 
 
-def _write_inputs(work_dir: Path, design_name: str, motif_bytes: bytes | None) -> Path:
+def _write_inputs(
+    work_dir: Path, design_name: str, motif_bytes: bytes | None, partial_t: float
+) -> Path:
     if motif_bytes is not None:
         pdb_path = work_dir / "motif.pdb"
         pdb_path.write_bytes(motif_bytes)
-        spec = {"input": str(pdb_path), "select_fixed_atoms": True}
+        spec: dict = {"input": str(pdb_path), "select_fixed_atoms": True}
+        if partial_t > 0:
+            spec["partial_t"] = partial_t
     else:
         spec = {"length": "100-150"}
     inputs_path = work_dir / "inputs.json"

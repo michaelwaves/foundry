@@ -32,11 +32,12 @@ app.add_middleware(
 async def submit_job(
     background_tasks: BackgroundTasks,
     alpha: float = Form(...),
+    partial_t: float = Form(0.0),
     motif: UploadFile | None = File(None),
 ):
     motif_bytes = await motif.read() if motif else None
     job = create_job()
-    background_tasks.add_task(launch, job, alpha, motif_bytes)
+    background_tasks.add_task(launch, job, alpha, partial_t, motif_bytes)
     return {"job_id": job.id}
 
 

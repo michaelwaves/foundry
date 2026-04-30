@@ -1,0 +1,7 @@
+# @package steering
+# Subtract hazard diff-of-means direction from block12. coeff=-8.
+block12:
+  - mode: raw_diff
+    vector_path: /mnt/nw/home/m.yu/repos/foundry/outputs/steering/vectors/haz_minus_ben/block12.pt
+    coeff: -8.0
+    apply_at_steps: all

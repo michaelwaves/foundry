@@ -7,6 +7,7 @@ type Status = 'idle' | 'submitting' | 'pending' | 'running' | 'done' | 'failed'
 
 export default function SteeringDemo() {
   const [alpha, setAlpha] = useState(0)
+  const [partialT, setPartialT] = useState(0)
   const [motif, setMotif] = useState<File | null>(null)
   const [status, setStatus] = useState<Status>('idle')
   const [jobId, setJobId] = useState<string | null>(null)
@@ -59,6 +60,7 @@ export default function SteeringDemo() {
     setLogs([])
     const form = new FormData()
     form.append('alpha', String(alpha))
+    form.append('partial_t', String(partialT))
     if (motif) form.append('motif', motif)
     try {
       const { job_id } = await submitJob(form)
@@ -69,7 +71,7 @@ export default function SteeringDemo() {
       setStatus('failed')
       setError(String(e))
     }
-  }, [alpha, motif, closeStream, openStream])
+  }, [alpha, partialT, motif, closeStream, openStream])
 
   const download = useCallback(async () => {
     if (!jobId) return
@@ -122,6 +124,27 @@ export default function SteeringDemo() {
             onChange={(e) => setMotif(e.target.files?.[0] ?? null)}
             className="text-sm text-zinc-600 dark:text-zinc-400 file:mr-3 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-xs file:font-medium dark:file:bg-zinc-800 dark:file:text-zinc-300"
           />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            Partial diffusion (partial_t):{' '}
+            <span className="font-mono text-zinc-900 dark:text-zinc-100">
+              {partialT === 0 ? 'off' : partialT}
+            </span>
+            {!motif && (
+              <span className="ml-2 font-normal text-zinc-400">(requires motif)</span>
+            )}
+          </label>
+          <input
+            type="range" min={0} max={160} step={1} value={partialT}
+            disabled={!motif}
+            onChange={(e) => setPartialT(Number(e.target.value))}
+            className="w-full accent-zinc-900 dark:accent-white disabled:opacity-30"
+          />
+          <div className="flex justify-between text-xs text-zinc-400">
+            <span>0 off</span><span>15 rec.</span><span>160 full noise</span>
+          </div>
         </div>
 
         <button
