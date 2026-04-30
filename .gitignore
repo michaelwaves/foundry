@@ -237,3 +237,4 @@ data_pipelines/vfdb
 # AI
 **/CLAUDE.md
 **/.claude
+api/cache/

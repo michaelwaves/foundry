@@ -5,7 +5,7 @@
 
 block12:
   - mode: sae_feature
-    sae_path: ${oc.env:FOUNDRY_ROOT,${hydra:runtime.cwd}}/outputs/sae/2026-04-26_15-38-55/train/block12/final.pt
+    sae_path: /mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-38-55/train/block12/final.pt
     feature_id: 639
     alpha: 1.0
     type: ablate

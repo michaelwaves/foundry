@@ -71,10 +71,16 @@ sae = [
     "rc-foundry-sae",
     "tmtools>=0.3.0",
 ]
+api = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "python-multipart>=0.0.9",
+]
 all = [
     "rc-foundry[rfd3]",
     "rc-foundry[rf3]",
     "rc-foundry[sae]",
+    "rc-foundry[api]",
 ]
 dev = [
     # Linters & formatters

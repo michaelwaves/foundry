@@ -1,0 +1,9 @@
+# @package activation_collection
+# Minimal hooks for API steering — block12 only, collect_every_n_steps set
+# large so the activation buffer is initialised (required for steering) but
+# almost nothing is written to disk.
+hooks:
+  - name: block12
+    module_path: diffusion_module.diffusion_transformer.blocks.12.transition_block
+    hook_type: dynamic
+    collect_every_n_steps: 100000
