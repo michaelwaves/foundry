@@ -57,7 +57,8 @@ def build() -> None:
                 "input": str(_PDB_DIR / f"{acc}.pdb"),
                 "partial_t": _PARTIAL_T,
             }
-            label_rows.append(f"{key},{label}")
+            full_id = f"{_OUT_COLLECT.stem}_{key}_0"
+            label_rows.append(f"{full_id},{label}")
 
     _OUT_COLLECT.write_text(json.dumps(collect_inputs, indent=2))
     n_pos = sum(1 for r in label_rows[1:] if r.endswith(",1"))

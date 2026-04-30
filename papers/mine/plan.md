@@ -1,8 +1,128 @@
 # NeurIPS Submission Plan — 7 Days
 
-**Paper**: Interpretable Biosecurity Screening via Sparse Autoencoders on Protein Design Models
+**Paper**: Saffron: Interpretability, Hazard Monitoring, and Steering of Protein Design Models
 **Deadline**: 7 days from 2026-04-30 → **2026-05-07**
 **Current AUROC**: 0.817 ± 0.10 (homology-clustered) vs SOTA 0.92 (DTVF)
+
+---
+
+## Paper Framing Options
+
+Three viable angles, ordered by recommendation:
+
+**A. Framework paper (recommended)** — "Saffron: a toolkit for activation collection, SAE
+training, hazard monitoring, and steering of protein design models, built on RFDiffusion3."
+AUROC is one demo, not the headline. Hard to reject; highly citable. Analogous to EasySteer
+(2509.25175) for LLMs.
+
+**B. Hazard vectors paper** — "Hazard Vectors in Protein Design Models: directions in RFD3/RF3
+activation space corresponding to virulence and immunogenicity." Closer to Persona Vectors
+(2507.21509). Requires steering experiments as core result, not bonus.
+
+**C. Pure interpretability / biosecurity paper** — original SAEBER framing. Weakest given
+AUROC gap; don't do this as the primary angle.
+
+**Recommendation**: Go with A, using B's steering experiments as the showcase application.
+The framework contribution survives regardless of AUROC. The steering result is the "wow"
+moment reviewers remember.
+
+**Important framing note**: Foundry (rc-foundry) is RoseTTACommons' original repo for running
+RFD3, RF3, and ProteinMPNN. Our contribution is `saffron` — a SAE module (`sae/`) and CLI
+built on top of foundry, plus minimal engine modifications to expose activation hooks.
+
+---
+
+## 5 Core Contributions
+
+These are the paper's claimed contributions. Each maps to a concrete experiment or artifact.
+
+### C1 — Saffron: open-source interpretability and steering plugin for RFDiffusion3/RF3
+
+A CLI-driven, Hydra-configured toolkit built on top of the existing foundry (RoseTTACommons)
+infrastructure, covering the full interpretability pipeline:
+`saffron collect` → `saffron train` → `saffron eval` → `saffron screen` → `saffron steer`.
+
+The key engineering contribution is a minimal, non-invasive engine modification that exposes
+activation hooks in RFD3/RF3 without forking the original model code, plus:
+- `sae/` — Matryoshka BatchTopK SAE training, evaluation, and feature scoring
+- `detectors/` — logistic probe fitting, AUROC scoring, BH-corrected feature ranking
+- `saffron steer` / `saffron compute_steering_vector` — inference-time hazard steering
+
+This is the EasySteer equivalent for biology — the first open-source interpretability
+plugin for all-atom protein design/folding models. Framework contribution survives
+independent of empirical AUROC.
+
+**Status**: Mostly built. `sae/`, `detectors/` are functional.
+Polish CLI help text and ensure end-to-end reproducibility with a single README command.
+
+---
+
+### C2 — Hazard direction vectors for protein design models
+
+Diff-of-means vectors and SAE feature decoder rows in RFD3/RF3 activation space that
+correspond to virulence and immunogenicity. These are "hazard vectors" — the biology-model
+analog of persona vectors in LLMs.
+
+- Virulence vectors: mean(virulent activations) − mean(benign activations) per hook
+- Immunogenicity vectors: same, using VaxiJen labels
+- SAE feature vectors: top-AUROC SAE feature decoder rows
+
+Released as pre-computed `.pt` files alongside the saffron repo.
+
+**Status**: `sae/steering/compute_diff.py` is complete. Just needs to be run on the
+existing activation caches with virulence and VaxiJen labels.
+
+---
+
+### C3 — Runtime hazard monitoring during diffusion
+
+During a live RFD3 diffusion trajectory, project intermediate activations onto the virulence
+direction vector at each denoising step. This produces a per-step hazard score that can
+flag a design as potentially virulent *before* generation completes.
+
+Key result to show: hazard projection score increases earlier in the trajectory for virulent
+designs vs. benign designs, enabling early-exit detection before the full 200-step diffusion
+finishes.
+
+This is the "monitoring" contribution from Persona Vectors — actionable, novel, and
+alarming enough to reviewers to be memorable.
+
+**Status**: `_apply_steering` and the activation buffer already support per-step callbacks.
+New experiment: run 20–30 virulent + 20–30 benign designs, record projection per step,
+plot the divergence curve. ~1 day of GPU time + analysis.
+
+---
+
+### C4 — Steering away from hazardous latent regions
+
+Apply the virulence direction vector with a negative coefficient during RFD3 generation
+(f(h) := h − α·v, the "ablate" mode already in `activation_buffer.py`). Measure:
+1. Does the probe's predicted virulence score decrease on steered outputs vs. unsteered?
+2. Does structural quality (pLDDT, RMSD to motif) degrade with increasing α?
+
+The tradeoff curve (hazard score vs. pLDDT vs. α) is a clean Figure 5. This is the
+"steering" contribution — analogous to EasySteer's hallucination reduction results.
+
+**Note**: We are steering *away* from danger, which is clearly defensive and not dual-use.
+Frame explicitly in the ethics section.
+
+**Status**: All steering machinery is built and tested (`sae/tests/test_steering.py` passes).
+Need to: (1) run compute_diff to get the virulence vector, (2) run a steered generation
+sweep over α ∈ {0.5, 1.0, 2.0, 4.0}, (3) score with the existing probe. ~1.5 days.
+
+---
+
+### C5 — Multi-task benchmark: virulence + immunogenicity
+
+Run the full pipeline (activation collection → SAE encoding → probing → steering) on
+VaxiJen immunogenicity labels in addition to virulence. Show the same framework, same
+code, different labels — AUROC on both tasks in a single table.
+
+This converts a one-shot result into a general framework demonstration. Reviewers who
+doubt the virulence result can still cite the framework paper for immunogenicity work.
+
+**Status**: `data_pipelines/vaxijen/` pipeline exists with `labels.tsv`. Needs:
+activation collection run on VaxiJen inputs, probe fit, report. ~0.5 days.
 
 ---
 
@@ -31,7 +151,7 @@ The unique selling points in order:
 #### 1a. Expand to deeper layers
 Currently using blocks 6, 8, 12 for RFD3. saeber.md shows AUROC and feature quality
 increase monotonically with depth. Add blocks 16, 20, 24 (or the last 2–3 blocks available
-in RFD3). Modify `foundry collect` to add new hookpoints.
+in RFD3). Modify `saffron collect` hookpoints config to add new blocks.
 
 Expected gain: +0.03–0.05 AUROC based on observed depth trend.
 
@@ -106,7 +226,7 @@ Frame the narrative. Key points:
   2. Feature-correlated-with-virulence database
   3. Interpretable probe approaching SOTA on virulence classification
   4. Zero-shot transfer to immunogenicity (VaxiJen)
-  5. Open harness (foundry) for reproducibility
+  5. Open-source saffron plugin for reproducibility
 
 Related work must clearly position against:
 - FoldSAE (SAEs on older RFDiffusion, only secondary structure features, not biosecurity)
@@ -165,7 +285,7 @@ NeurIPS reviewers will scrutinize this given the biosecurity topic. Write it car
 
 - NeurIPS 2025 template, 9 pages + references
 - Proofread abstract, check every number matches tables
-- Ensure reproducibility section mentions foundry repo + dataset DOI (HuggingFace)
+- Ensure reproducibility section mentions saffron repo + dataset DOI (HuggingFace)
 - Submit by end of day, May 6 (one day buffer before deadline)
 
 ---

@@ -1,4 +1,4 @@
-activations_h5: outputs/vaxijen/collect_all/activations.h5
+activations_h5: outputs/vaxijen/collect_all/activations/activations.h5
 labels_csv: data_pipelines/vaxijen/labels_for_steering.csv
 positive_label: 1
 negative_label: 0
