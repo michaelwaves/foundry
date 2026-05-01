@@ -49,5 +49,38 @@ python tutorials/steering/score_dtvf.py \
   --out_csv    outputs/steering/sweep_pt50/dtvf_scores.csv
 ```
 
+
+ Now the full pipeline:
+
+  # 1. Extract sequences from CIF outputs →
+  FASTA
+  python
+  tutorials/steering/extract_sequences.py \
+    --sweep_dir outputs/steering/sweep_pt50
+  \
+    --out_fasta outputs/steering/sweep_pt50/
+  sequences.fasta
+
+  # 2. Embed sequences with ProtT5 → H5
+  python tutorials/steering/embed_prot_t5.py
+   \
+    --fasta  outputs/steering/sweep_pt50/seq
+  uences.fasta \
+    --out_h5
+  outputs/steering/sweep_pt50/embeddings.h5
+
+  # 3. Score embeddings with DTVF → CSV
+  python tutorials/steering/score_dtvf.py \
+    --embeddings
+  outputs/steering/sweep_pt50/embeddings.h5
+  \
+    --model_path DTVF/best_model.pth \
+
+  # 3. Score embeddings with DTVF → CSV
+  python tutorials/steering/score_dtvf.py \
+    --embeddings outputs/steering/sweep_pt50/embeddings.h5 \
+    --model_path DTVF/best_model.pth \
+    --out_csv    outputs/steering/sweep_pt50/dtvf_scores.csv
+
 Expected output: DTVF virulence probability should decrease from null → c4 → c8
 if steering is working. Plot with plot_results.py pointing at sweep_pt50.
