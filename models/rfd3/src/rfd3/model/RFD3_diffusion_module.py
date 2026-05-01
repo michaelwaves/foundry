@@ -10,6 +10,7 @@ from rfd3.model.layers.block_utils import (
     gaussian_rbf_distogram,
     create_attention_indices,
 )
+from rfd3.model.layers.zeus import build_zeus_indexer
 from rfd3.model.layers.blocks import (
     CompactStreamingDecoder,
     Downcast,
@@ -348,6 +349,7 @@ class RFD3DiffusionModule(nn.Module):
                 else X_L_self[..., f["is_ca"], :]
             ),
             full=not (os.environ.get("RFD3_LOW_MEMORY_MODE", None) == "1"),
+            zeus_indexer=build_zeus_indexer(f),
         )
         # ... Decoder readout
         # Check if using chunked P_LL mode

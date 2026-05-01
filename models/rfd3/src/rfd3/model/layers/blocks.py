@@ -609,7 +609,7 @@ class LocalTokenTransformer(nn.Module):
             ]
         )
 
-    def forward(self, A_I, S_I, Z_II, f, X_L, full=False):
+    def forward(self, A_I, S_I, Z_II, f, X_L, full=False, zeus_indexer=None):
         indices = create_attention_indices(
             X_L=X_L,
             f=f,
@@ -621,15 +621,13 @@ class LocalTokenTransformer(nn.Module):
         for i, block in enumerate(self.blocks):
             # Set checkpointing
             block.attention_pair_bias.use_checkpointing = not DISABLE_CHECKPOINTING
-            # A_I: [B, L, C_token]
-            # S_I: [B, L, C_s]
-            # Z_II: [B, L, L, C_tokenpair]
             A_I = block(
                 A_I,
                 S_I,
                 Z_II,
                 indices=indices,
-                full=full,  # (self.training and torch.is_grad_enabled()),  # Does not accelerate inference, but memory *does* scale better
+                full=full,
+                zeus_indexer=zeus_indexer,
             )
 
         return A_I
@@ -687,6 +685,7 @@ class StructureLocalAtomTransformerBlock(nn.Module):
         f=None,
         chunked_pairwise_embedder=None,
         initializer_outputs=None,
+        zeus_indexer=None,
         **kwargs,
     ):
         Q_L = Q_L + self.dropout(
@@ -697,13 +696,22 @@ class StructureLocalAtomTransformerBlock(nn.Module):
                 f=f,
                 chunked_pairwise_embedder=chunked_pairwise_embedder,
                 initializer_outputs=initializer_outputs,
+                zeus_indexer=zeus_indexer,
                 **kwargs,
             )
         )
-        if exists(C_L):
-            Q_L = Q_L + self.transition_block(Q_L, C_L)
+        if zeus_indexer is not None:
+            M, n_sym = zeus_indexer.M, zeus_indexer.n_sym
+            trans_out = (
+                self.transition_block(Q_L[:, :M], C_L[:, :M])
+                if exists(C_L)
+                else self.transition_block(Q_L[:, :M])
+            )
+            Q_L = Q_L + trans_out.repeat(1, n_sym, 1)
         else:
-            Q_L = Q_L + self.transition_block(Q_L)
+            Q_L = Q_L + (
+                self.transition_block(Q_L, C_L) if exists(C_L) else self.transition_block(Q_L)
+            )
         return Q_L
 
 

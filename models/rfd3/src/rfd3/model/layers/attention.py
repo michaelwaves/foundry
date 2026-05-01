@@ -242,14 +242,14 @@ class LocalAttentionPairBias(nn.Module):
         full=False,
         chunked_pairwise_embedder=None,
         initializer_outputs=None,
+        zeus_indexer=None,
     ):
         """
         Q_L: [D, L, c_a]
         C_L: [D, L, c_s]
         P_LL: [D, L, L, c_pair] or None (if using chunked mode)
         indices: [D, L, k] long
-        chunked_pairwise_embedder: ChunkedPairwiseEmbedder for memory efficient computation
-        initializer_outputs: Dict containing features for chunked computation
+        zeus_indexer: ZeUSIndexer for symmetric attention (optional)
         """
 
         # If no indices are provided, prepare indices from
@@ -318,6 +318,27 @@ class LocalAttentionPairBias(nn.Module):
                     self.to_g(Q_L),
                 )
                 q, k = (self.ln_q(q), self.ln_k(k)) if self.kq_norm else (q, k)
+
+                if zeus_indexer is not None and not use_sparse_pll:
+                    # ZeUS: compute attention only for ASU queries, broadcast to all chains.
+                    # Valid when inputs are symmetric: Q[kM+i] = Q[i] and Z_II is block-circulant.
+                    M, n_sym = zeus_indexer.M, zeus_indexer.n_sym
+                    b = self.to_b(P_LL)
+                    attn_out = sparse_pairbias_attention(
+                        Q=q[:, :M],
+                        K=k,
+                        V=v,
+                        B=b,
+                        G=g[:, :M],
+                        gather_bias=True,
+                        indices=indices[:, :M],
+                        H=self.n_head,
+                        full=False,
+                    )  # [D, M, c]
+                    Q_L_out = self.to_o(attn_out)  # [D, M, c]
+                    if exists(C_L):
+                        Q_L_out = self.linear_output_project(C_L[:, :M]) * Q_L_out
+                    return Q_L_out.repeat(1, n_sym, 1)  # [D, n*M, c]
 
                 if use_sparse_pll:
                     # Use pre-computed sparse P_LL (already gathered)
