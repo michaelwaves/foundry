@@ -36,6 +36,7 @@ class JobConfig:
     partial_t: float = 0.0
     steering: SteeringConfig | None = None
     symmetry: SymmetryConfig | None = None
+    disable_zeus: bool = False
 
 
 @dataclass

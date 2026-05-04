@@ -64,7 +64,7 @@ def run_job(job_id: str, user_id: str, config: dict[str, Any]) -> None:
                 config.get("steering"), work_dir)
             output_path = _run_saffron(
                 inputs_path, steering_yaml, work_dir, config["diffusion_steps"],
-                bool(config.get("symmetry")), logger)
+                bool(config.get("symmetry")), bool(config.get("disable_zeus")), logger)
             output_url = upload_output(db, user_id, job_id, output_path)
         db.table("jobs").update({"status": "done", "output_url": output_url}).eq(
             "id", job_id).execute()
@@ -87,6 +87,7 @@ def _run_saffron(
     work_dir: Path,
     diffusion_steps: int,
     symmetric: bool,
+    disable_zeus: bool,
     logger: RedisLogger,
 ) -> Path:
     out_dir = work_dir / "out"
@@ -99,6 +100,8 @@ def _run_saffron(
     ]
     if symmetric:
         cmd += ["inference_sampler.kind=symmetry", "diffusion_batch_size=1"]
+    if disable_zeus:
+        cmd += ["disable_zeus=true"]
     if steering_yaml:
         cmd += ["hooks=rfd3_steer_only", f"steering={steering_yaml.stem}"]
     process = subprocess.Popen(

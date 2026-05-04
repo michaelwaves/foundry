@@ -89,7 +89,7 @@ class RFD3InferenceConfig:
     low_memory_mode: bool = (
         False  # False for standard mode, True for memory efficient tokenization mode
     )
-    disable_zeus: bool = True  # Disable ZeUS symmetric attention optimization
+    disable_zeus: bool = False  # Disable ZeUS symmetric attention optimization
 
     # Other:
     num_nodes: int = 1
@@ -179,7 +179,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         dump_trajectories: bool,
         align_trajectory_structures: bool,
         low_memory_mode: bool,
-        disable_zeus: bool = True,
+        disable_zeus: bool = False,
         activation_collection: dict | None = None,
         steering: dict | None = None,
         layers_to_ablate: List[int] | None = None,

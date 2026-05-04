@@ -45,6 +45,7 @@ export default function GeneratePage() {
           symmetry: isSymmetric
             ? { id: form.symmetryId, is_unsym_motif: form.isUnsymMotif.trim() || null }
             : null,
+          disable_zeus: form.disableZeus,
         },
         motifPayload,
       )

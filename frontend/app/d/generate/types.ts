@@ -27,6 +27,7 @@ export type GenerateForm = {
   inferOriStrategy: InferOriStrategy
   symmetryId: SymmetryId
   isUnsymMotif: string
+  disableZeus: boolean
 }
 
 export const DEFAULT_FORM: GenerateForm = {
@@ -45,6 +46,7 @@ export const DEFAULT_FORM: GenerateForm = {
   inferOriStrategy: 'hotspots',
   symmetryId: 'C5',
   isUnsymMotif: '',
+  disableZeus: false,
 }
 
 export function parseHotspots(raw: string): Record<string, string> {

@@ -144,6 +144,16 @@ function SymmetricInputs({ form, update }: Props) {
           className={`${INPUT_BASE} disabled:opacity-40 disabled:cursor-not-allowed`}
         />
       </Field>
+
+      <label className="flex items-center gap-2.5 text-sm font-medium cursor-pointer">
+        <input
+          type="checkbox" checked={form.disableZeus}
+          onChange={(e) => update('disableZeus', e.target.checked)}
+          className="h-4 w-4 accent-brand-orange cursor-pointer"
+        />
+        Disable ZeUS attention
+        <span className="font-normal text-muted-foreground text-xs">fall back to full attention</span>
+      </label>
     </>
   )
 }

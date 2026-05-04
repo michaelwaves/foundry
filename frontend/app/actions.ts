@@ -26,6 +26,7 @@ export type JobInput = {
   partial_t: number
   steering: SteeringInput | null
   symmetry: SymmetryInput | null
+  disable_zeus: boolean
 }
 
 export async function submitJob(
