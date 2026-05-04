@@ -13,6 +13,7 @@ from models import JobConfig, JobStatus
 from redis_client import channel_for, make_redis
 from runner import submit_job
 
+import os
 _db = None
 _redis = None
 
@@ -36,7 +37,8 @@ app.add_middleware(
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    redis_public_url = os.getenv('REDIS_PUBLIC_URL')
+    return {"status": "ok", "url": redis_public_url}
 
 
 @app.post("/jobs")
@@ -70,7 +72,8 @@ def read_output(job_id: str, user_id: str = Depends(get_user_id)) -> RedirectRes
     if not job:
         raise HTTPException(status_code=404, detail="job not found")
     if job.status != JobStatus.done or not job.output_url:
-        raise HTTPException(status_code=400, detail=f"job not done (status: {job.status.value})")
+        raise HTTPException(
+            status_code=400, detail=f"job not done (status: {job.status.value})")
     return RedirectResponse(job.output_url, status_code=307)
 
 
