@@ -9,12 +9,14 @@ export async function GET(
 ) {
   const { id } = await params
   const supabase = await createClient()
-  const { data } = await supabase.auth.getSession()
-  if (!data.session) return new Response('unauthorized', { status: 401 })
+  const { data: userData } = await supabase.auth.getUser()
+  if (!userData.user) return new Response('unauthorized', { status: 401 })
+  const { data: sessionData } = await supabase.auth.getSession()
+  if (!sessionData.session) return new Response('unauthorized', { status: 401 })
 
   const upstream = await fetch(`${API_URL}/jobs/${id}/output`, {
     redirect: 'manual',
-    headers: { Authorization: `Bearer ${data.session.access_token}` },
+    headers: { Authorization: `Bearer ${sessionData.session.access_token}` },
   })
   const location = upstream.headers.get('location')
   if (upstream.status >= 300 && upstream.status < 400 && location) {

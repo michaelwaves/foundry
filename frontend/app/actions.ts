@@ -44,9 +44,11 @@ export async function submitJob(
 
 async function requireSession(): Promise<{ accessToken: string; userId: string }> {
   const supabase = await createClient()
-  const { data } = await supabase.auth.getSession()
-  if (!data.session) throw new Error('not authenticated')
-  return { accessToken: data.session.access_token, userId: data.session.user.id }
+  const { data: userData, error: userError } = await supabase.auth.getUser()
+  if (userError || !userData.user) throw new Error('not authenticated')
+  const { data: sessionData } = await supabase.auth.getSession()
+  if (!sessionData.session) throw new Error('not authenticated')
+  return { accessToken: sessionData.session.access_token, userId: userData.user.id }
 }
 
 async function uploadMotif(
