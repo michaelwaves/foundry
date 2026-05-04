@@ -75,6 +75,7 @@ api = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
     "python-multipart>=0.0.9",
+    "modal",
 ]
 all = [
     "rc-foundry[rfd3]",
@@ -131,7 +132,10 @@ allow-direct-references = true
 rc-foundry-sae = { workspace = true }
 
 [tool.uv.workspace]
-members = ["sae"]
+members = [
+    "sae",
+    "api",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = [
