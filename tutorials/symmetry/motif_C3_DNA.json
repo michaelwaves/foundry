@@ -1,0 +1,13 @@
+{
+    "unsym_C3_6t8h": {
+        "symmetry": {
+            "id": "C3",
+            "is_symmetric_motif": true,
+            "is_unsym_motif": "Y1-11,Z16-25"
+        },
+        "input": "inputs/6t8h_C3.pdb",
+        "contig": "100-100,/0,Y1-11,/0,Z16-25",
+        "length": null,
+        "is_non_loopy": true
+    }
+}

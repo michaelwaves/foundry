@@ -5,19 +5,21 @@
 ```
 Browser
    │
+   ├─ Auth ──────────────────────────────► Supabase Auth (JWT issued)
+   │
    ├─ POST /jobs ────────► Railway FastAPI ──► modal_worker.run_job.spawn()
-   │                            │                        │
-   │                            └─► Supabase Postgres    │
-   │                                (insert job row)     │
-   │                                                     ▼
-   └─ GET /jobs/:id/stream ─► Railway SSE ◄── Redis pub/sub
-                                  ▲                      │
-                                  │                      ▼
-                                  └── Modal GPU worker ──┤
-                                           │             │
-                                           ├─► Redis (publish log lines)
-                                           ├─► Supabase Postgres (status updates)
-                                           └─► Supabase Storage (output CIF)
+   │   Authorization:           │  verify JWT                    │
+   │   Bearer <token>           ├─► Supabase Postgres            │
+   │                            │   (insert job, created_by)     │
+   │                            │                                ▼
+   └─ GET /jobs/:id/stream ─► Railway SSE ◄──────── Redis pub/sub
+       Authorization:              ▲  verify JWT        │
+       Bearer <token>              │                    ▼
+                                   └─── Modal GPU worker (service-role key)
+                                              │
+                                              ├─► Redis (publish log lines)
+                                              ├─► Supabase Postgres (status updates)
+                                              └─► Supabase Storage (output CIF)
 ```
 
 ## Current State
@@ -35,7 +37,7 @@ Browser
 
 ### 1.1 Supabase
 
-Create the `jobs` table:
+Create the `jobs` table with RLS:
 
 ```sql
 create table jobs (
@@ -43,16 +45,29 @@ create table jobs (
   status     text not null default 'pending',
   error      text,
   output_url text,
-  created_at timestamptz not null default now()
-    created_by uuid, add user
+  created_at timestamptz not null default now(),
+  created_by uuid not null references auth.users(id)
 );
+
+alter table jobs enable row level security;
+
+create policy "users see own jobs"
+  on jobs for select
+  using (auth.uid() = created_by);
+
+create policy "users insert own jobs"
+  on jobs for insert
+  with check (auth.uid() = created_by);
 ```
+
+RLS is defense-in-depth. The Railway API uses the **service-role key** (bypasses RLS) and filters `created_by = user_id` explicitly in every query.
 
 Create a storage bucket named `outputs` (private, signed URLs for download).
 
 Environment variables needed:
 - `SUPABASE_URL`
-- `SUPABASE_KEY` (service-role key, never anon key — workers write to storage)
+- `SUPABASE_KEY` (service-role key — bypasses RLS, used by Railway API and Modal worker)
+- `SUPABASE_JWT_SECRET` (from Supabase Project Settings → API → JWT Secret, used by Railway API to verify tokens locally)
 
 ### 1.2 Redis on Railway
 
@@ -115,7 +130,12 @@ volume = modal.Volume.from_name("foundry-weights", create_if_missing=True)
 app = modal.App("foundry", image=image, secrets=[modal.Secret.from_name("foundry-secrets")])
 
 
-@app.function(gpu="A10G", timeout=600, volumes={VOLUME_PATH: volume})
+@app.function(
+    gpu="A10G",
+    timeout=600,
+    volumes={VOLUME_PATH: volume},
+    env={"FOUNDRY_ROOT": VOLUME_PATH},  # resolves ${oc.env:FOUNDRY_ROOT} in steering YAMLs
+)
 def run_job(job_id: str, job_config: dict) -> None:
     r = redis.from_url(os.environ["REDIS_URL"])
     db = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
@@ -168,12 +188,19 @@ def make_client(url: str, key: str) -> Client:
     return create_client(url, key)
 
 
-def insert_job(db: Client, job_id: str) -> None:
-    db.table("jobs").insert({"id": job_id, "status": "pending"}).execute()
+def insert_job(db: Client, job_id: str, user_id: str) -> None:
+    db.table("jobs").insert({"id": job_id, "status": "pending", "created_by": user_id}).execute()
 
 
-def get_job(db: Client, job_id: str) -> Job | None:
-    row = db.table("jobs").select("*").eq("id", job_id).maybe_single().execute()
+def get_job(db: Client, job_id: str, user_id: str) -> Job | None:
+    row = (
+        db.table("jobs")
+        .select("*")
+        .eq("id", job_id)
+        .eq("created_by", user_id)
+        .maybe_single()
+        .execute()
+    )
     if row.data is None:
         return None
     return Job(**row.data)
@@ -194,7 +221,35 @@ def subscribe_logs(r: redis.Redis, job_id: str):
     return ps
 ```
 
-### 2.4 `scripts/upload_weights.py` — one-time weight upload
+### 2.4 `auth.py` — JWT verification dependency
+
+Verifies the Supabase JWT on every protected route and returns the user ID. Uses `python-jose` for local verification — no network round-trip.
+
+```python
+# api/auth.py
+import os
+from fastapi import HTTPException, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jose import JWTError, jwt
+
+_bearer = HTTPBearer()
+
+def get_user_id(credentials: HTTPAuthorizationCredentials = Security(_bearer)) -> str:
+    try:
+        payload = jwt.decode(
+            credentials.credentials,
+            os.environ["SUPABASE_JWT_SECRET"],
+            algorithms=["HS256"],
+            audience="authenticated",
+        )
+        return payload["sub"]
+    except JWTError:
+        raise HTTPException(status_code=401, detail="invalid token")
+```
+
+Add `python-jose[cryptography]` to `api` extras in `pyproject.toml`.
+
+### 2.5 `scripts/upload_weights.py` — one-time weight upload
 
 Run locally once to populate the Modal volume with RFD3 weights.
 
@@ -220,24 +275,28 @@ import uuid
 from .db import insert_job
 from .modal_worker import run_job
 
-def submit_job(db, alpha: float, partial_t: float, motif_bytes: bytes | None) -> str:
+def submit_job(db, user_id: str, alpha: float, partial_t: float, motif_bytes: bytes | None) -> str:
     job_id = str(uuid.uuid4())
     job_config = build_job_config(alpha, partial_t, motif_bytes)
-    insert_job(db, job_id)
+    insert_job(db, job_id, user_id)
     run_job.spawn(job_id, job_config)
     return job_id
 ```
 
-### 3.2 `main.py` — wire Redis SSE + Supabase store
+### 3.2 `main.py` — wire auth, Redis SSE, and Supabase store
 
-**`POST /jobs`**: call `runner.submit_job(db, ...)`.
+All routes except health-check get `user_id: str = Depends(get_user_id)`.
 
-**`GET /jobs/{job_id}`**: call `db.get_job(db_client, job_id)`.
+**`POST /jobs`**: call `runner.submit_job(db, user_id, ...)`.
 
-**`GET /jobs/{job_id}/stream`** (SSE): subscribe to Redis channel instead of polling in-memory list.
+**`GET /jobs/{job_id}`**: call `db.get_job(db_client, job_id, user_id)` — returns 404 if the job doesn't belong to this user.
+
+**`GET /jobs/{job_id}/stream`** (SSE): verify ownership via `get_job` first, then subscribe to Redis channel.
 
 ```python
-async def stream_logs(job_id: str):
+async def stream_logs(job_id: str, user_id: str = Depends(get_user_id)):
+    if not get_job(db_client, job_id, user_id):
+        raise HTTPException(status_code=404)
     ps = subscribe_logs(redis_client, job_id)
     async for message in _iter_pubsub(ps):
         if message["data"] == "__done__":
@@ -245,7 +304,7 @@ async def stream_logs(job_id: str):
         yield f"data: {message['data']}\n\n"
 ```
 
-**`GET /jobs/{job_id}/output`**: redirect to `job.output_url` (Supabase signed URL, 1-hour TTL).
+**`GET /jobs/{job_id}/output`**: redirect to `job.output_url` (Supabase signed URL, 1-hour TTL). Returns 404 if job not owned by user or not yet done.
 
 ### 3.3 `models.py` — add `output_url` field
 
@@ -313,6 +372,8 @@ Fix: replace every hardcoded `/mnt/nw/home/m.yu/repos/foundry/` with `${oc.env:F
 
 The Modal image needs `foundry[rfd3,sae]` installed so `saffron steer` is available. The steering YAML configs ship inside the installed package, so no extra copy step is needed — only the weight files need the volume.
 
+**YAML generation must move into the modal worker.** Currently `runner.py` writes the temp steering YAML before launching the subprocess. In the new architecture `runner.py` only builds a plain `job_config` dict and spawns — it never touches the filesystem. The modal worker is responsible for writing `inputs.json` and generating the steering YAML (if `alpha != 0`) before calling `saffron steer`. The generated YAML uses `${oc.env:FOUNDRY_ROOT,...}` for `sae_path`, which resolves to `/weights/outputs/sae/2026-04-26_15-38-55/train/block12/final.pt` inside the worker because `FOUNDRY_ROOT=/weights` is set.
+
 ---
 
 ## Implementation Order
@@ -336,12 +397,15 @@ The Modal image needs `foundry[rfd3,sae]` installed so `saffron steer` is availa
 
 | Service | Variable | Where used |
 |---|---|---|
-| Railway | `SUPABASE_URL` | FastAPI + db.py |
-| Railway | `SUPABASE_KEY` | FastAPI + db.py |
-| Railway | `REDIS_URL` | FastAPI + redis_client.py |
+| Railway | `SUPABASE_URL` | db.py |
+| Railway | `SUPABASE_KEY` | db.py (service-role) |
+| Railway | `SUPABASE_JWT_SECRET` | auth.py (local JWT verify) |
+| Railway | `REDIS_URL` | redis_client.py |
 | Modal Secret | `SUPABASE_URL` | modal_worker.py |
-| Modal Secret | `SUPABASE_KEY` | modal_worker.py |
+| Modal Secret | `SUPABASE_KEY` | modal_worker.py (service-role) |
 | Modal Secret | `REDIS_URL` | modal_worker.py |
+
+`SUPABASE_JWT_SECRET` is in **Supabase → Project Settings → API → JWT Secret**. It never leaves Railway — used only for local token verification, never sent to Modal.
 
 ---
 
@@ -350,7 +414,8 @@ The Modal image needs `foundry[rfd3,sae]` installed so `saffron steer` is availa
 | File | Action |
 |---|---|
 | `modal_worker.py` | **New** — Modal GPU function |
-| `db.py` | **New** — Supabase job CRUD |
+| `auth.py` | **New** — FastAPI JWT dependency (`get_user_id`) |
+| `db.py` | **New** — Supabase job CRUD (all queries filter by `user_id`) |
 | `redis_client.py` | **New** — Redis pub/sub helpers |
 | `scripts/upload_weights.py` | **New** — one-time volume population (RFD3 + SAE + steering vectors) |
 | `runner.py` | **Rewrite** — spawn Modal instead of subprocess |
