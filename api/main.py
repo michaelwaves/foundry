@@ -37,8 +37,7 @@ app.add_middleware(
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    redis_public_url = os.getenv('REDIS_PUBLIC_URL')
-    return {"status": "ok", "url": redis_public_url}
+    return {"status": "ok"}
 
 
 @app.post("/jobs")
