@@ -6,6 +6,8 @@ from typing import Any
 
 import modal
 
+from worker_logs import RedisLogger
+
 VOLUME_PATH = "/weights"
 TIMEOUT_SECONDS = 1800
 
@@ -35,7 +37,6 @@ def run_job(job_id: str, user_id: str, config: dict[str, Any]) -> None:
 
     from worker_steering import generate_steering_yaml
     from worker_inputs import build_inputs_json, fetch_motif_pdb
-    from worker_logs import RedisLogger
     from worker_output import upload_output
 
     db = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
@@ -72,7 +73,7 @@ def _run_saffron(
     steering_yaml: Path | None,
     work_dir: Path,
     diffusion_steps: int,
-    logger: "RedisLogger",  # noqa: F821
+    logger: RedisLogger,
 ) -> Path:
     out_dir = work_dir / "out"
     out_dir.mkdir()

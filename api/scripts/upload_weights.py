@@ -11,9 +11,6 @@ from pathlib import Path
 
 import modal
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-SAE_LOCAL = REPO_ROOT / "outputs/sae/2026-04-26_15-38-55"
-STEERING_LOCAL = REPO_ROOT / "outputs/steering/vectors"
 RFD3_URL = "https://files.ipd.uw.edu/pub/rfd3/rfd3_foundry_2025_12_01_remapped.ckpt"
 VOLUME_PATH = "/weights"
 
@@ -35,8 +32,17 @@ def download_rfd3() -> str:
 
 @download_app.local_entrypoint()
 def main() -> None:
-    _upload_local_tree(SAE_LOCAL, "outputs/sae/2026-04-26_15-38-55", patterns=["**/final.pt"])
-    _upload_local_tree(STEERING_LOCAL, "outputs/steering/vectors", patterns=["**/*.pt", "**/*.json"])
+    repo_root = Path(__file__).resolve().parents[2]
+    _upload_local_tree(
+        repo_root / "outputs/sae/2026-04-26_15-38-55",
+        "outputs/sae/2026-04-26_15-38-55",
+        patterns=["**/final.pt"],
+    )
+    _upload_local_tree(
+        repo_root / "outputs/steering/vectors",
+        "outputs/steering/vectors",
+        patterns=["**/*.pt", "**/*.json"],
+    )
     print(download_rfd3.remote())
 
 
