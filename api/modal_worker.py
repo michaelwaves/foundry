@@ -1,12 +1,15 @@
+from __future__ import annotations
+
 import os
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import modal
 
-from worker_logs import RedisLogger
+if TYPE_CHECKING:
+    from worker_logs import RedisLogger
 
 VOLUME_PATH = "/weights"
 TIMEOUT_SECONDS = 1800
@@ -15,7 +18,9 @@ image = (
     modal.Image.debian_slim(python_version="3.12")
     .apt_install("git", "build-essential")
     .pip_install(
-        "rc-foundry[rfd3,sae,api] @ git+https://github.com/michaelwaves/foundry@modal",
+        "rc-foundry[rfd3,api] @ git+https://github.com/michaelwaves/foundry@modal",
+        "rc-foundry-sae @ git+https://github.com/michaelwaves/foundry@modal#subdirectory=sae",
+        "tmtools>=0.3.0",
         "supabase>=2.9",
         "redis>=5.2",
     )
@@ -35,6 +40,7 @@ app = modal.App(
 def run_job(job_id: str, user_id: str, config: dict[str, Any]) -> None:
     from supabase import create_client
 
+    from worker_logs import RedisLogger
     from worker_steering import generate_steering_yaml
     from worker_inputs import build_inputs_json, fetch_motif_pdb
     from worker_output import upload_output

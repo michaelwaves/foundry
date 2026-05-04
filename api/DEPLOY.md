@@ -38,6 +38,9 @@
   source .venv/bin/activate
   modal run api/scripts/upload_weights.py
 
+    source .venv/bin/activate
+  modal deploy api/modal_worker.py
+
   3. Railway
 
   - Add Redis addon (New → Database → Redis). Copy the REDIS_URL it
@@ -73,6 +76,8 @@
   hotspots: E64:CD2+CZ; E88:CG+CZ; E96:CD1+CZ
   steps: 15
   Run → watch logs stream → /d/jobs/{id} → download .cif.gz
+
+
 
   ---
   Files changed
