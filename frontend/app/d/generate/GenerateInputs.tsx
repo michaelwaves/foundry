@@ -5,6 +5,9 @@ type Props = {
   update: <K extends keyof GenerateForm>(key: K, value: GenerateForm[K]) => void
 }
 
+const INPUT_BASE =
+  'h-9 w-full rounded-md border border-border bg-background px-3 text-sm font-mono outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20'
+
 export function GenerateInputs({ form, update }: Props) {
   return (
     <>
@@ -12,7 +15,7 @@ export function GenerateInputs({ form, update }: Props) {
         <input
           type="text" value={form.designName}
           onChange={(e) => update('designName', e.target.value)}
-          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono"
+          className={INPUT_BASE}
         />
       </Field>
 
@@ -20,7 +23,7 @@ export function GenerateInputs({ form, update }: Props) {
         <input
           type="file" accept=".pdb"
           onChange={(e) => update('motif', e.target.files?.[0] ?? null)}
-          className="text-sm text-zinc-600 dark:text-zinc-400 file:mr-3 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-xs file:font-medium dark:file:bg-zinc-800 dark:file:text-zinc-300"
+          className="text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-brand-orange/10 file:text-brand-orange file:px-3 file:py-1.5 file:text-xs file:font-medium hover:file:bg-brand-orange/20 file:cursor-pointer"
         />
       </Field>
 
@@ -28,7 +31,7 @@ export function GenerateInputs({ form, update }: Props) {
         <input
           type="text" value={form.contig} placeholder="40-120,/0,E6-155"
           onChange={(e) => update('contig', e.target.value)}
-          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono"
+          className={INPUT_BASE}
         />
       </Field>
 
@@ -36,7 +39,7 @@ export function GenerateInputs({ form, update }: Props) {
         <input
           type="text" value={form.length}
           onChange={(e) => update('length', e.target.value)}
-          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono"
+          className={INPUT_BASE}
         />
       </Field>
 
@@ -48,7 +51,7 @@ export function GenerateInputs({ form, update }: Props) {
           type="text" value={form.hotspots} placeholder="E64:CD2+CZ; E88:CG+CZ"
           disabled={!form.motif}
           onChange={(e) => update('hotspots', e.target.value)}
-          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono disabled:opacity-30"
+          className={`${INPUT_BASE} disabled:opacity-40 disabled:cursor-not-allowed`}
         />
       </Field>
 
@@ -56,7 +59,7 @@ export function GenerateInputs({ form, update }: Props) {
         <select
           value={form.inferOriStrategy}
           onChange={(e) => update('inferOriStrategy', e.target.value as 'hotspots' | 'none')}
-          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm"
+          className={INPUT_BASE}
         >
           <option value="hotspots">hotspots (default)</option>
           <option value="none">none</option>
@@ -84,11 +87,12 @@ export function GenerateInputs({ form, update }: Props) {
 
 function SteeringPanel({ form, update }: Props) {
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 p-3">
-      <label className="flex items-center gap-2 text-sm font-medium">
+    <div className="flex flex-col gap-3 rounded-lg border border-border bg-muted/30 p-4">
+      <label className="flex items-center gap-2.5 text-sm font-medium cursor-pointer">
         <input
           type="checkbox" checked={form.steeringEnabled}
           onChange={(e) => update('steeringEnabled', e.target.checked)}
+          className="h-4 w-4 accent-brand-orange cursor-pointer"
         />
         SAE steering
       </label>
@@ -98,7 +102,7 @@ function SteeringPanel({ form, update }: Props) {
             <input
               type="number" value={form.steeringFeatureId}
               onChange={(e) => update('steeringFeatureId', Number(e.target.value))}
-              className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono"
+              className={INPUT_BASE}
             />
           </Field>
           <RangeField
@@ -116,9 +120,9 @@ function SteeringPanel({ form, update }: Props) {
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+      <label className="text-sm font-medium text-foreground">
         {label}
-        {hint && <span className="ml-2 font-normal text-zinc-400">{hint}</span>}
+        {hint && <span className="ml-2 font-normal text-muted-foreground">{hint}</span>}
       </label>
       {children}
     </div>
@@ -137,9 +141,9 @@ function RangeField({
         <input
           type="range" min={min} max={max} step={step} value={value} disabled={disabled}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="flex-1 accent-zinc-900 dark:accent-white disabled:opacity-30"
+          className="flex-1 accent-brand-orange disabled:opacity-30"
         />
-        <span className="font-mono text-sm w-12 text-right">{value}</span>
+        <span className="font-mono text-sm w-12 text-right tabular-nums">{value}</span>
       </div>
     </Field>
   )

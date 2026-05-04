@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, type ComponentType } from 'react'
 import { LogOut, PanelLeftClose, PanelLeftOpen, Sparkles, ListChecks } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 type NavItem = { href: string; label: string; icon: ComponentType<{ className?: string }> }
@@ -19,38 +20,51 @@ export function DashboardSidebar() {
 
   return (
     <aside
-      data-collapsed={collapsed}
       className={cn(
-        'group/sidebar sticky top-0 flex h-dvh shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width] duration-200 ease-out',
-        collapsed ? 'w-16' : 'w-60',
+        'sticky top-0 flex h-dvh shrink-0 flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border',
+        'transition-[width] duration-300 ease-out',
+        collapsed ? 'w-[72px]' : 'w-64',
       )}
     >
-      <SidebarHeader collapsed={collapsed} onToggle={() => setCollapsed((v) => !v)} />
-      <nav className="flex flex-1 flex-col gap-1 px-2 py-4">
+      <div className={cn('flex h-16 items-center border-b border-sidebar-border', collapsed ? 'justify-center' : 'justify-between px-4')}>
+        {!collapsed && (
+          <span className="font-heading text-2xl text-brand-orange tracking-tight select-none">Saffron</span>
+        )}
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() => setCollapsed((v) => !v)}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="text-sidebar-foreground/60 hover:text-brand-orange"
+        >
+          {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+        </Button>
+      </div>
+
+      <nav className="flex flex-1 flex-col gap-1 p-3">
         {NAV_ITEMS.map((item) => (
           <SidebarLink key={item.href} item={item} active={isActive(pathname, item.href)} collapsed={collapsed} />
         ))}
       </nav>
-      <SidebarFooter collapsed={collapsed} />
-    </aside>
-  )
-}
 
-function SidebarHeader({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
-  return (
-    <div className="flex h-14 items-center gap-2 px-3 border-b border-sidebar-border">
-      {!collapsed && (
-        <span className="flex-1 text-sm font-semibold tracking-tight truncate">Saffron</span>
-      )}
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-md text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-      >
-        {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
-      </button>
-    </div>
+      <div className="border-t border-sidebar-border p-3">
+        <form action="/auth/logout" method="post">
+          <Button
+            type="submit"
+            variant="ghost"
+            size="lg"
+            title={collapsed ? 'Logout' : undefined}
+            className={cn(
+              'w-full text-sidebar-foreground/70 hover:bg-brand-orange/10 hover:text-brand-orange',
+              collapsed ? 'justify-center px-0' : 'justify-start',
+            )}
+          >
+            <LogOut />
+            {!collapsed && <span>Logout</span>}
+          </Button>
+        </form>
+      </div>
+    </aside>
   )
 }
 
@@ -61,36 +75,16 @@ function SidebarLink({ item, active, collapsed }: { item: NavItem; active: boole
       href={item.href}
       title={collapsed ? item.label : undefined}
       className={cn(
-        'group/link relative flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
+        'flex h-10 items-center rounded-lg text-sm font-medium transition-colors',
+        collapsed ? 'justify-center' : 'gap-3 px-3',
         active
-          ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-          : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+          ? 'bg-brand-orange text-white shadow-sm shadow-brand-orange/30'
+          : 'text-sidebar-foreground/75 hover:bg-brand-orange/10 hover:text-brand-orange',
       )}
     >
-      <Icon className="h-4 w-4 shrink-0" />
-      <span className={cn('truncate transition-opacity duration-150', collapsed && 'opacity-0 pointer-events-none')}>
-        {item.label}
-      </span>
+      <Icon className="h-[18px] w-[18px] shrink-0" />
+      {!collapsed && <span className="truncate">{item.label}</span>}
     </Link>
-  )
-}
-
-function SidebarFooter({ collapsed }: { collapsed: boolean }) {
-  return (
-    <div className="border-t border-sidebar-border p-2">
-      <form action="/auth/logout" method="post">
-        <button
-          type="submit"
-          title={collapsed ? 'Logout' : undefined}
-          className="flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          <span className={cn('truncate transition-opacity duration-150', collapsed && 'opacity-0 pointer-events-none')}>
-            Logout
-          </span>
-        </button>
-      </form>
-    </div>
   )
 }
 

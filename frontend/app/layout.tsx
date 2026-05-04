@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist_Mono, Kaisei_Tokumin, Nunito } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const nunito = Nunito({ variable: '--font-nunito', subsets: ['latin'] })
+const kaisei = Kaisei_Tokumin({ variable: '--font-kaisei', subsets: ['latin'], weight: ['400', '700'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -16,9 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       dir="ltr"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${nunito.variable} ${kaisei.variable} ${geistMono.variable}`}
     >
-      <body>{children}</body>
+      <body className="font-sans">{children}</body>
     </html>
   )
 }

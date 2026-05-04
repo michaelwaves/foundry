@@ -1,7 +1,9 @@
 'use client'
 
 import { useCallback, useState } from 'react'
+import { Download } from 'lucide-react'
 import { submitJob } from '@/app/actions'
+import { Button } from '@/components/ui/button'
 import { DEFAULT_FORM, type GenerateForm, parseHotspots } from './types'
 import { GenerateInputs } from './GenerateInputs'
 import { JobStatusCard } from './JobStatusCard'
@@ -54,28 +56,32 @@ export default function GeneratePage() {
   const busy = ['submitting', 'pending', 'running'].includes(stream.status)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 py-8 max-w-6xl mx-auto">
-      <div className="flex flex-col gap-6">
-        <h1 className="text-lg font-semibold">Design</h1>
-        <GenerateInputs form={form} update={updateForm} />
-        <button
-          onClick={run} disabled={busy}
-          className="h-10 rounded-lg bg-zinc-900 dark:bg-zinc-50 text-sm font-medium text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-200 disabled:opacity-40"
-        >
-          {busy ? 'Running…' : 'Run'}
-        </button>
-      </div>
-      <div className="flex flex-col gap-6">
-        <h2 className="text-sm font-medium text-zinc-500">Output</h2>
-        <JobStatusCard jobId={jobId} status={stream.status} error={stream.error} logs={stream.logs} />
-        {stream.status === 'done' && jobId && (
-          <a
-            href={`/api/jobs/${jobId}/output`}
-            className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 px-4 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
-          >
-            Download .cif.gz
-          </a>
-        )}
+    <div className="px-8 py-10 max-w-6xl mx-auto">
+      <header className="mb-8">
+        <h1 className="font-heading text-4xl text-foreground tracking-tight">Design</h1>
+        <p className="text-sm text-muted-foreground mt-1">Configure inputs and run a new diffusion job.</p>
+      </header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="flex flex-col gap-5">
+          <GenerateInputs form={form} update={updateForm} />
+          <Button onClick={run} disabled={busy} size="lg" className="mt-2">
+            {busy ? 'Running…' : 'Run'}
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <h2 className="font-heading text-xl text-foreground">Output</h2>
+          <JobStatusCard jobId={jobId} status={stream.status} error={stream.error} logs={stream.logs} />
+          {stream.status === 'done' && jobId && (
+            <Button asChild variant="outline" size="lg" className="w-fit">
+              <a href={`/api/jobs/${jobId}/output`}>
+                <Download />
+                Download .cif.gz
+              </a>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   )

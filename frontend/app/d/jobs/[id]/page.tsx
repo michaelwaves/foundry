@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { ArrowLeft, Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { Button } from '@/components/ui/button'
 import { StatusBadge } from '../StatusBadge'
 import { LiveLogs } from './LiveLogs'
 
@@ -30,27 +32,30 @@ export default async function JobDetailPage({
   const job = data as JobRow
 
   return (
-    <div className="px-4 py-8 max-w-3xl mx-auto flex flex-col gap-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <Link href="/d/jobs" className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
-            ← All jobs
-          </Link>
-          <h1 className="text-lg font-semibold mt-2 font-mono">{id}</h1>
-          <p className="text-xs text-zinc-500">{new Date(job.created_at).toLocaleString()}</p>
+    <div className="px-8 py-10 max-w-3xl mx-auto flex flex-col gap-8">
+      <header className="flex flex-col gap-3">
+        <Link href="/d/jobs" className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-brand-orange transition-colors w-fit">
+          <ArrowLeft className="h-3 w-3" />
+          All jobs
+        </Link>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="font-heading text-3xl tracking-tight font-mono break-all">{id}</h1>
+            <p className="text-xs text-muted-foreground mt-1">{new Date(job.created_at).toLocaleString()}</p>
+          </div>
+          <StatusBadge status={job.status} />
         </div>
-        <StatusBadge status={job.status} />
-      </div>
+      </header>
 
       {job.error && (
-        <pre className="rounded-lg bg-red-50 dark:bg-red-950 p-3 text-xs text-red-700 dark:text-red-400 whitespace-pre-wrap">
+        <pre className="rounded-lg bg-destructive/10 p-4 text-xs text-destructive whitespace-pre-wrap font-mono">
           {job.error}
         </pre>
       )}
 
-      <section>
-        <h2 className="text-sm font-medium text-zinc-500 mb-2">Inputs</h2>
-        <pre className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 text-xs overflow-x-auto">
+      <section className="flex flex-col gap-2">
+        <h2 className="font-heading text-lg text-foreground">Inputs</h2>
+        <pre className="rounded-lg border border-border bg-muted/30 p-4 text-xs overflow-x-auto font-mono">
           {JSON.stringify(job.inputs, null, 2)}
         </pre>
       </section>
@@ -58,12 +63,12 @@ export default async function JobDetailPage({
       {(job.status === 'running' || job.status === 'pending') && <LiveLogs jobId={id} />}
 
       {job.status === 'done' && (
-        <a
-          href={`/api/jobs/${id}/output`}
-          className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 px-4 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 w-fit"
-        >
-          Download .cif.gz
-        </a>
+        <Button asChild variant="outline" size="lg" className="w-fit">
+          <a href={`/api/jobs/${id}/output`}>
+            <Download />
+            Download .cif.gz
+          </a>
+        </Button>
       )}
     </div>
   )

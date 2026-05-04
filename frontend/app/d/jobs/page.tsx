@@ -1,5 +1,7 @@
 import Link from 'next/link'
+import { Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { Button } from '@/components/ui/button'
 import { StatusBadge } from './StatusBadge'
 
 type JobRow = {
@@ -20,40 +22,55 @@ export default async function JobsPage() {
   const rows = (jobs ?? []) as JobRow[]
 
   return (
-    <div className="px-4 py-8 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-lg font-semibold">Jobs</h1>
-        <Link href="/d/generate" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
-          New →
-        </Link>
-      </div>
+    <div className="px-8 py-10 max-w-5xl mx-auto">
+      <header className="flex items-end justify-between mb-8">
+        <div>
+          <h1 className="font-heading text-4xl text-foreground tracking-tight">Jobs</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {rows.length === 0 ? 'No jobs yet.' : `${rows.length} job${rows.length === 1 ? '' : 's'}`}
+          </p>
+        </div>
+        <Button asChild size="lg">
+          <Link href="/d/generate">
+            <Plus />
+            New
+          </Link>
+        </Button>
+      </header>
+
       {rows.length === 0 ? (
-        <p className="text-sm text-zinc-500">No jobs yet. Run one from /d/generate.</p>
+        <div className="rounded-lg border border-border bg-muted/30 p-10 text-center">
+          <p className="text-sm text-muted-foreground">
+            Run a new design from <Link href="/d/generate" className="text-brand-orange hover:underline">Generate</Link>.
+          </p>
+        </div>
       ) : (
-        <table className="w-full text-sm">
-          <thead className="text-xs text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
-            <tr>
-              <th className="text-left font-medium py-2">Design</th>
-              <th className="text-left font-medium py-2">Status</th>
-              <th className="text-left font-medium py-2">Submitted</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((job) => (
-              <tr key={job.id} className="border-b border-zinc-100 dark:border-zinc-900">
-                <td className="py-2 font-mono text-xs">{job.inputs?.design_name ?? '—'}</td>
-                <td className="py-2"><StatusBadge status={job.status} /></td>
-                <td className="py-2 text-zinc-500">{new Date(job.created_at).toLocaleString()}</td>
-                <td className="py-2 text-right">
-                  <Link href={`/d/jobs/${job.id}`} className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
-                    View →
-                  </Link>
-                </td>
+        <div className="rounded-lg border border-border overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+              <tr>
+                <th className="text-left font-medium px-4 py-3">Design</th>
+                <th className="text-left font-medium px-4 py-3">Status</th>
+                <th className="text-left font-medium px-4 py-3">Submitted</th>
+                <th className="px-4 py-3" />
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((job) => (
+                <tr key={job.id} className="border-t border-border hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs">{job.inputs?.design_name ?? '—'}</td>
+                  <td className="px-4 py-3"><StatusBadge status={job.status} /></td>
+                  <td className="px-4 py-3 text-muted-foreground">{new Date(job.created_at).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right">
+                    <Link href={`/d/jobs/${job.id}`} className="text-xs font-medium text-brand-orange hover:underline">
+                      View →
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )
