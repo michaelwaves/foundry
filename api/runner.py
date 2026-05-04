@@ -5,8 +5,8 @@ from pathlib import Path
 
 import sae
 
-from api.models import Job, JobStatus
-from api.store import save
+from models import Job, JobStatus
+from store import save
 
 FOUNDRY_ROOT = Path(__file__).resolve().parent.parent
 SAE_STEERING_CONFIGS = Path(sae.__file__).resolve().parent / "configs" / "steering"

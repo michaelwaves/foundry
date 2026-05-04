@@ -1,0 +1,13 @@
+providers = ["python"]
+
+[phases.setup]
+nixPkgs = ["python312", "gcc"]
+
+[phases.install]
+cmds = [
+  "python -m venv --copies /opt/venv",
+  ". /opt/venv/bin/activate && pip install --upgrade pip && pip install fastapi 'uvicorn[standard]' python-multipart 'python-jose[cryptography]' supabase redis httpx 'modal[api]'",
+]
+
+[start]
+cmd = "uvicorn main:app --host 0.0.0.0 --port $PORT"

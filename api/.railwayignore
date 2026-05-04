@@ -1,0 +1,8 @@
+.env
+.python-version
+cache
+__pycache__
+*.pyc
+*.pyo
+plan.md
+README.md

@@ -8,9 +8,9 @@ from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadF
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 
-from api.models import JobStatus
-from api.runner import JOBS_DIR, create_job, launch
-from api.store import get
+from models import JobStatus
+from runner import JOBS_DIR, create_job, launch
+from store import get
 
 
 @asynccontextmanager
