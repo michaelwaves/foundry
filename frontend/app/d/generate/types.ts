@@ -1,11 +1,14 @@
 export type Status = 'idle' | 'submitting' | 'pending' | 'running' | 'done' | 'failed'
 
+export type InferOriStrategy = 'hotspots' | 'none'
+
 export type GenerateForm = {
   designName: string
   motif: File | null
   contig: string
   length: string
   hotspots: string
+  inferOriStrategy: InferOriStrategy
   diffusionSteps: number
   isNonLoopy: boolean
   partialT: number
@@ -18,8 +21,9 @@ export const DEFAULT_FORM: GenerateForm = {
   designName: 'design_001',
   motif: null,
   contig: '',
-  length: '100-150',
+  length: '190-270',
   hotspots: '',
+  inferOriStrategy: 'hotspots',
   diffusionSteps: 15,
   isNonLoopy: true,
   partialT: 0,

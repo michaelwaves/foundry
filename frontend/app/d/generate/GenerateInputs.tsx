@@ -40,12 +40,27 @@ export function GenerateInputs({ form, update }: Props) {
         />
       </Field>
 
-      <Field label="Hotspot residues" hint="E64:CD2+CZ; E88:CG+CZ">
+      <Field
+        label="Hotspot residues"
+        hint={form.motif ? 'E64:CD2+CZ; E88:CG+CZ' : 'requires motif PDB'}
+      >
         <input
           type="text" value={form.hotspots} placeholder="E64:CD2+CZ; E88:CG+CZ"
+          disabled={!form.motif}
           onChange={(e) => update('hotspots', e.target.value)}
-          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono"
+          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm font-mono disabled:opacity-30"
         />
+      </Field>
+
+      <Field label="Orientation inference" hint="how to orient the designed chain">
+        <select
+          value={form.inferOriStrategy}
+          onChange={(e) => update('inferOriStrategy', e.target.value as 'hotspots' | 'none')}
+          className="h-9 w-full rounded border border-zinc-200 dark:border-zinc-700 bg-transparent px-2 text-sm"
+        >
+          <option value="hotspots">hotspots (default)</option>
+          <option value="none">none</option>
+        </select>
       </Field>
 
       <RangeField

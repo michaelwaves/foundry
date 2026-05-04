@@ -32,10 +32,11 @@ def _build_spec(config: dict[str, Any], motif_path: Path | None) -> dict[str, An
         spec["contig"] = config["contig"]
     if config.get("length"):
         spec["length"] = config["length"]
-    if config.get("hotspots"):
+    if motif_path is not None and config.get("hotspots"):
         spec["select_hotspots"] = config["hotspots"]
-    if config.get("infer_ori_strategy"):
-        spec["infer_ori_strategy"] = config["infer_ori_strategy"]
+    strategy = config.get("infer_ori_strategy")
+    if strategy and strategy != "none" and motif_path is not None and config.get("hotspots"):
+        spec["infer_ori_strategy"] = strategy
     if config.get("is_non_loopy"):
         spec["is_non_loopy"] = config["is_non_loopy"]
     return spec

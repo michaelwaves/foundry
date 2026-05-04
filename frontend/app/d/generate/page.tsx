@@ -33,7 +33,7 @@ export default function GeneratePage() {
           contig: form.contig.trim() || null,
           length: form.length.trim() || null,
           hotspots: parseHotspots(form.hotspots),
-          infer_ori_strategy: 'hotspots',
+          infer_ori_strategy: form.inferOriStrategy,
           is_non_loopy: form.isNonLoopy,
           partial_t: form.partialT,
           steering: form.steeringEnabled
