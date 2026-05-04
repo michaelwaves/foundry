@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -49,9 +50,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-dvh flex items-center justify-center px-4 bg-gradient-to-br from-brand-orange/5 via-background to-brand-green/10">
       <div className="w-full max-w-sm flex flex-col gap-7 rounded-2xl border border-border bg-card p-8 shadow-sm">
-        <header className="flex flex-col gap-1">
+        <header className="flex flex-col items-center gap-2 text-center">
+          <Image src="/logo.svg" alt="Raft Bioworks" width={68} height={64} priority />
           <span className="font-heading text-3xl text-brand-orange tracking-tight">Raft Bioworks</span>
-          <h1 className="font-heading text-xl text-foreground">
+          <h1 className="font-heading text-xl text-foreground mt-1">
             {mode === 'signin' ? 'Welcome back' : 'Create your account'}
           </h1>
           <p className="text-xs text-muted-foreground">

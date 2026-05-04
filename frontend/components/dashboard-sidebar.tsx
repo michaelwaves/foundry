@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, type ComponentType } from 'react'
@@ -27,19 +28,39 @@ export function DashboardSidebar() {
       )}
     >
       <div className={cn('flex h-16 items-center border-b border-sidebar-border', collapsed ? 'justify-center' : 'justify-between px-4')}>
-        {!collapsed && (
-          <span className="font-heading text-2xl text-brand-orange tracking-tight select-none">Raft Bioworks</span>
+        {collapsed ? (
+          <Image src="/logo.svg" alt="Raft Bioworks" width={30} height={28} priority />
+        ) : (
+          <Link href="/d/generate" className="flex items-center gap-2 select-none">
+            <Image src="/logo.svg" alt="Raft Bioworks" width={30} height={28} priority />
+            <span className="font-heading text-xl text-brand-orange tracking-tight">Raft Bioworks</span>
+          </Link>
         )}
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => setCollapsed((v) => !v)}
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="text-sidebar-foreground/60 hover:text-brand-orange"
-        >
-          {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
-        </Button>
+        {!collapsed && (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setCollapsed((v) => !v)}
+            aria-label="Collapse sidebar"
+            className="text-sidebar-foreground/60 hover:text-brand-orange"
+          >
+            <PanelLeftClose />
+          </Button>
+        )}
       </div>
+      {collapsed && (
+        <div className="flex justify-center px-2 pt-2">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setCollapsed(false)}
+            aria-label="Expand sidebar"
+            className="text-sidebar-foreground/60 hover:text-brand-orange"
+          >
+            <PanelLeftOpen />
+          </Button>
+        </div>
+      )}
 
       <nav className="flex flex-1 flex-col gap-1 p-3">
         {NAV_ITEMS.map((item) => (

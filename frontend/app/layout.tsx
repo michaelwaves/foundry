@@ -7,8 +7,8 @@ const kaisei = Kaisei_Tokumin({ variable: '--font-kaisei', subsets: ['latin'], w
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Foundry',
-  description: 'Foundry documentation',
+  title: 'Raft Bioworks',
+  description: 'Design the Nanoparticle Future',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
