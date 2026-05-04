@@ -28,7 +28,7 @@ export function DashboardSidebar() {
     >
       <div className={cn('flex h-16 items-center border-b border-sidebar-border', collapsed ? 'justify-center' : 'justify-between px-4')}>
         {!collapsed && (
-          <span className="font-heading text-2xl text-brand-orange tracking-tight select-none">Saffron</span>
+          <span className="font-heading text-2xl text-brand-orange tracking-tight select-none">Raft Bioworks</span>
         )}
         <Button
           variant="ghost"

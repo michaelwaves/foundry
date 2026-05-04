@@ -39,7 +39,7 @@ export default async function JobsPage() {
       </header>
 
       {rows.length === 0 ? (
-        <div className="rounded-lg border border-border bg-muted/30 p-10 text-center">
+        <div className="rounded-lg border border-brand-green/40 bg-brand-green/10 p-10 text-center">
           <p className="text-sm text-muted-foreground">
             Run a new design from <Link href="/d/generate" className="text-brand-orange hover:underline">Generate</Link>.
           </p>

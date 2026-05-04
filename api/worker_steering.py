@@ -1,5 +1,8 @@
+import uuid
 from pathlib import Path
 from typing import Any
+
+import sae
 
 _TEMPLATE = """\
 # @package steering
@@ -11,11 +14,14 @@ block12:
     apply_at_steps: {apply_at_steps}
 """
 
+STEERING_CONFIG_DIR = Path(sae.__file__).parent / "configs" / "steering"
+
 
 def generate_steering_yaml(steering: dict[str, Any] | None, work_dir: Path) -> Path | None:
     if not steering or steering.get("alpha", 0) == 0:
         return None
-    yaml_path = work_dir / "steering.yaml"
+    name = f"job_{uuid.uuid4().hex[:12]}"
+    yaml_path = STEERING_CONFIG_DIR / f"{name}.yaml"
     yaml_path.write_text(_TEMPLATE.format(
         feature_id=steering["feature_id"],
         alpha=steering["alpha"],

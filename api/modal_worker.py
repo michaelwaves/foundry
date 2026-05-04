@@ -53,6 +53,7 @@ def run_job(job_id: str, user_id: str, config: dict[str, Any]) -> None:
     logger.publish_status("running")
     db.table("jobs").update({"status": "running"}).eq("id", job_id).execute()
 
+    steering_yaml: Path | None = None
     try:
         with tempfile.TemporaryDirectory() as tmp:
             work_dir = Path(tmp)
@@ -73,6 +74,8 @@ def run_job(job_id: str, user_id: str, config: dict[str, Any]) -> None:
             "id", job_id).execute()
         logger.publish_status("failed", message)
     finally:
+        if steering_yaml is not None:
+            steering_yaml.unlink(missing_ok=True)
         logger.publish_done()
         logger.close()
 
@@ -93,7 +96,7 @@ def _run_saffron(
         f"inference_sampler.num_timesteps={diffusion_steps}",
     ]
     if steering_yaml:
-        cmd += ["hooks=rfd3_steer_only", f"steering=@{steering_yaml}"]
+        cmd += ["hooks=rfd3_steer_only", f"steering={steering_yaml.stem}"]
     process = subprocess.Popen(
         cmd,
         stdout=subprocess.PIPE,

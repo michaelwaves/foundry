@@ -87,7 +87,7 @@ export function GenerateInputs({ form, update }: Props) {
 
 function SteeringPanel({ form, update }: Props) {
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-border bg-muted/30 p-4">
+    <div className="flex flex-col gap-3 rounded-lg border border-brand-green/40 bg-brand-green/10 p-4">
       <label className="flex items-center gap-2.5 text-sm font-medium cursor-pointer">
         <input
           type="checkbox" checked={form.steeringEnabled}
