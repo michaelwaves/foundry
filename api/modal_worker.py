@@ -13,13 +13,34 @@ if TYPE_CHECKING:
 
 VOLUME_PATH = "/weights"
 TIMEOUT_SECONDS = 1800
+GIT_REPO = "https://github.com/michaelwaves/foundry"
+
+
+def _resolve_git_ref() -> str:
+    """Pin the Modal image to the current local HEAD so each push busts the cache.
+
+    Falls back to the `modal` branch ref if git isn't available (e.g. running
+    outside a clone). Make sure to push before deploy so the SHA exists remotely.
+    """
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=Path(__file__).resolve().parent,
+            text=True,
+        ).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "modal"
+
+
+_GIT_REF = _resolve_git_ref()
+print(f"[modal_worker] building image at ref={_GIT_REF}")
 
 image = (
     modal.Image.debian_slim(python_version="3.12")
     .apt_install("git", "build-essential")
     .pip_install(
-        "rc-foundry[rfd3,api] @ git+https://github.com/michaelwaves/foundry@modal",
-        "rc-foundry-sae @ git+https://github.com/michaelwaves/foundry@modal#subdirectory=sae",
+        f"rc-foundry[rfd3,api] @ git+{GIT_REPO}@{_GIT_REF}",
+        f"rc-foundry-sae @ git+{GIT_REPO}@{_GIT_REF}#subdirectory=sae",
         "tmtools>=0.3.0",
         "supabase>=2.9",
         "redis>=5.2",
