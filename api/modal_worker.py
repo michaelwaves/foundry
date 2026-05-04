@@ -17,11 +17,16 @@ GIT_REPO = "https://github.com/michaelwaves/foundry"
 
 
 def _resolve_git_ref() -> str:
-    """Pin the Modal image to the current local HEAD so each push busts the cache.
+    """Resolve the git ref baked into the Modal image's pip URLs.
 
-    Falls back to the `modal` branch ref if git isn't available (e.g. running
-    outside a clone). Make sure to push before deploy so the SHA exists remotely.
+    Default: `modal` branch — Modal's layer cache is reused across deploys, so
+    builds are fast but stale package code may persist.
+    Opt-in: set `MODAL_PIN_TO_SHA=1` before `modal deploy` to pin to the local
+    HEAD SHA. Each commit gets a unique URL, busting the cache. Push the SHA
+    to GitHub *before* deploying.
     """
+    if os.environ.get("MODAL_PIN_TO_SHA") != "1":
+        return "modal"
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "HEAD"],
