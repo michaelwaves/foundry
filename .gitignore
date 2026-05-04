@@ -185,6 +185,8 @@ ruff.toml
 # Development
 dev.py
 lib
+!frontend/lib
+!frontend/lib/**
 .gitmodules
 .ipd/
 
