@@ -64,12 +64,7 @@ export default function GeneratePage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="flex flex-col gap-5">
           <GenerateInputs form={form} update={updateForm} />
-          <Button
-            onClick={run}
-            disabled={busy}
-            size="lg"
-            className="mt-2 bg-zinc-900 text-white hover:bg-zinc-800"
-          >
+          <Button onClick={run} disabled={busy} size="lg" className="mt-2">
             {busy ? 'Running…' : 'Run'}
           </Button>
         </div>
