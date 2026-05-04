@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 
 import torch
@@ -15,6 +16,8 @@ def build_zeus_indexer(f: dict) -> ZeUSIndexer | None:
     Build a ZeUSIndexer from feature dict, or return None if the input is not
     fully symmetric (fixed motifs present, only one subunit, or missing feats).
     """
+    if os.environ.get("RFD3_DISABLE_ZEUS") == "1":
+        return None
     if "is_sym_asu" not in f or "sym_transform_id" not in f:
         return None
 

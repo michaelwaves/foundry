@@ -89,6 +89,7 @@ class RFD3InferenceConfig:
     low_memory_mode: bool = (
         False  # False for standard mode, True for memory efficient tokenization mode
     )
+    disable_zeus: bool = True  # Disable ZeUS symmetric attention optimization
 
     # Other:
     num_nodes: int = 1
@@ -178,6 +179,7 @@ class RFD3InferenceEngine(BaseInferenceEngine):
         dump_trajectories: bool,
         align_trajectory_structures: bool,
         low_memory_mode: bool,
+        disable_zeus: bool = True,
         activation_collection: dict | None = None,
         steering: dict | None = None,
         layers_to_ablate: List[int] | None = None,
@@ -225,6 +227,9 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             ranked_logger.info("Low memory mode enabled.")
             # HACK: Set attribute to the diffusion module
             os.environ["RFD3_LOW_MEMORY_MODE"] = "1"
+        if disable_zeus:
+            ranked_logger.info("ZeUS symmetric attention disabled.")
+            os.environ["RFD3_DISABLE_ZEUS"] = "1"
 
     def run(
         self,
