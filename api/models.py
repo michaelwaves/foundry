@@ -17,6 +17,13 @@ class SteeringConfig:
 
 
 @dataclass
+class SymmetryConfig:
+    id: str
+    is_unsym_motif: str | None = None
+    is_symmetric_motif: bool = True
+
+
+@dataclass
 class JobConfig:
     design_name: str
     diffusion_steps: int = 15
@@ -28,6 +35,7 @@ class JobConfig:
     is_non_loopy: bool = True
     partial_t: float = 0.0
     steering: SteeringConfig | None = None
+    symmetry: SymmetryConfig | None = None
 
 
 @dataclass

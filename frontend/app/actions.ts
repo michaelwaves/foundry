@@ -10,6 +10,11 @@ export type SteeringInput = {
   apply_at_steps: string
 }
 
+export type SymmetryInput = {
+  id: string
+  is_unsym_motif: string | null
+}
+
 export type JobInput = {
   design_name: string
   diffusion_steps: number
@@ -20,6 +25,7 @@ export type JobInput = {
   is_non_loopy: boolean
   partial_t: number
   steering: SteeringInput | null
+  symmetry: SymmetryInput | null
 }
 
 export async function submitJob(

@@ -1,9 +1,8 @@
-import type { GenerateForm } from './types'
+import { cn } from '@/lib/utils'
+import { type GenerateForm, type GenerateMode, SYMMETRY_OPTIONS } from './types'
 
-type Props = {
-  form: GenerateForm
-  update: <K extends keyof GenerateForm>(key: K, value: GenerateForm[K]) => void
-}
+type Update = <K extends keyof GenerateForm>(key: K, value: GenerateForm[K]) => void
+type Props = { form: GenerateForm; update: Update }
 
 const INPUT_BASE =
   'h-9 w-full rounded-md border border-border bg-background px-3 text-sm font-mono outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20'
@@ -19,7 +18,7 @@ export function GenerateInputs({ form, update }: Props) {
         />
       </Field>
 
-      <Field label="Target protein (PDB)" hint="Leave empty for de novo design">
+      <Field label="Target protein (PDB)" hint={form.mode === 'symmetric' ? 'must be pre-symmetrized about origin' : 'leave empty for de novo'}>
         <input
           type="file" accept=".pdb"
           onChange={(e) => update('motif', e.target.files?.[0] ?? null)}
@@ -27,18 +26,68 @@ export function GenerateInputs({ form, update }: Props) {
         />
       </Field>
 
-      <Field label="Contigs" hint="e.g. 40-120,/0,E6-155">
+      <Field
+        label="Length"
+        hint={form.mode === 'symmetric' ? 'residues per subunit, e.g. 100 or 80-120' : 'range, e.g. 190-270'}
+      >
         <input
-          type="text" value={form.contig} placeholder="40-120,/0,E6-155"
-          onChange={(e) => update('contig', e.target.value)}
+          type="text" value={form.length}
+          onChange={(e) => update('length', e.target.value)}
           className={INPUT_BASE}
         />
       </Field>
 
-      <Field label="Length range" hint="e.g. 190-270">
+      <ModeTabs mode={form.mode} onChange={(m) => update('mode', m)} />
+      {form.mode === 'standard' ? <StandardInputs form={form} update={update} /> : <SymmetricInputs form={form} update={update} />}
+
+      <RangeField
+        label="Diffusion steps" value={form.diffusionSteps}
+        min={1} max={50} step={1}
+        onChange={(v) => update('diffusionSteps', v)}
+      />
+
+      <RangeField
+        label="Partial diffusion (partial_t)" value={form.partialT}
+        min={0} max={160} step={1}
+        disabled={!form.motif}
+        onChange={(v) => update('partialT', v)}
+        hint={!form.motif ? 'requires motif' : form.partialT === 0 ? 'off' : undefined}
+      />
+
+      <SteeringPanel form={form} update={update} />
+    </>
+  )
+}
+
+function ModeTabs({ mode, onChange }: { mode: GenerateMode; onChange: (m: GenerateMode) => void }) {
+  return (
+    <div className="grid grid-cols-2 gap-1 rounded-lg border border-border bg-muted/30 p-1">
+      {(['standard', 'symmetric'] as const).map((m) => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => onChange(m)}
+          className={cn(
+            'h-9 rounded-md text-sm font-medium capitalize transition-colors',
+            mode === m
+              ? 'bg-brand-orange text-white shadow-sm'
+              : 'text-muted-foreground hover:bg-brand-orange/10 hover:text-brand-orange',
+          )}
+        >
+          {m}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function StandardInputs({ form, update }: Props) {
+  return (
+    <>
+      <Field label="Contigs" hint="e.g. 40-120,/0,E6-155">
         <input
-          type="text" value={form.length}
-          onChange={(e) => update('length', e.target.value)}
+          type="text" value={form.contig} placeholder="40-120,/0,E6-155"
+          onChange={(e) => update('contig', e.target.value)}
           className={INPUT_BASE}
         />
       </Field>
@@ -65,22 +114,36 @@ export function GenerateInputs({ form, update }: Props) {
           <option value="none">none</option>
         </select>
       </Field>
+    </>
+  )
+}
 
-      <RangeField
-        label="Diffusion steps" value={form.diffusionSteps}
-        min={1} max={50} step={1}
-        onChange={(v) => update('diffusionSteps', v)}
-      />
+function SymmetricInputs({ form, update }: Props) {
+  return (
+    <>
+      <Field label="Symmetry group" hint="Cn = cyclic, Dn = dihedral">
+        <select
+          value={form.symmetryId}
+          onChange={(e) => update('symmetryId', e.target.value as typeof form.symmetryId)}
+          className={INPUT_BASE}
+        >
+          {SYMMETRY_OPTIONS.map((id) => (
+            <option key={id} value={id}>{id}</option>
+          ))}
+        </select>
+      </Field>
 
-      <RangeField
-        label="Partial diffusion (partial_t)" value={form.partialT}
-        min={0} max={160} step={1}
-        disabled={!form.motif}
-        onChange={(v) => update('partialT', v)}
-        hint={!form.motif ? 'requires motif' : form.partialT === 0 ? 'off' : undefined}
-      />
-
-      <SteeringPanel form={form} update={update} />
+      <Field
+        label="Unsymmetrized motif"
+        hint={form.motif ? 'optional contigs/ligands to leave unsymmetrized, e.g. Y1-11,Z16-25' : 'requires motif PDB'}
+      >
+        <input
+          type="text" value={form.isUnsymMotif} placeholder="Y1-11,Z16-25"
+          disabled={!form.motif}
+          onChange={(e) => update('isUnsymMotif', e.target.value)}
+          className={`${INPUT_BASE} disabled:opacity-40 disabled:cursor-not-allowed`}
+        />
+      </Field>
     </>
   )
 }

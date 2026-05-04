@@ -39,4 +39,12 @@ def _build_spec(config: dict[str, Any], motif_path: Path | None) -> dict[str, An
         spec["infer_ori_strategy"] = strategy
     if config.get("is_non_loopy"):
         spec["is_non_loopy"] = config["is_non_loopy"]
+    symmetry = config.get("symmetry")
+    if symmetry:
+        sym_block: dict[str, Any] = {"id": symmetry["id"]}
+        if symmetry.get("is_unsym_motif"):
+            sym_block["is_unsym_motif"] = symmetry["is_unsym_motif"]
+        if motif_path is not None:
+            sym_block["is_symmetric_motif"] = symmetry.get("is_symmetric_motif", True)
+        spec["symmetry"] = sym_block
     return spec
