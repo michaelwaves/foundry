@@ -201,6 +201,8 @@ lib
 *.gif
 *.bmp
 *.tiff
+!frontend/public/**
+!frontend/app/**
 
 # Versioning
 **/version.py
