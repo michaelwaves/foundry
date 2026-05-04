@@ -3,8 +3,12 @@
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
 
 type Mode = 'signin' | 'signup'
+
+const INPUT_BASE =
+  'h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20'
 
 export default function LoginPage() {
   const supabase = createClient()
@@ -43,53 +47,54 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-start justify-center py-16 px-4">
-      <div className="w-full max-w-sm flex flex-col gap-6">
-        <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          {mode === 'signin' ? 'Sign in' : 'Create account'}
-        </h1>
+    <div className="min-h-dvh flex items-center justify-center px-4 bg-gradient-to-br from-brand-orange/5 via-background to-brand-green/10">
+      <div className="w-full max-w-sm flex flex-col gap-7 rounded-2xl border border-border bg-card p-8 shadow-sm">
+        <header className="flex flex-col gap-1">
+          <span className="font-heading text-3xl text-brand-orange tracking-tight">Raft Bioworks</span>
+          <h1 className="font-heading text-xl text-foreground">
+            {mode === 'signin' ? 'Welcome back' : 'Create your account'}
+          </h1>
+          <p className="text-xs text-muted-foreground">
+            {mode === 'signin' ? 'Sign in to continue.' : 'Start designing proteins in minutes.'}
+          </p>
+        </header>
 
-        <button
-          onClick={signInWithGoogle}
-          className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
-        >
+        <Button onClick={signInWithGoogle} variant="outline" size="lg" className="w-full">
           Continue with Google
-        </button>
+        </Button>
 
-        <div className="flex items-center gap-2 text-xs text-zinc-400">
-          <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+        <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
+          <div className="flex-1 h-px bg-border" />
           or
-          <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+          <div className="flex-1 h-px bg-border" />
         </div>
 
         <form onSubmit={submitEmailPassword} className="flex flex-col gap-3">
           <input
             type="email" placeholder="email" value={email} required
             onChange={(e) => setEmail(e.target.value)}
-            className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 px-3 text-sm bg-transparent"
+            className={INPUT_BASE}
           />
           <input
             type="password" placeholder="password" value={password} required
             onChange={(e) => setPassword(e.target.value)}
-            className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 px-3 text-sm bg-transparent"
+            className={INPUT_BASE}
           />
-          <button
-            type="submit" disabled={busy}
-            className="h-10 rounded-lg bg-zinc-900 dark:bg-zinc-50 text-sm font-medium text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-200 disabled:opacity-40"
-          >
+          <Button type="submit" disabled={busy} size="lg" className="mt-1">
             {busy ? '…' : mode === 'signin' ? 'Sign in' : 'Create account'}
-          </button>
+          </Button>
         </form>
 
         <button
+          type="button"
           onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-          className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+          className="text-xs text-muted-foreground hover:text-brand-orange transition-colors text-center cursor-pointer"
         >
           {mode === 'signin' ? 'No account? Create one' : 'Have an account? Sign in'}
         </button>
 
         {error && (
-          <p className="rounded-lg bg-red-50 dark:bg-red-950 px-3 py-2 text-sm text-red-600 dark:text-red-400">
+          <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
             {error}
           </p>
         )}
