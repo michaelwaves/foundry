@@ -24,7 +24,10 @@ image = (
         "supabase>=2.9",
         "redis>=5.2",
     )
-    .env({"FOUNDRY_ROOT": VOLUME_PATH})
+    .env({
+        "FOUNDRY_ROOT": VOLUME_PATH,
+        "FOUNDRY_CHECKPOINT_DIRS": f"{VOLUME_PATH}/checkpoints",
+    })
     .add_local_python_source("worker_inputs", "worker_steering", "worker_logs", "worker_output")
 )
 
@@ -87,7 +90,7 @@ def _run_saffron(
         "saffron", "steer", "model=rfd3",
         f"inputs={inputs_path}",
         f"out_dir={out_dir}",
-        f"diffusion.num_steps={diffusion_steps}",
+        f"inference_sampler.num_timesteps={diffusion_steps}",
     ]
     if steering_yaml:
         cmd += ["hooks=rfd3_steer_only", f"steering=@{steering_yaml}"]
