@@ -1,0 +1,1372 @@
+
+[p1]
+Measuring Progress in Dictionary Learning for
+Language Model Interpretability with Board Game Models
+Adam Karvonen * 1 Benjamin Wright * 2 Can Rager 1 Rico Angell 3 Jannik Brinkmann 4 Logan Smith 1
+Claudio Mayrink Verdun 5 David Bau 6 Samuel Marks 6
+Abstract
+What latent features are encoded in language
+model (LM) representations? Recent work on
+training sparse autoencoders (SAEs) to disentan-
+gle interpretable features in LM representations
+has shown significant promise. However, evaluat-
+ing the quality of these SAEs is difficult because
+we lack a ground-truth collection of interpretable
+features that we expect good SAEs to recover. We
+thus propose to measure progress in interpretable
+dictionary learning by working in the setting of
+LMs trained on chess and Othello transcripts.
+These settings carry natural collections of inter-
+pretable features—for example, “there is a knight
+on F3”—which we leverage into supervised met-
+rics for SAE quality. To guide progress in inter-
+pretable dictionary learning, we introduce a new
+SAE training technique, p-annealing, which im-
+proves performance on prior unsupervised metrics
+as well as our new metrics.1
+1. Introduction
+Mechanistic interpretability aims to reverse engineer neural
+networks into human-understandable components. What,
+however, should these components be? Recent work has
+applied Sparse Autoencoders (SAEs) (Bricken et al., 2023;
+Cunningham et al., 2023), a scalable unsupervised learn-
+ing method inspired by sparse dictionary learning to find
+a disentangled representation of language model (LM) in-
+ternals. However, measuring progress in training SAEs is
+challenging because we do not know what a gold-standard
+dictionary would look like, as it is difficult to anticipate
+which ground-truth features underlie model cognition. Prior
+work has either attempted to measure SAE quality in toy
+*Equal contribution
+1Independent 2MIT 3University of Mas-
+sachusetts, Amherst 4University of Mannheim 5Harvard University
+6Northeastern University. Correspondence to: Adam Karvonen
+<adam.karvonen@gmail.com>.
+Vienna, Austria. PMLR 235, 2024. Copyright 2024 by the au-
+thor(s).
+synthetic settings (Sharkey et al., 2023) or relied on various
+proxies such as sparsity, fidelity of the reconstruction, and
+LM-assisted autointerpretability (Bills et al., 2023).
+In this work, we explore a setting that lies between toy
+synthetic data (where all ground-truth features are known;
+cf. Elhage et al. (2022)) and natural language: LMs trained
+on board game transcripts. This setting allows us to for-
+mally specify natural categories of interpretable features,
+e.g., “there is a knight on e3” or “the bishop on f5 is
+pinned.” We leverage this to introduce two novel metrics for
+how much of a model’s knowledge an SAEs has captured:
+• Board reconstruction. Can we reconstruct the state of
+the game board by interpreting each feature as a classifier
+for some board configuration?
+• Coverage. Out of a catalog of researcher-specified can-
+didate features, how many of these candidate features
+actually appear in the SAE?
+These metrics carry the limitation that they are sensitive to
+researcher preconceptions. Nevertheless, we show that they
+provide a useful new signal of SAE quality.
+Additionally, we introduce p-annealing, a novel technique
+for training SAEs. When training an SAE with p-annealing,
+we use an Lp-norm-based sparsity penalty with p ranging
+from p = 1 at the beginning of training (corresponding to a
+convex minimization problem) to some p < 1 (a non-convex
+objective) by the end of training. We demonstrate that p-
+annealing improves over prior methods, giving performance
+on par with the more compute-intensive Gated SAEs from
+Rajamanoharan et al. (2024), as measured both by prior
+metrics and our new metrics.
+Overall, our main contributions are as follows:
+1. We train and open-source over 500 SAEs trained on
+chess and Othello models each.
+2. We introduce two new metrics for measuring the qual-
+ity of SAEs.
+1Code, models, and data are available at https://github.
+com/adamkarvonen/SAE_BoardGameEval
+1
+
+[p2]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+3. We introduce p-annealing, a novel technique for train-
+ing SAEs that improves on prior techniques.
+2. Background
+2.1. Language models for Othello and chess
+In this work, we make use of LMs trained to autoregres-
+sively predict transcripts of chess and Othello games. We
+emphasize that these transcripts only give lists of moves in
+a standard notation and do not directly expose the board
+state. Based on behavioral evidence (the high accuracy of
+the LMs for predicting legal moves) and prior studies of
+LM representations (Li et al., 2023a; Nanda et al., 2023;
+Karvonen, 2024) we infer that the LMs internally model the
+board state, making them a good testbed setting for studying
+LM representations.
+Othello.
+Othello is a two-player strategy board game
+played on an 8x8 grid, with players using black and white
+discs. Players take turns placing discs on the board, captur-
+ing their opponent’s discs by bracketing them between their
+own, causing the captured discs to turn their color. The goal
+is to have more discs turned to display your color at the end
+of the game. The game ends if every square on the board is
+covered or either player cannot make a move.
+In our experiments, we use an 8-layer GPT model with 8
+attention heads and a n = 512 dimensional hidden space,
+as provided by Li et al. (2023a). This model had no prior
+knowledge of the game or its rules and was trained from
+scratch on 20 million game transcripts, where each token
+in the corpus represents a tile on which players place their
+discs. The game transcripts were synthetically generated by
+uniformly sampling from the Othello game tree. Thus, the
+data distribution captures valid move sequences rather than
+strategic depth. For this model, Li et al. (2023a) demon-
+strated the emergence of a world model—an internal rep-
+resentation of the correct board state allowing it to predict
+the next move—that can be extracted from the model activa-
+tions using a non-linear probe. Nanda et al. (2023) extended
+this finding, showing that a similar internal representation
+could be extracted using linear probes, supporting the linear
+representation hypothesis (Mikolov et al., 2013).
+Chess.
+Othello makes a natural testbed for studying emer-
+gent internal representations since the game tree is far too
+large to memorize. However, the rules and state are not par-
+ticularly complex. Therefore, we also consider a language
+model trained on chess game transcripts with identical archi-
+tecture, provided by Karvonen (2024). The model again had
+no prior knowledge of chess and was trained from scratch
+on 16 million human games from the Lichess chess game
+database (Lichess, 2024). The input to the model is a string
+in the Portable Game Notation (PGN) format (e.g., “1. e4
+e5 2. Nf3 ...”). The model predicts a legal move in
+99.8 % of cases and, similar to Othello, it has an internal rep-
+resentation of the board state that can be extracted from the
+internal activations using a linear probe (Karvonen, 2024).
+2.2. Sparse autoencoders
+Given a dataset D of vectors x ∈Rd, a sparse autoencoder
+(SAE) is trained to produce an approximation
+x ≈
+dSAE
+X
+i
+fi(x)di + b
+(1)
+as a sparse linear combination of features. Here, the feature
+vectors di ∈Rd are unit vectors, the feature activations
+fi(x) ≥0 are a sparse set of coefficients, and b ∈Rd
+is a bias term. Concretely, an SAE is a neural network
+with an encoder-decoder architecture, where the encoder
+maps x to the vector f =
+f1(x)
+. . .
+fdSAE(x)
+of fea-
+ture activations, and the decoder maps f to an approximate
+reconstruction of x.
+In this paper, we train SAEs on datasets consisting of activa-
+tions extracted from the residual stream after the sixth layer
+for both the chess and Othello models. At these layers, lin-
+ear probes trained with logistic regression were accurate for
+classifying a variety of properties of the game board (Kar-
+vonen, 2024; Nanda et al., 2023). For training SAEs, we
+employ a variety of SAE architectures and training algo-
+rithms, as detailed in Section 4.
+3. Measuring autoencoder quality for chess
+and Othello models
+Many of the features learned by our SAEs reflect uninter-
+esting, surface-level properties of the input, such as the
+presence of certain tokens. However, upon inspection, we
+additionally find many SAE features which seem to reflect a
+latent model of the board state, e.g., features that reflect the
+presence of certain pieces on particular squares, squares that
+are legal to play on, and strategy-relevant properties like the
+presence of a pin in chess (Figure 1).
+Fortunately, in the setting of board games, we can formally
+specify certain classes of these interesting features, allowing
+us to more rigorously detect them and use them to under-
+stand our SAEs. In Section 3.1, we specify certain classes
+of interesting game board properties. Then, in Section 3.2,
+we leverage these classes into two metrics of SAE quality.
+3.1. Board state properties in chess and Othello models
+We formalize a board state property (BSP) to be a function
+g : {game board} →{0, 1}. In this work, we will consider
+the following interpretable classes of BSPs:
+2
+
+[p3]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+Figure 1: We find SAE features that detect interpretable board state properties (BSP) with high precision (i.e., above 0.95).
+This figure illustrates three distinct chessboard states, each an example of a BSP associated with a high activation of a
+particular SAE feature. Left: A board state detector identifies a knight on square f3, owned by the player to move. Middle:
+A rook threat detector indicates an immediate threat posed by a rook to a queen regardless of location and piece threatened.
+Right: A pin detector recognizes moves that resolve a check on a diagonal by creating a pin, again, regardless of location
+and piece pinned.
+• Gboard state contains BSPs which classify the presence of a
+piece at a specific board square, where the board consists
+of 8 × 8 squares in both games. For chess, we consider
+the full board for the twelve distinct piece types (white
+king, white queen, ..., black king), giving a total of 8 ×
+8 × 12 BSPs. For Othello, we consider the full board for
+the two distinct piece types (black and white), yielding
+8 × 8 × 2 BSPs.
+• Gstrategy consists of BSPs relevant for predicting legal
+moves and playing strategically in chess, such as a pin de-
+tector. They were selected by the authors based on domain
+knowledge and prior interpretability work on the chess
+model AlphaZero (McGrath et al., 2022). We provide a
+full list of strategy BSPs in Table 3 in the Appendix. Be-
+cause our Othello model was trained to play random legal
+moves, we do not consider strategy BSPs for Othello.
+3.2. Measuring SAE quality with board state properties
+In this section, we introduce two metrics of SAE quality:
+coverage and board reconstruction.
+Coverage.
+Given a collection G of BSPs, our coverage
+metric quantifies the extent to which an SAE has identi-
+fied features that coincide with the BSPs in G. In more
+detail, suppose that fi is an SAE feature and t ∈[0, 1] is a
+threshold, we define the function
+ϕfi,t(x) = I [fi(x) > t · f max
+i
+]
+(2)
+where f max
+i
+is (an empirical estimate of) maxx∼D fi(x),
+the maximum value that fi takes over the dataset D of
+activations extracted from our model, and I is the indicator
+function. We interpret ϕfi,t as a binary classifier; intuitively,
+it corresponds to binarizing the activations of fi into “on”
+vs. “off” at some fraction t of the maximum value of fi
+on D. Given some BSP g ∈G, let F1(ϕfi,t; g) ∈[0, 1]
+denote the F1-score for ϕfi,t classifying g. Then we define
+the coverage of an SAE with features {fi} relative to a set
+of BSPs G to be
+Cov({fi}, G) := 1
+|G|
+X
+g∈G
+max
+t
+max
+fi F1(ϕfi,t; g).
+(3)
+In other words, we take, for each g ∈G, the F1-score of
+the feature that best serves as a classifier for g, and then
+take the mean of these maximal F1-scores. An SAE re-
+ceives a coverage score of 1 if, for each BSP g ∈G, it
+has some feature that is a perfect classifier for g. Since
+Cov depends on the choice of threshold t, we sweep over
+t ∈{0, 0.1, 0.2, . . . , 0.9} and take the best coverage score;
+typically this best t is in {0, 0.1, 0.2}.
+Board reconstruction.
+Again, let G be a set of BSPs.
+Intuitively, the idea of our board reconstruction metric is
+that, for a sufficiently good SAE, there should be a simple,
+human-interpretable way to recover the state of the board
+from the profile of feature activations {fi(x)} on an activa-
+tion x ∈Rd. Here, the activation x was extracted after the
+post-MLP residual connection in layer 6.
+We will base our board reconstruction metric around the
+following human-interpretable way of recovering a board
+state from a feature activation profile; we emphasize that
+different ways of recovering boards from feature activations
+3
+
+[p4]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+may lead to qualitatively different results. This recovery rule
+is based on the assumption that interpretable SAE features
+tend to be high precision for some subset of BSPs, in line
+with Templeton et al. (2024). For example, features that
+classify common configurations of pieces are high precision
+(but not necessarily high recall) for multiple BSPs. Thus,
+using a batch of “train” data Dtrain we identify, for each SAE
+feature fi, all of the BSPs g ∈G for which ϕfi,t is a high
+precision (of at least 0.95) classifier. Then for each g ∈G
+our prediction rule is
+Pg({fi(x)}) =
+
+
+
+
+
+1,
+if ϕfi,t(x) = 1 for any fi which
+is high precision for g on Dtrain
+0,
+otherwise.
+(4)
+Let F1(P({fi(x)}); b) denote the F1-score for a given
+board state b, where P({fi(x)}) = {Pg({fi(x)})}g∈G
+represents the full predicted board (containing predictions
+for all 64 squares) obtained from the SAE activations. Then,
+the average F1-score over all board states in the test dataset
+Dtest can be calculated as:
+Rec({xi}, Dtest) =
+1
+|Dtest|
+X
+x∈Dtest
+max
+t
+F1(P({fi(x)}); b),
+(5)
+4. Training methodologies for SAEs
+In our experiments, we investigate four methods for
+training SAEs, as explained in this section.
+These
+are given by two autoencoder architectures and two
+training methodologies—one with p-annealing and one
+without
+p-annealing—for
+each
+architecture.
+Our
+SAEs are available at https://huggingface.co/
+adamkarvonen/chess_saes/tree/main
+(chess)
+and https://huggingface.co/adamkarvonen/
+othello_saes/tree/main (Othello).
+4.1. Standard SAEs
+Let n be the dimension of the model’s residual stream acti-
+vations that are input to the autoencoder, m the autoencoder
+hidden dimension, and s the dataset size. Our baseline
+“standard” SAE architecture, as introduced in Bricken et al.
+(2023) is defined by encoder weights We ∈Rm×n, decoder
+weights Wd ∈Rn×m with columns constrained to have a
+L2-norm of 1, and biases be ∈Rm, bd ∈Rn. Given an
+input x ∈Rn, the SAE computes
+f(x) = ReLU(We(x −bd) + be)
+(6)
+ˆx = Wd f(x) + bd
+(7)
+where f(x) is the vector of feature activations, and ˆx is the
+reconstruction.
+For a standard SAE, our baseline training method is as im-
+plemented in the open-source dictionary learning
+repository (Marks & Mueller, 2024), optimizing the loss
+Lstandard = Ex∼Dtrain
+h
+∥x −ˆx∥2 + λ∥f(x)∥1
+i
+.
+(8)
+for some hyperparameter λ > 0 controlling sparsity.
+4.2. Gated SAEs
+The L1 penalty used in the original training method encour-
+ages feature activations to be smaller than they would be
+for optimal reconstruction (Wright & Sharkey, 2024). To
+address this, Rajamanoharan et al. (2024) introduced a mod-
+ification to the original SAE architecture that separates the
+selection of dictionary elements to use in a reconstruction
+and estimating the coefficients of these dictionary elements.
+This results in the following gated architecture:
+πgate(x) := Wgate(x −bd) + bgate
+˜f(x) := I [πgate(x) > 0] ⊙ReLU(Wmag(x −bd) + bmag)
+ˆx(˜f(x)) = Wd˜f(x) + bd
+where I[· > 0] is the Heaviside step function and ⊙denotes
+elementwise multiplication. Then, the loss function uses
+ˆxfrozen, a frozen copy of the decoder:
+Lgated := Ex∼Dtrain
+h
+∥x −ˆx(˜f(x))∥2
+2
++ λ∥ReLU(πgate(x))∥1
+(9)
++ ∥x −ˆxfrozen(ReLU(πgate(x)))∥2
+2
+i
+4.3. p-Annealing
+Fundamentally, an L1 penalty has been used to induce spar-
+sity in SAE features because it serves as a convex relaxation
+of the true sparsity measure, the L0-norm. The L1-norm is
+the convex hull of the L0-norm, making it a tractable alterna-
+tive for promoting sparsity (Wright & Ma, 2022). However,
+the proxy loss function is not the same as directly optimiz-
+ing for sparsity, leading to issues such as feature shrinkage
+(Wright & Sharkey, 2024) and potentially less sparse learned
+features. Unfortunately, the L0-norm is non-differentiable
+and directly minimizing it is an NP-hard problem (Natara-
+jan, 1995; Davis et al., 1997), rendering it impractical for
+training.
+In this work, we propose the use of nonconvex Lp
+p-
+minimization, with p < 1, as an alternative to the stan-
+dard L1 minimization in sparse autoencoders (SAEs). This
+approach has been successfully employed in compressive
+sensing and sparse recovery to achieve even sparser repre-
+sentations (Chartrand, 2007; Wen et al., 2015; Yang et al.,
+2018; Wang et al., 2011). To perform this optimization,
+we introduce a method called p-annealing for training
+SAEs, based on the compressive sensing technique called
+4
+
+[p5]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+(a) Coverage of Board State
+(b) Coverage of Board State vs. L0
+(c) Board Reconstruction
+(d) Board Reconstruction vs. L0
+Figure 2: Comparison of the coverage and board reconstruction metrics for chess SAE quality on Gboard state. The coverage
+score reports the mean F1 scores over BSPs. The top row corresponds to coverage, and the bottom row corresponds to board
+reconstruction. The left column contains a scatterplot of loss recovered vs. L0, with the scheme color corresponding to the
+coverage score and each point representing different hyperparameters. We differentiate between SAE training methods with
+shapes.
+p-continuation (Zheng et al., 2017). The key idea is to start
+with convex L1-minimization through setting p = 1 and
+progressively decrease the value of p during training, result-
+ing in closer approximations of the true sparsity measure,
+L0, as p approaches 0. We define the sparsity penalty for
+each batch x as a function of the current training step s:
+Lsparse(x, s) = λs∥f(x)∥ps
+ps = λs
+X
+i
+fi(x)ps
+(10)
+In other words, the sparsity penalty will be a scaled Lp
+p
+norm of the SAE feature activations, with p decreasing over
+time. At p = 1, the Lp
+p norm is equal to the L1 norm,
+and as p →0, the Lp
+p norm limits to the L0-norm, as
+limp→0
+P
+i fi(x)p = P
+i fi(x)0.
+The purpose of annealing p from 1 →0 instead of starting
+from a fixed, low value for p is that the lower the p, the more
+concave (non-convex) the Lp
+p norm is, increasing the likeli-
+hood of the training process getting stuck in local optima,
+which we have observed in initial experiments. Therefore,
+we aim to first arrive at a region of an optimum using the
+easier-to-train L1 penalty and then gradually shift the loss
+function. This manifests as keeping p = 1 for a certain num-
+ber of steps and then starting decreasing p linearly down to
+pend > 0 at the end of training. We set pend = 0.2.
+Coefficient Annealing.
+Changing the value of p changes
+the scale of the Lp
+p norm. Without also adapting the coeffi-
+cient λ, the strength of the sparsity penalty would vary too
+wildly across training. Empirically, we found that keeping a
+constant λ would lead to far too weak of a sparsity penalty
+for the larger p’s at the start of training, making the pro-
+cess worse than simply training with a constant p from the
+beginning.
+Consequently, we aim to adapt the coefficient λ such that the
+strength of the sparsity penalty is not changed significantly
+due to p updates. Formally, the update step is:
+λs+1 ←λs
+Ps
+j=s−q+1
+P
+i fi(xj)ps
+Ps
+j=s−q+1
+P
+i fi(xj)ps+1 .
+(11)
+We keep a queue of the most recent q batches of feature
+activations mid-training and use them to calibrate the λs
+updates. Therefore, the strength of the sparsity penalty is
+kept locally constant.
+5
+
+[p6]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+(a) Coverage of Strategy BSPs
+(b) Coverage of Strategy BSPs vs. L0
+(c) Strategy BSP Reconstruction
+(d) Strategy BSP Reconstruction vs. L0
+Figure 3: Comparison of the coverage and board reconstruction metrics for chess SAE quality on Gstrategy. The metrics
+represent the average coverage and board reconstruction obtained across all BSPs in Gstrategy. The coverage score reports the
+mean of maximal F1 scores over BSPs. The absolute coverage scores vary significantly between strategy BSPs, as discussed
+in Appendix C. The top row corresponds to coverage, and the bottom row corresponds to board reconstruction. The left
+column contains a scatterplot of loss recovered vs. L0, with the color scheme corresponding to the coverage score and each
+point representing different hyperparameters. We differentiate between SAE training methods with shapes.
+Combining p-annealing with other SAEs.
+Since the
+p-annealing method only modifies the L1 terms in the
+loss function without affecting the SAE architecture, it is
+simple to combine p-annealing with other SAE modifica-
+tions. This allows us to create the Gated-Annealed SAE
+method by combining the Gated SAE architecture and p-
+annealing. Concretely, we modify Lgated (Equation 9) by
+replacing the sparsity term λ∥ReLU(πgate(x))∥1 in with
+λs∥ReLU(πgate(x))∥ps
+ps. Our experiments showed that the
+optimum values for coefficients λ and λs differ.
+5. Results
+In this section, we explore the performance of SAEs applied
+to language models trained on Othello and chess. Consistent
+with Nanda et al. (2023), we find that interpretable SAE fea-
+tures typically track properties relative to the player whose
+turn it is (e.g. “my king is pinned” rather than “the white
+king is pinned”). To side-step subtleties arising from this,
+we only extract our activations from the token immediately
+preceding white’s move. Specifically, we consider SAEs
+trained on the residual stream activations after the sixth
+layer using the four methods from Section 4 (see Table 2
+for additional hyperparameters). In addition to our metrics
+introduced above, we also make use of unsupervised metrics
+previously appearing in the literature (Bricken et al., 2023;
+Cunningham et al., 2023; Rajamanoharan et al., 2024):
+• L0 measures the average number of active SAE active
+features (i.e., positive activation) on a given input.
+• Loss recovered measures the change in model perfor-
+mance when replacing activations with the corresponding
+SAE reconstruction during a forward pass. This metric is
+quantified as (H∗−H0)/(Horig −H0), where Horig is the
+cross-entropy loss of the board game model for next-token
+prediction, H∗is the cross-entropy loss after substituting
+the model activation x with its SAE reconstruction during
+the forward pass, and H0 is the cross-entropy loss when
+zero-ablating x.
+Our key takeaways are as follows.
+SAE features can accurately reconstruct game boards.
+In general, we find that SAE features are effective at captur-
+6
+
+[p7]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+Chess
+Othello
+Model
+Coverage
+Reconstruction
+Coverage
+Reconstruction
+SAE: random GPT
+0.11
+0.01
+0.27
+0.08
+SAE: trained GPT
+0.48
+0.85
+0.52
+0.95
+Linear probe
+0.98
+0.98
+0.99
+0.99
+Table 1: Best performance obtained for different techniques across games for Gboard state. As a baseline, we train an SAE on
+random GPT, a version of the trained GPT model with randomly initialized weights. All models were trained on activations
+after the post-MLP residual connection in layer 6.
+ing board state information in both Othello and chess (see
+Table 1, Figure 2d and 4d). In contrast, SAEs trained on a
+model with random weights perform very poorly according
+to our metrics, showing that SAE performance is driven by
+identifying structure in the models’ learned representation
+of game boards. Nonetheless, SAEs do not match the per-
+formance of linear probes in terms of reconstructing the
+board state. This performance gap suggests that SAEs do
+not capture all of the information encoded in the model’s
+internal representations.
+Standard SAEs trained with p-annealing perform on par
+with Gated SAEs.
+We find that standard SAEs trained
+using p-annealing consistently perform better than those
+trained with a constant L1 penalty (Equation 8), as mea-
+sured by existing proxy metrics and in terms of improve-
+ment in coverage (see Figure 2a and 4a). In fact, standard
+SAEs trained using p-annealing show a coverage score that
+is comparable to Gated SAEs trained without p-annealing.
+However, we find cases where our coverage metric disagrees
+with existing metrics. In Figure 2, for example, Gated SAEs
+perform achieve a higher loss recovered score than Standard
+SAEs trained using p-annealing. We emphasize that the
+training and inference of Gated SAEs is more computation-
+ally expensive, requiring 50% more compute per forward
+pass compared to Standard SAEs (Rajamanoharan et al.,
+2024).
+Coverage and board reconstruction reveal differences
+in SAE quality not captured by unsupervised metrics.
+Our metrics reveal improvements in SAE performance that
+traditional proxy metrics fail to capture. For example, we
+trained SAEs with hidden dimensions 4096 and 8192 (ex-
+pansion factors of 8 and 16, respectively). We expect the
+SAEs with 8192 hidden dimensions to perform better since
+they have greater capacity. However, we observe that they
+perform equally well according to prior unsupervised met-
+rics (see Figures 2 a, c and 4 a, c). In contrast, our metrics
+reveal that SAEs with larger hidden dimensions are better.
+For the Standard architecture, this is reflected by the parallel
+lines (of purple diamonds) in Figures 2 b, d and 4 b, d. Thus,
+our metrics are able to capture improvements from larger
+expansion factors. In addition, we find that the performance
+of p-annealing closely resembles that of Gated SAEs when
+evaluated using standard proxy metrics; it demonstrates
+clear improvements under our proposed metrics.
+Coverage and board reconstruction are consistent with
+existing metrics.
+Figures 2, 4, and 3 demonstrate that
+both coverage and board reconstruction metrics are opti-
+mal in the elbow region of the Pareto frontier. This region,
+where SAEs reconstruct internal activations efficiently with
+minimal features, also yielded the most coherent interpreta-
+tions during our manual inspections. This provides precise,
+empirical validation to the common wisdom that SAEs in
+this region of the Pareto frontier are the best.
+6. Limitations
+The proposed metrics for board reconstruction and coverage
+provide a more objective evaluation of SAE quality than
+previous subjective methods. Nevertheless, these metrics
+exhibit several limitations. Primarily, their applicability is
+confined to the chess and Othello domains, raising concerns
+about their generalizability to other domains or different
+models. Additionally, the set of BSPs that underpin these
+metrics is determined by researchers based on their domain
+knowledge. This approach may not encompass all pertinent
+features or strategic concepts, thus potentially overlooking
+essential aspects of model evaluation. Developing compa-
+rable objective metrics for other domains, such as natural
+language processing, remains a significant challenge. More-
+over, our current focus is on evaluating the quality of SAEs
+in terms of their ability to capture internal representations
+of the model. However, this does not directly address how
+these learned features could be utilized for downstream in-
+terpretability tasks.
+7. Related work
+Sparse dictionary learning.
+Since the nineties, dictionary
+learning (Elad, 2010; Dumitrescu & Irofti, 2018), sparse
+regression (Foucart & Rauhut, 2013), and later, sparse au-
+toencoders (Ng et al., 2011) have been extensively studied
+7
+
+[p8]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+(a) Coverage of Board State
+(b) Coverage of Board State vs. L0
+(c) Board Reconstruction
+(d) Board Reconstruction vs. L0
+Figure 4: Comparison of the coverage and board reconstruction metrics for Othello SAE quality on Gboard state. The coverage
+score reports the mean of maximal F1 scores over BSPs. The top row corresponds to coverage, and the bottom row
+corresponds to board reconstruction. The left column contains a scatterplot of loss recovered vs. L0, with the color scheme
+corresponding to the coverage score and each point representing different hyperparameters. We differentiate between SAE
+training methods with shapes.
+in the machine learning and signal processing literature.
+The seminal work of Olshausen & Field (1996) introduced
+the concept of sparse coding in neuroscience (see also (Ol-
+shausen & Field, 2004), building upon the earlier concept of
+sparse representations (Donoho, 1992) and matching pursuit
+(Mallat & Zhang, 1993). Subsequently, a series of works
+established the theoretical and algorithmic foundations of
+sparse dictionary learning (Elad & Bruckstein, 2002; Hoyer,
+2002; Eggert & Korner, 2004; Aharon et al., 2006; Yang
+et al., 2009; Jung et al., 2014; Tillmann, 2014; Arora et al.,
+2015; Bao et al., 2015; Blasiok & Nelson, 2016; Chalk et al.,
+2018). Notably, Gregor & LeCun (2010) introduced LISTA,
+an unrolled version of ISTA (Daubechies et al., 2004) that
+learns the dictionary instead of having it fixed.
+In parallel, autoencoders were introduced in machine learn-
+ing to automatically learn data features and perform dimen-
+sionality reduction (Hinton & Zemel, 1993; Li et al., 2023b).
+Inspired by sparse dictionary learning, sparse autoencoders
+(Ng et al., 2011; Coates et al., 2011; Coates & Ng, 2011;
+Makhzani & Frey, 2013; Li et al., 2016) were proposed as
+an unsupervised learning model to build deep sparse hierar-
+chical models of data, assuming a certain degree of sparsity
+in the hidden layer activations. Later, Luo et al. (2017) gen-
+eralized sparse autoencoders (SAEs) to convolutional SAEs.
+Although the theory for SAEs is less developed than that of
+dictionary learning with a fixed dictionary, some progress
+has been made in quantifying whether autoencoders can, in-
+deed, do sparse coding, e.g., Arpit et al. (2016); Rangamani
+et al. (2018); Nguyen et al. (2019).
+Feature disentanglement using sparse autoencoders.
+The individual computational units of neural networks are
+often polysemantic, i.e., they respond to multiple seem-
+ingly unrelated inputs (Arora et al., 2018). Elhage et al.
+(2022) investigated this phenomenon and suggested that
+neural networks represent features in linear superposition,
+which allows them to represent more features than they have
+dimensions. Thus, in an internal representation of dimen-
+sion n, a model can encode m ≫n concepts as linear
+directions (Park et al., 2023), such that only a sparse subset
+of concepts are active across all inputs – a concept deeply
+related to the coherence of vectors (Foucart & Rauhut, 2013)
+and to frame theory in general (Christensen et al., 2003). To
+identify these concepts, Sharkey et al. (2023) used SAEs
+to perform dictionary learning on a one-layer transformer,
+8
+
+[p9]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+identifying a large (overcomplete) basis of features. Cun-
+ningham et al. (2023) applied SAEs to language models
+and demonstrated that dictionary features can be used to
+localize and edit model behavior. Marks et al. (2024) pro-
+posed a scalable method to discover sparse feature circuits,
+as opposed to circuits consisting of polysemantic model
+components, and demonstrated that a human could change
+the generalization of a classifier by editing its feature circuit.
+Recently, Kissane et al. (2024) explored autoencoders for
+attention layer outputs. These works have benefited from a
+variety of open-source libraries for training SAEs for LLM
+interpretability (Marks & Mueller, 2024; Bloom & Chanin,
+2024; Cooney, 2023).
+Improving and evaluating sparse autoencoders.
+De-
+spite the success of SAEs at extracting human-interpretable
+features, they fail to perfectly reconstruct the activa-
+tions (Cunningham et al., 2023). One challenge in the train-
+ing of SAEs with an L1 penalty is shrinkage (or ’feature
+suppression’); in addition to encouraging sparsity, an L1
+penalty encourages feature activations to be smaller than
+they would be otherwise. Wright & Sharkey (2024) ap-
+proached this problem by fine-tuning the sparse autoencoder
+without a sparsity penalty. Jermyn et al. (2024) and Riggs
+& Brinkmann (2024) explored alternative sparsity penalties
+to reduce feature suppression during training. Rajamanoha-
+ran et al. (2024) introduced Gated SAEs, an architectural
+variation for the encoder which both addresses shrinkage
+and improves on the Pareto frontier of L0 vs reconstruction
+error. Recently, Gao et al. (2024) systematically evaluated
+the scaling laws with respect to sparsity, autoencoder size,
+and language model size.
+The goal of dictionary learning in machine learning is to
+produce human-interpretable features and capture the under-
+lying model’s computations (Bricken et al., 2023). However,
+quantitatively measuring interpretability is difficult and of-
+ten involves manual inspection. Therefore, most existing
+work assesses the quality of SAEs along different proxy
+metrics: (1) The cross-entropy loss recovered, which re-
+flects the degree to which the original loss of the language
+model can be recovered when replacing activations with the
+autoencoder predictions. (2) The L0-norm of feature acti-
+vations Ez∼D ∥h(z)∥0, measuring the number of activate
+features given an input (Ferrando et al., 2024). Makelov
+et al. (2024) proposed to compare SAEs against supervised
+feature dictionaries in a natural language setting. However,
+this requires a significant understanding of the model’s in-
+ternal computations and is thus not scalable.
+8. Conclusion
+Most SAE research has relied on proxy metrics such as
+loss recovered and L0, or subjective manual evaluation
+of interpretability by examining top activations. However,
+proxy measures only serve as an estimate of interpretabil-
+ity, monosemantic nature, and comprehensiveness of the
+learned features, while manual evaluations depend on the
+researcher’s domain knowledge and tend to be inconsistent.
+Our work provides a new, more objective paradigm for
+evaluating the quality of an SAE methodology; coverage
+serves as a quantifiable measure of monosemanticity and
+quality of feature extraction, while board reconstruction
+serves as a quantifiable measure of the extent to which an
+SAE is exhaustively representing the information contained
+within the language model. Therefore, the optimal SAE
+methodology can be judged by whether it yields both high
+coverage and high board reconstruction.
+Finally, we propose the p-annealing method, a modification
+to the SAE training paradigm that can be combined with
+other SAE methodologies and results in an improvement in
+both coverage and board reconstruction.
+Author Contributions
+A.K. built and maintained our infrastructure for working
+with board-game models. A.K., S.M., C.R., J.B., and L.S.
+designed the proposed metrics. B.W. performed initial ex-
+periments demonstrating the benefits of training SAEs with
+p < 1. B.W., C.M.V., and S.M. then proposed p-annealing,
+with B.W. leading the implementation and developing coef-
+ficient annealing. The basic framework for our dictionary
+learning work was built and maintained by S.M. and C.R.
+The training algorithms studied were implemented by S.M.,
+C.R., B.W., R.A., and J.B. R.A. trained the SAEs used in our
+experiments. A.K., C.R., and J.B. selected and implemented
+the BSPs. A.K. and J.B. trained the linear probes. Many
+of the authors (including L.S., J.B., R.A.) did experiments
+applying traditional dictionary learning methods and explor-
+ing both toy problems and natural language settings, which
+helped build valuable intuition. The manuscript was pri-
+marily drafted by A.K., B.W., C.R., R.A., J.B., C.M.V., and
+S.M., with extensive feedback and editing from all authors.
+D.B. suggested the original project idea.
+Acknowledgments
+C.R. is supported by Manifund Regrants and AISST. L.R. is
+supported by the Long Term Future Fund. S.M. is supported
+by an Open Philanthropy alignment grant.
+The work reported here was performed in part by the Uni-
+versity of Massachusetts Amherst Center for Data Science
+and the Center for Intelligent Information Retrieval, and in
+part using high performance computing equipment obtained
+under a grant from the Collaborative R&D Fund managed
+by the Massachusetts Technology Collaborative.
+9
+
+[p10]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+References
+Aharon, M., Elad, M., and Bruckstein, A. K-SVD: An algo-
+rithm for designing overcomplete dictionaries for sparse
+representation. IEEE Transactions on signal processing,
+54(11):4311–4322, 2006.
+Arora, S., Ge, R., Ma, T., and Moitra, A. Simple, efficient,
+and neural algorithms for sparse coding. In Conference
+on learning theory, pp. 113–149. PMLR, 2015.
+Arora, S., Li, Y., Liang, Y., Ma, T., and Risteski, A. Lin-
+ear algebraic structure of word senses, with applica-
+tions to polysemy. Transactions of the Association for
+Computational Linguistics, 6:483–495, 2018. doi: 10.
+1162/tacl a 00034. URL https://aclanthology.
+org/Q18-1034.
+Arpit, D., Zhou, Y., Ngo, H., and Govindaraju, V. Why
+regularized auto-encoders learn sparse representation?
+In International Conference on Machine Learning, pp.
+136–144. PMLR, 2016.
+Bao, C., Ji, H., Quan, Y., and Shen, Z. Dictionary learning
+for sparse coding: Algorithms and convergence analy-
+sis. IEEE transactions on pattern analysis and machine
+intelligence, 38(7):1356–1369, 2015.
+Bills, S., Cammarata, N., Mossing, D., Tillman, H., Gao, L.,
+Goh, G., Sutskever, I., Leike, J., Wu, J., and Saunders,
+W. Language models can explain neurons in language
+models. URL https://openaipublic. blob. core. windows.
+net/neuron-explainer/paper/index. html.(Date accessed:
+14.05. 2023), 2023.
+Blasiok, J. and Nelson, J. An improved analysis of the er-
+spud dictionary learning algorithm. In 43rd International
+Colloquium on Automata, Languages, and Programming
+(ICALP 2016). Schloss Dagstuhl-Leibniz-Zentrum fuer
+Informatik, 2016.
+Bloom, J. and Chanin, D. Sae lens. https://github.
+com/jbloomAus/SAELens, 2024.
+Bricken, T., Templeton, A., Batson, J., Chen, B., Jermyn, A.,
+Conerly, T., Turner, N., Anil, C., Denison, C., Askell, A.,
+et al. Towards monosemanticity: Decomposing language
+models with dictionary learning. Transformer Circuits
+Thread, pp. 2, 2023.
+Chalk, M., Marre, O., and Tkaˇcik, G. Toward a unified
+theory of efficient, predictive, and sparse coding. Pro-
+ceedings of the National Academy of Sciences, 115(1):
+186–191, 2018.
+Chartrand, R. Exact reconstruction of sparse signals via
+nonconvex minimization. IEEE Signal Processing Letters,
+14(10):707–710, 2007.
+Christensen, O. et al. An introduction to frames and Riesz
+bases, volume 7. Springer, 2003.
+Coates, A. and Ng, A. Y. The importance of encoding
+versus training with sparse coding and vector quantization.
+In Proceedings of the 28th international conference on
+machine learning (ICML-11), pp. 921–928, 2011.
+Coates, A., Ng, A., and Lee, H. An analysis of single-
+layer networks in unsupervised feature learning. In Pro-
+ceedings of the fourteenth international conference on
+artificial intelligence and statistics, pp. 215–223. JMLR
+Workshop and Conference Proceedings, 2011.
+Cooney, A.
+Sparse autoencoder library.
+https:
+//github.com/ai-safety-foundation/
+sparse_autoencoder, 2023.
+Cunningham, H., Ewart, A., Smith, L. R., Huben, R., and
+Sharkey, L. Sparse autoencoders find highly interpretable
+features in language models. In The Twelfth International
+Conference on Learning Representations, 2023.
+Daubechies, I., Defrise, M., and De Mol, C. An iterative
+thresholding algorithm for linear inverse problems with a
+sparsity constraint. Communications on Pure and Applied
+Mathematics: A Journal Issued by the Courant Institute
+of Mathematical Sciences, 57(11):1413–1457, 2004.
+Davis, G., Mallat, S., and Avellaneda, M. Adaptive greedy
+approximations. Constructive approximation, 13:57–98,
+1997.
+Donoho, D. L. Superresolution via sparsity constraints.
+SIAM journal on mathematical analysis, 23(5):1309–
+1331, 1992.
+Dumitrescu, B. and Irofti, P. Dictionary learning algorithms
+and applications. Springer, 2018.
+Eggert, J. and Korner, E. Sparse coding and nmf. In 2004
+IEEE International Joint Conference on Neural Networks
+(IEEE Cat. No. 04CH37541), volume 4, pp. 2529–2533.
+IEEE, 2004.
+Elad, M. Sparse and redundant representations: from theory
+to applications in signal and image processing. Springer
+Science & Business Media, 2010.
+Elad, M. and Bruckstein, A. M. A generalized uncertainty
+principle and sparse representation in pairs of bases. IEEE
+Transactions on Information Theory, 48(9):2558–2567,
+2002.
+Elhage, N., Hume, T., Olsson, C., Schiefer, N., Henighan,
+T., Kravec, S., Hatfield-Dodds, Z., Lasenby, R., Drain,
+D., Chen, C., et al. Toy models of superposition. arXiv
+preprint arXiv:2209.10652, 2022.
+10
+
+[p11]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+Ferrando, J., Sarti, G., Bisazza, A., and Costa-juss`a, M. R.
+A primer on the inner workings of transformer-based lan-
+guage models. arXiv preprint arXiv:2405.00208, 2024.
+Foucart, S. and Rauhut, H. A Mathematical Introduction
+to Compressive Sensing. Springer New York, New York,
+NY, 2013.
+Gao, L., la Tour, T. D., Tillman, H., Goh, G., Troll, R.,
+Radford, A., Sutskever, I., Leike, J., and Wu, J. Scal-
+ing and evaluating sparse autoencoders. arXiv preprint
+arXiv:2406.04093, 2024.
+Gregor, K. and LeCun, Y. Learning fast approximations of
+sparse coding. In Proceedings of the 27th international
+conference on international conference on machine learn-
+ing, pp. 399–406, 2010.
+Hinton, G. E. and Zemel, R. Autoencoders, minimum de-
+scription length and helmholtz free energy. Advances in
+neural information processing systems, 6, 1993.
+Hoyer, P. O. Non-negative sparse coding. In Proceedings
+of the 12th IEEE workshop on neural networks for signal
+processing, pp. 557–565. IEEE, 2002.
+Jermyn, A., Templeton, A., Batson, J., and Bricken,
+T.
+Tanh penalty in dictionary learning, 2024.
+URL
+https://transformer-circuits.pub/
+2024/feb-update/index.html.
+Accessed:
+2024-05-20.
+Jung, A., Eldar, Y. C., and G¨ortz, N. Performance limits
+of dictionary learning for sparse coding. In 2014 22nd
+European Signal Processing Conference (EUSIPCO), pp.
+765–769. IEEE, 2014.
+Karvonen, A. Emergent world models and latent variable
+estimation in chess-playing language models, 2024.
+Kissane, C., Krzyzanowski, R., Bloom, J. I., Conmy, A., and
+Nanda, N. Interpreting attention layer outputs with sparse
+autoencoders. In ICML 2024 Workshop on Mechanistic
+Interpretability, 2024.
+Li, J., Zhang, T., Luo, W., Yang, J., Yuan, X.-T., and Zhang,
+J. Sparseness analysis in the pretraining of deep neural
+networks. IEEE transactions on neural networks and
+learning systems, 28(6):1425–1438, 2016.
+Li, K., Hopkins, A. K., Bau, D., Vi´egas, F., Pfister, H.,
+and Wattenberg, M. Emergent world representations:
+Exploring a sequence model trained on a synthetic task.
+In The Eleventh International Conference on Learning
+Representations, 2023a.
+Li, P., Pei, Y., and Li, J. A comprehensive survey on design
+and application of autoencoder in deep learning. Applied
+Soft Computing, 138:110176, 2023b.
+Lichess. lichess.org open database, 2024. URL https:
+//database.lichess.org.
+Luo, W., Li, J., Yang, J., Xu, W., and Zhang, J. Convolu-
+tional sparse autoencoders for image classification. IEEE
+transactions on neural networks and learning systems, 29
+(7):3289–3294, 2017.
+Makelov, A., Lange, G., and Nanda, N. Towards principled
+evaluations of sparse autoencoders for interpretability and
+control. arXiv preprint arXiv:2405.08366, 2024.
+Makhzani, A. and Frey, B. K-sparse autoencoders. arXiv
+preprint arXiv:1312.5663, 2013.
+Mallat, S. G. and Zhang, Z. Matching pursuits with time-
+frequency dictionaries.
+IEEE Transactions on signal
+processing, 41(12):3397–3415, 1993.
+Marks, S. and Mueller, A. dictionary learning. https:
+//github.com/saprmarks/dictionary_
+learning, 2024.
+Marks, S., Rager, C., Michaud, E. J., Belinkov, Y., Bau, D.,
+and Mueller, A. Sparse feature circuits: Discovering and
+editing interpretable causal graphs in language models.
+arXiv preprint arXiv:2403.19647, 2024.
+McGrath, T., Kapishnikov, A., Tomaˇsev, N., Pearce, A.,
+Wattenberg, M., Hassabis, D., Kim, B., Paquet, U., and
+Kramnik, V. Acquisition of chess knowledge in alphazero.
+Proceedings of the National Academy of Sciences, 119
+(47), November 2022. ISSN 1091-6490. doi: 10.1073/
+pnas.2206625119. URL http://dx.doi.org/10.
+1073/pnas.2206625119.
+Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., and
+Dean, J. Distributed representations of words and phrases
+and their compositionality. Advances in neural informa-
+tion processing systems, 26, 2013.
+Nanda, N., Lee, A., and Wattenberg, M. Emergent lin-
+ear representations in world models of self-supervised
+sequence models.
+In Belinkov, Y., Hao, S., Jumelet,
+J., Kim, N., McCarthy, A., and Mohebbi, H. (eds.),
+Proceedings of the 6th BlackboxNLP Workshop: An-
+alyzing and Interpreting Neural Networks for NLP,
+pp. 16–30, Singapore, December 2023. Association for
+Computational Linguistics.
+doi:
+10.18653/v1/2023.
+blackboxnlp-1.2.
+URL https://aclanthology.
+org/2023.blackboxnlp-1.2.
+Natarajan, B. K. Sparse approximate solutions to linear
+systems. SIAM journal on computing, 24(2):227–234,
+1995.
+Ng, A. et al. Sparse autoencoder. CS294A Lecture notes, 72
+(2011):1–19, 2011.
+11
+
+[p12]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+Nguyen, T. V., Wong, R. K., and Hegde, C. On the dynam-
+ics of gradient descent for autoencoders. In The 22nd
+International Conference on Artificial Intelligence and
+Statistics, pp. 2858–2867. PMLR, 2019.
+Olshausen, B. A. and Field, D. J. Emergence of simple-cell
+receptive field properties by learning a sparse code for
+natural images. Nature, 381(6583):607–609, 1996.
+Olshausen, B. A. and Field, D. J. Sparse coding of sensory
+inputs. Current opinion in neurobiology, 14(4):481–487,
+2004.
+Park, K., Choe, Y. J., and Veitch, V. The linear represen-
+tation hypothesis and the geometry of large language
+models. arXiv preprint arXiv:2311.03658, 2023.
+Rajamanoharan, S., Conmy, A., Smith, L., Lieberum, T.,
+Varma, V., Kram´ar, J., Shah, R., and Nanda, N. Improving
+dictionary learning with gated sparse autoencoders. arXiv
+preprint arXiv:2404.16014, 2024.
+Rangamani, A., Mukherjee, A., Basu, A., Arora, A., Gana-
+pathi, T., Chin, S., and Tran, T. D. Sparse coding and
+autoencoders. In 2018 IEEE International Symposium on
+Information Theory (ISIT), pp. 36–40. IEEE, 2018.
+Riggs, L. and Brinkmann, J. Improving sparse autoencoders
+by square-rooting l1 and removing lowest activation fea-
+tures, 2024.
+URL https://www.lesswrong.
+com/posts/YiGs8qJ8aNBgwt2YN/
+improving-sae-s-by-sqrt-ing-l1-and-removing-lowest.
+Accessed: 2024-05-20.
+Sharkey, L., Braun, D., and Millidge, B.
+Taking fea-
+tures out of superposition with sparse autoencoders,
+2023.
+URL https://www.alignmentforum.
+org/posts/z6QQJbtpkEAX3Aojj/
+interim-research-report-taking-features-out-of-superposition.
+Accessed: 2023-05-10.
+Templeton, A., Conerly, T., Marcus, J., Lindsey, J., Bricken,
+T., Chen, B., Pearce, A., Citro, C., Ameisen, E., Jones,
+A., Cunningham, H., Turner, N. L., McDougall, C.,
+MacDiarmid, M., Freeman, C. D., Sumers, T. R.,
+Rees, E., Batson, J., Jermyn, A., Carter, S., Olah,
+C., and Henighan, T.
+Scaling monosemanticity: Ex-
+tracting interpretable features from claude 3 sonnet.
+Transformer Circuits Thread, 2024.
+URL https:
+//transformer-circuits.pub/2024/
+scaling-monosemanticity/index.html.
+Tillmann, A. M. On the computational intractability of
+exact and approximate dictionary learning. IEEE Signal
+Processing Letters, 22(1):45–49, 2014.
+Wang, M., Xu, W., and Tang, A. On the performance of
+sparse recovery via ℓp-minimization (0 ≤p ≤1). IEEE
+Transactions on Information Theory, 57(11):7255–7278,
+2011.
+Wen, J., Li, D., and Zhu, F. Stable recovery of sparse
+signals via lp-minimization. Applied and Computational
+Harmonic Analysis, 38(1):161–176, 2015.
+Wright,
+B.
+and
+Sharkey,
+L.
+Addressing
+fea-
+ture
+suppression
+in
+sparse
+autoencoders,
+2024.
+URL
+https://www.lesswrong.
+com/posts/3JuSjTZyMzaSeTxKk/
+addressing-feature-suppression-in-saes.
+Accessed: 2024-05-20.
+Wright, J. and Ma, Y. High-dimensional data analysis with
+low-dimensional models: Principles, computation, and
+applications. Cambridge University Press, 2022.
+Yang, C., Shen, X., Ma, H., Gu, Y., and So, H. C. Sparse
+recovery conditions and performance bounds for ℓp-
+minimization. IEEE Transactions on Signal Processing,
+66(19):5014–5028, 2018.
+Yang, J., Yu, K., Gong, Y., and Huang, T. Linear spatial
+pyramid matching using sparse coding for image classifi-
+cation. In 2009 IEEE Conference on computer vision and
+pattern recognition, pp. 1794–1801. IEEE, 2009.
+Zheng, L., Maleki, A., Weng, H., Wang, X., and Long,
+T. Does ℓp-minimization outperform ℓ1-minimization?
+IEEE Transactions on Information Theory, 63(11):6896–
+6935, 2017.
+12
+
+[p13]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+A. Sparse Autoencoder Training Parameters
+We used a single NVIDIA A100 GPU for training SAEs and experiments. It takes much less than 24 hours to train a single
+SAE on 300 million tokens. Given a trained SAE, our evaluation requires less than 5 minutes of computing time.
+Table 2: Training parameters of our sparse autoencoders.
+Parameter
+Value
+Number of tokens
+300M
+Optimizer
+Adam
+Adam betas
+(0.9, 0.999)
+Linear warmup steps
+1,000
+Batch size
+8,192
+Learning rate
+3e-4
+Expansion factor
+{8, 16}
+Annealing start
+10,000
+pend
+0.2
+λinit
+[0.02, 2.0]
+13
+
+[p14]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+B. List of Board State Properties
+Table 3 summarizes the high-level board state properties considered in Gstrategy. The selection of concepts was inspired
+by McGrath et al. (2022). The column indicated by # denotes the number of individual BSPs per concept. A single BSP per
+concept indicates we match this condition globally for any corresponding piece.
+Table 3: List of strategic Board State Properties.
+Concept
+#
+Description
+check
+1
+Indicates whether the player to move is checked by the opponent.
+can check
+1
+Indicates whether the player to move could check the opponent with the next
+move.
+queen
+1
+Indicates whether the player to move has a queen on the board.
+can capture queen
+1
+Indicates whether the player to move can capture the queen of the opponent.
+bishop pair
+1
+Indicates whether the player to move still has both bishops on the board.
+castling rights
+1
+Indicates whether the player to move is still allowed to castle, contingent on
+the king and the rooks not having moved.
+kingside castling rights
+1
+Indicates whether the player to move is still allowed to kingside castle,
+contingent on the king and the kingside rook not having moved.
+queenside castling rights
+1
+Indicates whether the player to move is still allowed to queenside castle,
+contingent on the king and the queenside rook not having moved.
+fork
+1
+Indicates whether the player to move attacks has a fork on major pieces of the
+opponent.
+pin
+1
+Indicates whether there is a pin on the board, such that a player’s piece cannot
+move without exposing the kind behind it to capture.
+legal en passant
+1
+Indicates whether the player to move has a legal en passant: a special pawn
+capture that can only occur immediately after an opponent moves a pawn two
+squares from its starting position and it lands beside the player’s pawn.
+ambiguous moves
+1
+Indicates whether there are moves that would require further specification as
+more than one piece of the same type can move to the same square.
+threatened squares
+64
+Indicates which squares are threatened by the opponent.
+legal moves
+64
+Indicates which squares can be legally moved to by the current player.
+14
+
+[p15]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+C. Performance of Linear Probes and SAEs on Board State Properties
+In Figure 3, we present a mean coverage score over strategy board state properties GBSP. Properties within GBSP vary
+significantly in complexity. For example, queen detection can be inferred directly from the move history, while fork
+detection requires an accurate representation of the board state. Table 4 shows that linear probe F1-score is below 0.95 for 6
+out of 15 properties in GBSP. This suggests that chess-GPT (Karvonen, 2024) does not represent these properties linearly.
+Additional experiments are required to determine whether the representation is present at all.
+For the board state case, reconstruction is significantly higher than coverage. This is because there are many SAE features
+that are high precision classifiers for a configuration of squares, such as ”white pawn on e4, white knight of f3”. In cases
+where coverage is higher than reconstruction (such as for can check), it is because there are not many features that are
+over 95% precision for “there is a check move available” from which we can recover if there is an available check move.
+Coverage is significantly higher because there is at least one feature that has an F1-score of 0.54 for can check, which
+may not have a precision greater than 95%.
+Table 4: Comparison of performance of linear probes trained to predict board state properties given residual stream activation
+of ChessGPT after the sixth layer with SAEs evaluated using our coverage and reconstruction metrics.
+Concept
+Linear Probe F1-score
+Best SAE Reconstruction
+score
+Best SAE Coverage score
+check
+1.00
+1.00
+1.00
+can check
+0.93
+0.27
+0.54
+can capture queen
+0.66
+0.62
+0.48
+queen
+1.00
+0.97
+0.96
+bishop pair
+1.00
+0.83
+0.86
+castling rights
+1.00
+0.98
+0.82
+kingside castling
+1.00
+0.98
+0.81
+queenside castling
+1.00
+0.97
+0.81
+fork
+0.68
+0.13
+0.38
+pin
+0.67
+0.20
+0.33
+legal en passant
+0.96
+0.92
+0.90
+ambiguous moves
+0.72
+0.25
+0.57
+threatened squares
+0.96
+0.93
+0.71
+legal moves
+0.92
+0.66
+0.63
+board state
+0.98
+0.67
+0.41
+15
+
+[p16]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+Table 5: Comparison of performance of linear probes trained to predict high-level board state properties given residual
+stream activations with SAEs, both trained on a model with the same architecture as ChessGPT but randomly initialized.
+Performance on metrics can be high when the metric is correlated with move number or syntax level patterns (such as
+castling, which corresponds to “0-0”).
+Concept
+Linear Probe F1-score
+Best SAE Reconstruction
+score
+Best SAE Coverage score
+check
+0.00
+0.00
+0.13
+can check
+0.19
+0.03
+0.52
+can capture queen
+0.00
+0.00
+0.09
+queen
+0.85
+0.95
+0.93
+bishop pair
+0.82
+0.74
+0.81
+castling rights
+0.89
+0.75
+0.65
+kingside castling
+0.89
+0.75
+0.65
+queenside castling
+0.89
+0.75
+0.64
+fork
+0.01
+0.00
+0.07
+pin
+0.00
+0.00
+0.25
+legal en passant
+0.00
+0.00
+0.06
+ambiguous moves
+0.13
+0.00
+0.52
+threatened squares
+0.82
+0.73
+0.60
+legal moves
+0.65
+0.36
+0.45
+board state
+0.26
+0.01
+0.11
+16
+
+[p17]
+Measuring Progress in Dictionary Learning for Language Model Interpretability with Board Game Models
+D. Model Internal Board State Representation
+D.1. Othello Models
+Previous research of Othello-playing language models found that the model learned a nonlinear model of the board state (Li
+et al., 2023a). Further investigation found a closely related linear representation of the board when probing for ”my color”
+vs. ”opponent’s color” rather than white vs. black (Nanda et al., 2023). Based on these findings, when measuring the state
+of the board in Othello, we represent squares as (mine, yours) rather than (white, black).
+D.2. Chess Models
+Similar to Othello models, prior studies of chess-playing language models found the same property, where linear probes
+were only successful on the objective of the (mine, yours) representation and were unsuccessful on the (white, black)
+representation (Karvonen, 2024). They measured board state at the location of every period in the Portable Game Notation
+(PGN) string, which indicates that it is white’s turn to move and maintain the (mine, yours) objective. Some characters in
+the PGN string contain little board state information as measured by linear probes, and there is not a clear ground truth
+board state part way through a move (e.g., the “f” in “Nf3”). We follow these findings and measure the board state at every
+period in the PGN string.
+When measuring chess piece locations, we do not measure pieces on their initial starting location, as this correlates with
+position in the PGN string. An SAE trained on residual stream activations after the first layer of the chess model (which
+contains very little board state information as measured by linear probes) obtains a board reconstruction F1-score of 0.01 in
+this setting. If we also measure pieces on their initial starting location, the layer 1 SAE’s F1-score increases to 0.52, as the
+board can be mostly reconstructed in early game positions purely from the token’s location in the PGN string. Masking the
+initial board state and blank squares decreases the F1-score of the linear probe from 0.99 to 0.98.
+17

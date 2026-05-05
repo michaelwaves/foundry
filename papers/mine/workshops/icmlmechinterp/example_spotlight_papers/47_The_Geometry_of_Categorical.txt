@@ -1,0 +1,1321 @@
+
+[p1]
+The Geometry of Categorical and
+Hierarchical Concepts in Large Language Models
+Kiho Park 1 Yo Joong Choe 1 Yibo Jiang 1 Victor Veitch 1
+Abstract
+Understanding how semantic meaning is encoded
+in the representation spaces of large language
+models is a fundamental problem in interpretabil-
+ity. In this paper, we study the two foundational
+questions in this area. First, how are categorical
+concepts, such as {mammal, bird, reptile,
+fish}, represented? Second, how are hierar-
+chical relations between concepts encoded? For
+example, how is the fact that dog is a kind of
+mammal encoded? We show how to extend the
+linear representation hypothesis to answer these
+questions. We then ﬁnd a remarkably simple struc-
+ture: simple categorical concepts are represented
+as simplices, hierarchically related concepts are
+orthogonal in a sense we make precise, and (in
+consequence) complex concepts are represented
+as polytopes constructed from direct sums of sim-
+plices, reﬂecting the hierarchical structure. We
+validate the results on the Gemma large language
+model, estimating representations for 957 hier-
+archically related concepts using data from the
+WordNet hierarchy.
+1. Introduction
+This paper concerns how high-level semantic concepts are
+encoded in the representation spaces of large language mod-
+els (LLMs). Understanding this is crucial for model inter-
+pretability and control. The ultimate aspiration is to monitor
+(and manipulate) the semantic behavior of LLMs (e.g., is the
+model’s response truthful) by directly measuring (and edit-
+ing) the internal vector representations of the model (e.g., Li
+et al., 2023a; Zou et al., 2023; Ghandeharioun et al., 2024).
+Achieving this requires understanding how the geometric
+structure of the representation spaces corresponds to the
+high-level semantic concepts that humans understand. In
+1University of Chicago, Illinois, USA.
+Mechanistic Interpretability (MI) Workshop at the 41 st Interna-
+tional Conference on Machine Learning, Vienna, Austria. PMLR
+235, 2024. Copyright 2024 by the author(s).
+this paper, we are concerned with two fundamental ques-
+tions in this direction:
+1. How are categorical concepts represented? For ex-
+ample, what is the representation of the concept
+animal = {mammal, bird, reptile, fish}?
+2. How are hierarchical relations between concepts repre-
+sented? For example, what is the relationship between
+the representations of animal, mammal, dog, and
+poodle?
+Our starting point is the linear representation hypothe-
+sis, the informal idea that high-level concepts are lin-
+early encoded in the representation spaces of LLMs (e.g.,
+Marks & Tegmark, 2023; Tigges et al., 2023; Gurnee &
+Tegmark, 2024).
+A main challenge for the linear rep-
+resentation hypothesis is that, in general, it’s not clear
+what “linear” means, nor what constitutes a “high-level
+concept”. Park et al. (2024) give a formalization in the
+limited setting of binary concepts that can be deﬁned by
+counterfactual pairs of words. For example, the concept of
+male ⇒female is formalized using the counterfactual
+pairs {(“man”, “woman”), (“king”, “queen”), . . . }. They
+prove that such binary concepts have a well-deﬁned lin-
+ear representation as a direction in the representation space.
+They further connect semantic structure and representation
+geometry by showing that, under a suitably deﬁned causal
+inner product, concepts that can be freely manipulated (e.g.,
+male ⇒female and french ⇒english) are repre-
+sented by orthogonal directions.
+Our aim here is to extend this formalization beyond binary
+concepts represented as counterfactual word pairs. For ex-
+ample, the animal concept does not have a natural counter-
+factual deﬁnition, but such concepts are fundamental to hu-
+man semantic understanding. Further, we aim to understand
+how the geometry of the representation space encodes se-
+mantic relationships between concepts that cannot be freely
+manipulated, such as animal and mammal.
+To that end, we make the following contributions:
+1. We show how to move from representations of binary
+concepts as directions to representations as vectors.
+1
+
+[p2]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+Organism
+Animal
+Plant
+Fish
+Reptile
+Bird
+Mammal
+Dog
+Tiger
+Elephant
+⊕
+⊕
+⊕
+Organism
+Animal
+Plant
+Reptile
+Fish
+Mammal
+Bird
+Elephant
+Tiger
+Dog
+(a) Pictorial depiction of the representation of hierarchically related concepts. 
+(b) Hierarchy is encoded as orthogonality in Gemma.
+(c) Categorical concepts are represented as simplices in Gemma.
+Figure 1. In large language models, categorical concepts are represented as simplices in the representation space. Further, hierarchically
+related concepts (such as animal and mammal ⇒bird) live in orthogonal subspaces. The top panel illustrates the structure, the bottom
+panels show the measured representation structure in the Gemma LLM. See Section 5 for details.
+That is, we show how to associate a magnitude to
+the representation of a binary concept. This allows
+us to study semantic composition using simple vector
+addition.
+2. Using this result, we show that semantic hierarchy
+between concepts is encoded geometrically as orthogo-
+nality between representations, in a manner we make
+precise.
+3. Then, we construct the representation of categorical
+variables (e.g., animal) as the polytope where the ver-
+tices are the representations of the binary features that
+deﬁne the category (e.g., mammal, bird, . . . ). We
+show that for “natural” concepts, the representation is
+a simplex.
+4. Finally, we empirically validate these theoretical re-
+sults on the Gemma large language model (Mesnard
+et al., 2024). To that end, we extract concepts from
+the WordNet hierarchy (Miller, 1995), estimate their
+representations, and show that the geometric structure
+of the representations align with the semantic hierarchy
+of WordNet.
+The ﬁnal structure is remarkably simple, and is summarized
+in Figure 1. In totality, these results provide a foundation
+for understanding how high-level semantic concepts are
+encoded in the representation spaces of LLMs.
+2. Preliminaries
+Before we proceed, we introduce notations and deﬁnitions
+that we use throughout the paper.
+2
+
+[p3]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+Large Language Models
+For the purposes of this paper,
+we consider a large language model to consist of two parts.
+The ﬁrst part is a function λ that maps input texts x to vec-
+tors λ(x) in a representation space Λ ≃Rd. This is the
+function given by the stacked transformer blocks. We take
+λ(x) to be the output of the ﬁnal layer at the ﬁnal token po-
+sition. The second part is an unembedding layer that assigns
+a vector γ(y) in an unembedding space Γ ≃Rd to each
+token y in the vocabulary. Together, these deﬁne a sampling
+distribution over tokens via the softmax distribution:
+P(y | x) =
+exp(λ(x)⊤γ(y))
+P
+y′∈Vocab exp(λ(x)⊤γ(y′)).
+(2.1)
+The broad goal is to understand how semantic structure is
+encoded in the geometry of the spaces Λ and Γ. (We do not
+address the “internal” structure of the LLMs in this paper,
+though we are optimistic that a clear understanding of the
+softmax geometry will shed light on this as well.)
+Concepts
+We formalize a concept as a latent variable
+W that is caused by the context X and causes the
+output Y . That is, a concept is a thing that could—in
+principle—be manipulated to affect the output of the
+language model. In the particular case where a concept
+is a binary variable with a word-level counterfactual,
+we can identify the variable W with the counterfac-
+tual pair of outputs (Y (0), Y (1)).
+Concretely, we
+can identify male ⇒female with (Y (0), Y (1)) ∈R
+{(“man”, “woman”), (“king”, “queen”), (“he”, “her”), . . . }.
+We emphasize that the notion of a concept as a latent
+variable that affects the output is more general than the
+counterfactual binary case.
+Given a pair of concept variables W and Z, we say that
+W is causally separable with Z if the potential outcome
+Y (W = w, Z = z) is well-deﬁned for all w, z. That is,
+two variables are causally separable if they can be freely
+manipulated—e.g., we can change the output language and
+the sex of the subject freely, so these concepts are causally
+separable.
+Causal Inner Product and Linear Representations
+We
+are trying to understand how concepts are represented. At
+this stage, there are two distinct representation spaces: Λ
+and Γ. The former is the space of context embeddings, and
+the latter is the space of token unembeddings. We would
+like to unify these spaces so that there is just a single notion
+of representation.
+Park et al. (2024) show how to achieve this uniﬁcation via a
+“Causal Inner Product”. This is a particular choice of inner
+product that respects the semantics of language in the sense
+that the linear representations of (binary, counterfactual)
+causally separable concepts are orthogonal under the inner
+product. Their result can be understood as saying that there
+is some invertible matrix A and constant vector ¯γ0 such that,
+if we transform the embedding and unembedding spaces as
+g(y) ←A(γ(y) −¯γ0),
+ℓ(x) ←A−⊤λ(x)
+(2.2)
+then the Euclidean inner product in the transformed spaces
+is the causal inner product, and the Riesz isomorphism be-
+tween the embedding and unembedding spaces is simply
+the usual vector transpose operation. We can estimate A as
+the whitening operation for the unembedding matrix. Fol-
+lowing this transformation, we can think of the embedding
+and unembedding spaces as the same space, equipped with
+the familiar Euclidean inner product.1
+Notice that the softmax probabilities are unchanged for
+any A and ¯γ0, so this transformation does not affect the
+model’s behavior. The vector ¯γ0 deﬁnes an origin for the
+unembedding space, and can be chosen arbitrarily. We give
+a particularly convenient choice below.
+In this uniﬁed space, the linear representation of a binary
+concept W ∈R {0, 1} is deﬁned as:
+Deﬁnition 2.1. A vector ¯ℓW is a linear representation of
+a binary concept W if for all contexts ℓ, and all concept
+variables Z that are causally separable with W, we have,
+for all α > 0,
+P(W = 1 | ℓ+ α¯ℓW ) > P(W = 1 | ℓ), and
+(2.3)
+P(Z | ℓ+ α¯ℓW ) = P(Z | ℓ).
+(2.4)
+That is, the linear representation is a direction in the repre-
+sentation space that, when added to the context, increases
+the probability of the concept, but does not affect the
+probability of any off-target concept. In the case of bi-
+nary concepts that can be represented as counterfactual
+pairs of words, this direction can be shown to be propor-
+tional to the “linear probing” direction, and proportional
+to g(Y (1)) −g(Y (0)) for any counterfactual pair of words
+Y (1), Y (0) that represent the concept W.
+3. Binary Concepts and Hierarchical
+Structure
+Our high-level strategy will be to build up from binary
+concepts to more complex structure. We begin by deﬁning
+the basic building blocks.
+Binary and Categorical Concepts
+We consider two
+kinds of binary concept.
+A binary feature W
+∈R
+{not w, is w} is an indicator of whether the output has
+the attribute w. For example, if the feature is animal is
+1We are glossing over some technical details here; see (Park
+et al., 2024) for details.
+3
+
+[p4]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+true then the output will be about an animal. A binary con-
+trast a ⇒b ∈R {a, b} is a binary variable that contrasts
+two speciﬁc attribute values. For example, the variable
+mammal ⇒bird is a binary contrast. In the particular
+case where the concept may be represented as counterfac-
+tual pairs of words, we can identify the contrast with the
+notion of linear representation in Park et al. (2024).
+We also deﬁne a categorical concept to be any concept
+corresponding to a categorical latent variable. This includes
+binary concepts as a special case.
+Hierarchical Structure
+The next step is to deﬁne what
+we mean by a hierarchical relation between concepts. To
+that end, to each attribute w, we associate a set of tokens
+Y(w) that have the attribute. For example, Y(mammal) =
+{“ dog”, “ cats”, “ Tiger”, . . . }. Then,
+Deﬁnition 3.1. A value z is subordinate to a value w (de-
+noted by z ≺w) if Y(z) ⊆Y(w). We say a categorical
+concept Z ∈R {z0, . . . , zk−1} is subordinate to a categori-
+cal concept W ∈R {w0, . . . , wn−1} if there exists a value
+wZ of W such that each value zi of Z is subordinate to wZ.
+For example, the binary contrast dog ⇒cat is subordi-
+nate to the binary feature {is mammal, not mammal},
+and the binary contrast parrot ⇒eagle is subordi-
+nate to the categorical concept {mammal, bird, fish}.
+On the other hand, dog ⇒eagle is not subordinate
+to bird
+⇒
+mammal, and bird
+⇒
+mammal and
+live in house ⇒live in water are not subordi-
+nate to each other.
+Linear Representations of Binary Concepts
+Now we
+return to the question of how binary concepts are repre-
+sented. A key desideratum is that if ¯ℓW is a linear repre-
+sentation then moving the representation in this direction
+should modify the probability of the target concept in iso-
+lation. If adding ¯ℓW also modiﬁed off-target concepts, it
+would not be natural to identify it with W. In Deﬁnition 2.1,
+this idea is formalized by the requirement that the probabil-
+ity of causally separable concepts is unchanged when the
+representation is added to the context.
+We now observe that, when there is hierarchical structure,
+this requirement is not strong enough to capture ‘off-target’
+behavior. For example, if ¯ℓanimal captures the concept of
+animal vs not-animal, then moving in this direction should
+not affect the relative probability of the output being about
+a mammal versus a bird. If it did, then the representation
+would actually capture some amalgamation of the animal
+and mammal concepts. Accordingly, we must strengthen
+our deﬁnition:
+Deﬁnition 3.2. A vector ¯ℓW is a linear representation of a
+binary concept W if for all contexts ℓ,
+P(W = 1 | ℓ+ α¯ℓW ) > P(W = 1 | ℓ), and
+(3.1)
+P(Z | ℓ+ α¯ℓW ) = P(Z | ℓ),
+(3.2)
+for all α > 0 and all concept variables Z that are either
+subordinate or causally separable with W. Here, if W is
+a binary feature for an attribute w, W = 1 denotes W =
+is w.
+Notice that, in the case of binary concepts deﬁned by coun-
+terfactual pairs, this deﬁnition is equivalent to Deﬁnition 2.1,
+because such variables have no subordinate concepts.
+4. Representations of Complex Concepts
+Vector Representations of Binary Features
+To build up
+to complex concepts, we need to understand how to com-
+pose representations of binary concepts. At this stage, the
+representations are directions in the representation space—
+they do not have a natural notion of magnitude. In particular,
+this means we cannot use vector operations (such as addi-
+tion) to compose representations. To overcome this, we now
+show how to associate a magnitude to the representation of
+a binary concept.
+The key is the following result connecting binary feature
+representations and word unembeddings:
+Theorem 4.1 (Magnitudes of Linear Representations). Sup-
+pose there exists a linear representation (normalized direc-
+tion) ¯ℓW of a binary feature W for an attribute w. Then,
+there is a constant bw > 0 and a choice of unembedding
+space origin ¯γw
+0 in (2.2) such that
+(¯ℓ⊤
+W g(y) = bw
+if y ∈Y(w)
+¯ℓ⊤
+W g(y) = 0
+if y ̸∈Y(w).
+(4.1)
+Further, if there are d causally separable attributes
+{w0, . . . , wd−1} with linear representations, we can choose
+a canonical origin ¯γ0 in (2.2) as
+¯γ0 =
+X
+i
+¯γwi
+0 .
+(4.2)
+All proofs are given in Appendix A.
+In words, this theorem says that if a (perfect) linear repre-
+sentation of the animal feature exists, then every token that
+has the animal attribute has the same dot product with the
+representation vector; i.e., “cat” is exactly as much animal
+as “dog” is. If this weren’t true, then increasing the probabil-
+ity that the output is about an animal would also increase the
+relative probability that the output is about a dog rather than
+a cat. In practice, such exact representations are unlikely
+to be found by gradient descent in LLM training. Rather,
+4
+
+[p5]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+we expect ¯ℓ⊤
+W g(y) to be isotropically distributed around bw
+with variance that is small compared to bw (so that animal
+and non-animal words are well-separated.)
+With this result in hand, we can deﬁne a notion of vector
+representation for a binary feature:
+Deﬁnition 4.2. We say that binary feature W for an at-
+tribute w has a vector representation ¯ℓw ∈Rd if ¯ℓw satisﬁes
+Deﬁnition 3.2 and ∥¯ℓw∥2 = bw in Theorem 4.1. If the vec-
+tor representation of a binary feature is not unique, we say
+¯ℓw is the vector representation that maximizes bw.
+Hierarchical Orthogonality
+We have now moved from
+representations as directions to representations as vectors.
+Using this result, we now establish how hierarchical rela-
+tions between concepts are encoded in the vector space struc-
+ture of the representation space. The structure is illustrated
+in Figure 2. Formally, we have the following connections
+between vector and semantic structure:
+Theorem 4.3 (Hierarchical Orthogonality). Suppose there
+exist the vector representations for all the following binary
+features. Then, we have that
+(a) ¯ℓw1 −¯ℓw0 is a linear representation ¯ℓw0⇒w1 deﬁned
+in Deﬁnition 3.2;
+(b) ¯ℓw ⊥¯ℓz −¯ℓw for z ≺w;
+(c) ¯ℓw ⊥¯ℓz1 −¯ℓz0 for Z ∈R {z0, z1} subordinate to
+W ∈R {not w, is w};
+(d) ¯ℓw1 −¯ℓw0 ⊥¯ℓz1 −¯ℓz0 for Z ∈R {z0, z1} subordinate
+to W ∈R {w0, w1}; and
+(e) ¯ℓw1 −¯ℓw0 ⊥¯ℓw2 −¯ℓw1 for w2 ≺w1 ≺w0.
+We emphasize that these results—involving differences of
+representations—are only possible because we now have
+vector representations (mere direction would not sufﬁce).
+Categorical Concepts as Simplices
+The power of having
+a vector representation is that now we can use ordinary
+vector space operations to construct representation of other
+concepts. We now turn to the representation of categorical
+concepts, e.g., {mammal, reptile, bird, fish}. There
+is now a straightforward way to deﬁne the representation of
+such concepts:
+Deﬁnition 4.4. The polytope representation of a categorical
+concept Z = {z0, . . . , zk−1} is the convex hull of the vector
+representations of the elements of the concept.
+Polytopes are quite general objects. The deﬁnition here also
+includes representations of categorical variables that are se-
+mantically unnatural, e.g., {dog, sandwich, running}.
+We would like to make a more precise statement about the
+representation of “natural” concepts. One possible notion
+of a “natural” concept is one where the model can freely
+manipulate the output values. The next theorem shows that
+such concepts have a particularly simple structure:
+Theorem 4.5 (Categorical Concepts are Represented as
+Simplices). Suppose that {w0, . . . , wk−1} is a collection of
+k mutually exclusive attributes such that for every joint
+distribution Q(w0, . . . wk−1) there is some ℓi such that
+P(W = wi | ℓi) = Q(W = wi) for every i. Then, the vec-
+tor representations ¯ℓw0, . . . , ¯ℓwk−1 form a (k −1)-simplex
+in the representation space. In this case, we take the sim-
+plex to be the representation of the categorical concept
+W = {w0, . . . , wk−1}.
+Summary
+Together, Theorems 4.3 and 4.5 give the sim-
+ple structure illustrated in Figure 1: hierarchical concepts
+are represented as direct sums of simplices. The direct
+sum structure is immediate from the orthogonality in Theo-
+rem 4.3.
+5. Experiments
+We now turn to empirically testing the theoretical results in
+the representation space of the Gemma-2B large language
+model (Mesnard et al., 2024).
+Canonical representation space
+The results in this paper
+rely on transforming the representation space so that the Eu-
+clidean inner product is a causal inner product, aligning the
+embedding and unembedding representations. Following
+Park et al. (2024), we estimate the required transformation
+as:
+g(y) = Cov(γ)−1/2(γ(y) −E[γ])
+where γ is the unembedding vector of a word sampled uni-
+formly from the vocabulary. Centering by E[γ] is a rea-
+sonable approximation of centering by ¯γ0 deﬁned in The-
+orem 4.1 because this makes the projection of a random
+g(y) on an arbitrary direction close to 0. This matches the
+requirement that the projection of a word onto a concept the
+words does not belong to should be close to 0.
+WordNet
+We deﬁne a large collection of binary concepts
+using WordNet (Miller, 1995). Brieﬂy, WordNet organizes
+English words into a hierarchy of synsets, where each synset
+is a set of synonyms. The WordNet hierarchy is based on
+word hyponym relations, and reﬂects the semantic hierarchy
+of interest in this paper. We take each synset as an attribute
+w and deﬁne Y(w) as the collection of all words belonging
+to any synset that is a descendant of w. For example, the
+synset mammal.n.01 is a descendant of animal.n.01,
+so both Y(mammal.n.01) and Y(animal.n.01) con-
+tain the word “dog”. We collect all noun and verb synsets,
+5
+
+[p6]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+Figure 2. Hierarchical semantics are encoded as orthogonality in the representation space, as predicted in Theorem 4.3. The plots show the
+projection of the unembedding vectors on the 2D subspaces: span{¯ℓanimal, ¯ℓmammal} (left; statement (b)), span{¯ℓanimal, ¯ℓbird −¯ℓmammal}
+(middle; statement (c)), and span{¯ℓanimal −¯ℓplant, ¯ℓbird −¯ℓmammal} (right; statement (d)). The gray points indicate all 256K tokens in
+the vocabulary, and the colored points are the tokens in Y(w). The blue and red vectors are used to span the 2D subspaces.
+and augment the word collections by including plural forms
+of the nouns, multiple tenses of each verb, and capital and
+lower case versions of each word. We ﬁlter to include only
+those synsets with at least 50 words in the Gemma vocab-
+ulary. This leaves us with 593 noun and 364 verb synsets,
+each deﬁning an attribute.
+Estimation via Linear Discriminant Analysis
+Now, we
+want to estimate the vector representation ¯ℓw for each at-
+tribute w. To do this, we make use of vocabulary sets Y(w).
+Following Theorem 4.1, the vector associated to the concept
+w should have two properties. First, when the full vocabu-
+lary is projected onto this vector, the words in Y(w) should
+be well-separated from the rest of the vocabulary. Second,
+the projection of the unembedding vectors for y ∈Y(w)
+should be approximately the same value. Equivalently, the
+variance of the projection of the unembedding vectors for
+y ∈Y(w) should be small. To capture these requirements,
+we estimate the directions using a variant of Linear Discrim-
+inant Analysis (LDA), which ﬁnds a projection minimizing
+within-class variance and maximizing between-class vari-
+ance. Formally, we estimate the vector representation of a
+binary feature W for an attribute w as
+¯ℓw =
+ ˜g⊤
+wE(gw)
+
+˜gw,
+with
+˜gw =
+Cov(gw)†E(gw)
+∥Cov(gw)†E(gw)∥2
+,
+where gw is the unembedding vector of a word sampled
+uniformly from Y(w) and Cov(gw)† is a pseudo-inverse of
+the covariance matrix. We estimate the covariance matrix
+Cov(gw) using the Ledoit-Wolf shrinkage estimator (Ledoit
+& Wolf, 2004), because the dimension of the representation
+spaces is much higher than the number of samples.
+5.1. Visualization of animal
+As a concrete example, we check the theoretical predictions
+for the concept animal. For this, we generated two sets
+of tokens Y(animal) and Y(plant) using ChatGPT-4
+(OpenAI, 2023) and manually inspected them. Y(animal)
+is separated to six sets of tokens for each subcategory
+{mammal, bird, fish, reptile, amphibian, insect}.
+Figure 2 illustrates the geometric relationships between var-
+ious representation vectors. The main takeaway is that the
+semantic hierarchy is encoded as orthogonality in the man-
+ner predicted by Theorem 4.3. The ﬁgure also illustrates
+Theorem 4.1, showing that the projection of the unembed-
+ding vectors for y ∈Y(w) is approximately constant, while
+the projection of y ̸∈Y(w) is zero.
+Figure 3 illustrates that the representation of a cate-
+gorical concept is a simplex, as predicted in Theo-
+rem 4.5. It also shows that, as predicted, the simplex for
+fish, mammal, bird is orthogonal to the vector represen-
+tation of animal.
+5.2. WordNet Hierarchy
+We now turn to using the WordNet hierarchy to evaluate
+the theoretical predictions at scale. For space, we report
+the noun hierarchy here and defer the verb hierarchy to
+Appendix C.
+Existence of Vector Representations for Binary Fea-
+tures
+To evaluate whether vector representations exist, for
+each synset w we split Y(w) into train words (80%) and test
+words (20%), ﬁt the LDA estimator to the train words, and
+examine the projection of the unembedding vectors for the
+test words onto the estimated vector representation. Figure 4
+shows the mean and standard error of the test projections,
+divided by the magnitude of each estimated ¯ℓw. If a vector
+representation exists for an attribute, we would expect these
+values to be close to 1. We see that this is indeed the case,
+giving evidence that vector representations do indeed exist
+for these features.
+6
+
+[p7]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+Figure 3. Categorical concepts are represented as simplices. The plots show the projection of the unembedding vectors on the 3D
+subspaces: span{¯ℓmammal, ¯ℓbird, ¯ℓfish} (left) and span{¯ℓbird −¯ℓmammal, ¯ℓfish −¯ℓmammal, ¯ℓreptile −¯ℓmammal} (right). The gray points
+indicate all 256K tokens in the vocabulary, and the colored points are the tokens in Y(w). The left plot further shows the orthogonality
+between the triangle and the projection of ¯ℓanimal (black arrow).
+0
+100
+200
+300
+400
+500
+600
+0.50
+0.25
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25
+test
+random
+Figure 4. Linear representations exist for most binary features in the WordNet noun hierarchy. Comparison of projection of test and
+random words on estimated vector representations for each WordNet feature. The values are divided by the norm of the estimated vector
+representation. The x-axis indices denote all features in the noun hierarchy. The thick lines present the mean of the projections for each
+feature and the error bars indicate the 1.96 × standard error.
+Hierarchical Orthogonality
+It remains to evaluate the
+prediction that hierarchical relations are encoded as orthog-
+onality in the representation space. Figure 5 shows the
+adjacency matrix of the WordNet noun hyponym inclusion
+graph (left), the cosine similarity between the vector rep-
+resentations ¯ℓw for each feature (middle), and the cosine
+similarity between child-parent vectors ¯ℓw −¯ℓparent of w for
+each feature (right). Strikingly, the cosine similarity clearly
+reﬂects the semantic hierarchy—the adjacency matrix is
+clearly visible in the middle heatmap. This is because, e.g.,
+mammal.n.01 and animal.n.01 have high cosine similarity.
+By contrast, as predicted by Theorem 4.3, the child-parent
+and parent-grandparent vectors are orthogonal. This also
+straightforwardly implies all other theoretical connections
+between orthogonality and semantic hierarchy.
+In Appendix C, we present zoomed-in heatmaps for the
+subtree of descendants of “animal”, and the results for the
+verb hierarchy.
+6. Discussion and Related Work
+We set out to understand how semantic structure is encoded
+in the geometry of representation space. We have arrived an
+astonishingly simple structure, summarized in Figure 1. The
+key contributions are moving from representing concepts as
+directions to representing them as vectors (and polytopes),
+and connecting semantic hierarchy to orthogonality.
+Related work
+This result connects closely to the study
+of linear representations in language models (e.g., Mikolov
+et al., 2013; Pennington et al., 2014; Arora et al., 2016;
+Elhage et al., 2022; Burns et al., 2022; Tigges et al., 2023;
+Nanda et al., 2023; Moschella et al., 2022; Li et al., 2023b;
+Gurnee et al., 2023; Wang et al., 2023; Jiang et al., 2024;
+Park et al., 2024). In particular, Park et al. (2024) formal-
+ize the linear representation hypothesis by unifying three
+distinct notions of linearity: word2vec-like embedding dif-
+ferences, logistic probing, and steering vectors. Our work
+7
+
+[p8]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+0
+100
+200
+300
+400
+500
+0
+100
+200
+300
+400
+500
+Adjacency Matrix
+0
+100
+200
+300
+400
+500
+0
+100
+200
+300
+400
+500
+cos( W,
+Z)
+0
+100
+200
+300
+400
+500
+0
+100
+200
+300
+400
+500
+cos( W
+parent of W,
+Z
+parent of Z)
+1.00
+0.75
+0.50
+0.25
+0.00
+0.25
+0.50
+0.75
+1.00
+Figure 5. Hierarchical semantics in WordNet are encoded in Gemma representation space, with the orthogonal structure predicted in
+Theorem 4.3. The adjacency matrix of the hierarchical relations between features in the noun hierarchy (left), the cosine similarity
+between the vector representations ¯ℓw for each feature (middle), and the cosine similarity between child-parent vectors ¯ℓw −¯ℓparent of w for
+each feature (right). The features are ordered by the hierarchy.
+relies on this uniﬁcation, and just focuses on the steering
+vector notion. Our work also connects to work aimed at
+theoretically understanding the existence of linear represen-
+tations. Speciﬁcally, (Arora et al., 2016; 2018; Frandsen
+& Ge, 2019) use RAND-WALK model where the latent
+vectors are modeled to drift on the unit sphere. (Blei &
+Lafferty, 2006; Rudolph et al., 2016; Rudolph & Blei, 2017)
+consider a similar dynamic topic modeling. Gittens et al.
+(2017) and subsequent works (Allen & Hospedales, 2019;
+Allen et al., 2019) propose a paraphrasing model where a
+subset of words is semantically equivalent to a single word.
+Ethayarajh et al. (2018) try to explain linear representations
+by decomposing the pointwise mutual information matrix
+while Ri et al. (2023) connect it to contrastive loss. Jiang
+et al. (2024) connect the existence of linear representations
+to the implicit bias of gradient descent. In this paper, we
+do not seek to justify the existence of linear representa-
+tions, but rather to understand their structure if they do exist.
+Though, by empirically estimating vector representations
+for thousands of concepts, we add to the body of evidence
+supporting the existence of linear representations. Elhage
+et al. (2022) also empirically observe the formation of poly-
+topes in the representation space of a toy model, and the
+present work can be viewed as giving an explanation for
+this phenomenon.
+There is also a growing literature studying the representa-
+tion geometry of natural language (Mimno & Thompson,
+2017; Reif et al., 2019; Volpi & Malag`o, 2021; 2020; Li
+et al., 2020; Chen et al., 2021; Chang et al., 2022; Liang
+et al., 2022; Jiang et al., 2023; Park et al., 2024; Valeriani
+et al., 2024). Much of this work focuses on connections to
+hyperbolic geometry (Nickel & Kiela, 2017; Ganea et al.,
+2018; Chen et al., 2021; He et al., 2024). We do not ﬁnd
+such a connection in existing LLMs, but it is an interest-
+ing direction for future work to determine if more efﬁcient
+LLM representations could be constructed in hyperbolic
+space. Jiang et al. (2023) hypothesize that very general ”in-
+dependence structures” are naturally represented by partial
+orthogonality in vector spaces (Amini et al., 2022). The
+results here conﬁrm and expand on this hypothesis in the
+case of hierarchical structure in language models.
+Implications and Future Work
+The results in this paper
+are foundational for understanding the structure of represen-
+tation space in language models. Of course, the ultimate pur-
+pose of foundations is to build upon them. One immediate
+direction is to reﬁne the attempts to interpret LLM structure
+to explicitly account for hierarchical semantics. As a con-
+crete example, there is currently signiﬁcant interest in using
+sparse autoencoders to extract interpretable features from
+LLMs (e.g., Cunningham et al., 2023; Bricken et al., 2023).
+This work searches for representations in terms of distinct
+binary features. Concretely, it hopes to ﬁnd features for,
+e.g., animal, mammal, bird, etc. Based on the results here,
+these representations are strongly co-linear, and potentially
+difﬁcult to disentangle. On the other hand, a representation
+in terms of ¯ℓanimal, ¯ℓmammal −¯ℓanimal, ¯ℓbird −¯ℓanimal, etc.,
+will be cleanly separated and equally interpretable. Funda-
+mentally, semantic meaning has hierarchical structure, so
+interpretability methods should respect this structure. Un-
+derstanding the geometric representation makes it possible
+to design such methods.
+In a separate, foundational, direction: the results in this
+paper rely on using the canonical representation space. We
+estimate this using the whitening transformation of the un-
+embedding layer. However, this technique only works for
+the ﬁnal layer representation. It is an important open ques-
+tion how to make sense of the geometry of internal layers.
+8
+
+[p9]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+References
+Allen, C. and Hospedales, T. Analogies explained: To-
+wards understanding word embeddings. In International
+Conference on Machine Learning, pp. 223–231. PMLR,
+2019.
+Allen, C., Balazevic, I., and Hospedales, T.
+What the
+vec? towards probabilistically grounded embeddings. Ad-
+vances in Neural Information Processing Systems, 32,
+2019.
+Amini, A. A., Aragam, B., and Zhou, Q. A non-graphical
+representation of conditional independence via the neigh-
+bourhood lattice. arXiv preprint arXiv:2206.05829, 2022.
+Arora, S., Li, Y., Liang, Y., Ma, T., and Risteski, A. A latent
+variable model approach to pmi-based word embeddings.
+Transactions of the Association for Computational Lin-
+guistics, 4:385–399, 2016.
+Arora, S., Li, Y., Liang, Y., Ma, T., and Risteski, A. Linear
+algebraic structure of word senses, with applications to
+polysemy. Transactions of the Association for Computa-
+tional Linguistics, 6:483–495, 2018.
+Blei, D. M. and Lafferty, J. D. Dynamic topic models.
+In Proceedings of the 23rd international conference on
+Machine learning, pp. 113–120, 2006.
+Bricken, T., Templeton, A., Batson, J., Chen, B., Jermyn, A.,
+Conerly, T., Turner, N., Anil, C., Denison, C., Askell, A.,
+Lasenby, R., Wu, Y., Kravec, S., Schiefer, N., Maxwell,
+T., Joseph, N., Hatﬁeld-Dodds, Z., Tamkin, A., Nguyen,
+K., McLean, B., Burke, J. E., Hume, T., Carter, S.,
+Henighan, T., and Olah, C. Towards monosemanticity:
+Decomposing language models with dictionary learning.
+Transformer Circuits Thread, 2023. https://transformer-
+circuits.pub/2023/monosemantic-features/index.html.
+Burns, C., Ye, H., Klein, D., and Steinhardt, J. Discovering
+latent knowledge in language models without supervision.
+arXiv preprint arXiv:2212.03827, 2022.
+Chang, T. A., Tu, Z., and Bergen, B. K. The geometry
+of multilingual language model representations. arXiv
+preprint arXiv:2205.10964, 2022.
+Chen, B., Fu, Y., Xu, G., Xie, P., Tan, C., Chen, M., and
+Jing, L. Probing bert in hyperbolic spaces. arXiv preprint
+arXiv:2104.03869, 2021.
+Cunningham, H., Ewart, A., Riggs, L., Huben, R., and
+Sharkey, L.
+Sparse autoencoders ﬁnd highly inter-
+pretable features in language models. arXiv preprint
+arXiv:2309.08600, 2023.
+Elhage, N., Hume, T., Olsson, C., Schiefer, N., Henighan,
+T., Kravec, S., Hatﬁeld-Dodds, Z., Lasenby, R., Drain,
+D., Chen, C., et al. Toy models of superposition. arXiv
+preprint arXiv:2209.10652, 2022.
+Ethayarajh, K., Duvenaud, D., and Hirst, G.
+Towards
+understanding linear word analogies.
+arXiv preprint
+arXiv:1810.04882, 2018.
+Frandsen, A. and Ge, R.
+Understanding composition
+of word embeddings via tensor decomposition. arXiv
+preprint arXiv:1902.00613, 2019.
+Ganea, O., B´ecigneul, G., and Hofmann, T. Hyperbolic
+entailment cones for learning hierarchical embeddings.
+In International Conference on Machine Learning, pp.
+1646–1655. PMLR, 2018.
+Ghandeharioun, A., Caciularu, A., Pearce, A., Dixon, L.,
+and Geva, M. Patchscopes: A unifying framework for
+inspecting hidden representations of language models. In-
+ternational Conference on Machine Learning (to appear),
+2024.
+Gittens, A., Achlioptas, D., and Mahoney, M. W. Skip-gram
+- zipf + uniform = vector additivity. In Annual Meeting of
+the Association for Computational Linguistics, 2017.
+Gurnee, W. and Tegmark, M. Language models represent
+space and time. In The Twelfth International Conference
+on Learning Representations, 2024. URL https://
+openreview.net/forum?id=jE8xbmvFin.
+Gurnee, W., Nanda, N., Pauly, M., Harvey, K., Troit-
+skii, D., and Bertsimas, D.
+Finding neurons in a
+haystack: Case studies with sparse probing.
+arXiv
+preprint arXiv:2305.01610, 2023.
+He, Y., Yuan, Z., Chen, J., and Horrocks, I.
+Lan-
+guage models as hierarchy encoders.
+arXiv preprint
+arXiv:2401.11374, 2024.
+Jiang, Y., Aragam, B., and Veitch, V. Uncovering meanings
+of embeddings via partial orthogonality. arXiv preprint
+arXiv:2310.17611, 2023.
+Jiang, Y., Rajendran, G., Ravikumar, P., Aragam, B., and
+Veitch, V. On the origins of linear representations in
+large language models. In International Conference on
+Machine Learning (to appear), 2024.
+Ledoit, O. and Wolf, M.
+A well-conditioned estimator
+for large-dimensional covariance matrices. Journal of
+multivariate analysis, 88(2):365–411, 2004.
+Li, B., Zhou, H., He, J., Wang, M., Yang, Y., and Li, L.
+On the sentence embeddings from pre-trained language
+models. arXiv preprint arXiv:2011.05864, 2020.
+9
+
+[p10]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+Li, K., Hopkins, A. K., Bau, D., Vi´egas, F., Pﬁster, H.,
+and Wattenberg, M. Emergent world representations:
+Exploring a sequence model trained on a synthetic task.
+In The Eleventh International Conference on Learning
+Representations, 2023a.
+Li, K., Patel, O., Vi´egas, F., Pﬁster, H., and Wattenberg, M.
+Inference-time intervention: Eliciting truthful answers
+from a language model. arXiv preprint arXiv:2306.03341,
+2023b.
+Liang, V. W., Zhang, Y., Kwon, Y., Yeung, S., and Zou,
+J. Y. Mind the gap: Understanding the modality gap
+in multi-modal contrastive representation learning. Ad-
+vances in Neural Information Processing Systems, 35:
+17612–17625, 2022.
+Marks, S. and Tegmark, M.
+The geometry of truth:
+Emergent linear structure in large language model
+representations of true/false datasets.
+arXiv preprint
+arXiv:2310.06824, 2023.
+Mesnard, T., Hardin, C., Dadashi, R., Bhupatiraju, S.,
+Pathak, S., Sifre, L., Rivi`ere, M., Kale, M. S., Love,
+J., et al. Gemma: Open models based on gemini research
+and technology. arXiv preprint arXiv:2403.08295, 2024.
+Mikolov, T., Yih, W.-t., and Zweig, G. Linguistic regularities
+in continuous space word representations. In Proceedings
+of the 2013 conference of the north american chapter
+of the association for computational linguistics: Human
+language technologies, pp. 746–751, 2013.
+Miller, G. A. Wordnet: a lexical database for english. Com-
+munications of the ACM, 38(11):39–41, 1995.
+Mimno, D. and Thompson, L. The strange geometry of skip-
+gram with negative sampling. In Conference on Empirical
+Methods in Natural Language Processing, 2017.
+Moschella, L., Maiorca, V., Fumero, M., Norelli, A., Lo-
+catello, F., and Rodola, E. Relative representations enable
+zero-shot latent space communication. arXiv preprint
+arXiv:2209.15430, 2022.
+Nanda, N., Lee, A., and Wattenberg, M. Emergent linear rep-
+resentations in world models of self-supervised sequence
+models. arXiv preprint arXiv:2309.00941, 2023.
+Nickel, M. and Kiela, D. Poincar´e embeddings for learning
+hierarchical representations. Advances in neural informa-
+tion processing systems, 30, 2017.
+OpenAI.
+GPT-4 technical report.
+arXiv preprint
+arXiv:2303.08774, 2023.
+Park, K., Choe, Y. J., and Veitch, V. The linear representa-
+tion hypothesis and the geometry of large language mod-
+els. In International Conference on Machine Learning
+(to appear), 2024.
+Pennington, J., Socher, R., and Manning, C. D. Glove:
+Global vectors for word representation. In Proceedings
+of the 2014 conference on empirical methods in natural
+language processing (EMNLP), pp. 1532–1543, 2014.
+Reif, E., Yuan, A., Wattenberg, M., Viegas, F. B., Coenen,
+A., Pearce, A., and Kim, B. Visualizing and measuring
+the geometry of bert. Advances in Neural Information
+Processing Systems, 32, 2019.
+Ri, N., Lee, F.-T., and Verma, N. Contrastive loss is all you
+need to recover analogies as parallel lines. arXiv preprint
+arXiv:2306.08221, 2023.
+Rudolph, M. and Blei, D. Dynamic bernoulli embeddings
+for language evolution. arXiv preprint arXiv:1703.08052,
+2017.
+Rudolph, M., Ruiz, F., Mandt, S., and Blei, D. Exponential
+family embeddings. Advances in Neural Information
+Processing Systems, 29, 2016.
+Tigges, C., Hollinsworth, O. J., Geiger, A., and Nanda,
+N. Linear representations of sentiment in large language
+models. arXiv preprint arXiv:2310.15154, 2023.
+Valeriani, L., Doimo, D., Cuturello, F., Laio, A., Ansuini,
+A., and Cazzaniga, A. The geometry of hidden represen-
+tations of large transformer models. Advances in Neural
+Information Processing Systems, 36, 2024.
+Volpi, R. and Malag`o, L. Evaluating natural alpha embed-
+dings on intrinsic and extrinsic tasks. In Workshop on
+Representation Learning for NLP, 2020.
+Volpi, R. and Malag`o, L. Natural alpha embeddings. Infor-
+mation Geometry, 4(1):3–29, 2021.
+Wang, Z., Gui, L., Negrea, J., and Veitch, V. Concept alge-
+bra for (score-based) text-controlled generative models.
+In Advances in Neural Information Processing Systems,
+2023. URL https://openreview.net/forum?
+id=SGlrCuwdsB.
+Zou, A., Phan, L., Chen, S., Campbell, J., Guo, P., Ren, R.,
+Pan, A., Yin, X., Mazeika, M., Dombrowski, A.-K., et al.
+Representation engineering: A top-down approach to ai
+transparency. arXiv preprint arXiv:2310.01405, 2023.
+10
+
+[p11]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+A. Proofs
+A.1. Proof of Theorem 4.1
+Theorem 4.1 (Magnitudes of Linear Representations). Suppose there exists a linear representation (normalized direction)
+¯ℓW of a binary feature W for an attribute w. Then, there is a constant bw > 0 and a choice of unembedding space origin
+¯γw
+0 in (2.2) such that
+(¯ℓ⊤
+W g(y) = bw
+if y ∈Y(w)
+¯ℓ⊤
+W g(y) = 0
+if y ̸∈Y(w).
+(4.1)
+Further, if there are d causally separable attributes {w0, . . . , wd−1} with linear representations, we can choose a canonical
+origin ¯γ0 in (2.2) as
+¯γ0 =
+X
+i
+¯γwi
+0 .
+(4.2)
+Proof. For any y1, y0 ∈Y(w) or y1, y0 ̸∈Y(w), let Z be a binary concept where Y(Z = 0) = {y0} and Y(Z = 1) = {y1}.
+Since Z is subordinate to W, (3.2) implies that
+logit P(Y = y1 | Y ∈{y0, y1}, ℓ+ ¯ℓW ) = logit P(Y = y1 | Y ∈{y0, y1}, ℓ)
+(A.1)
+⇐⇒¯ℓ⊤
+W (g(y1) −g(y0)) = ¯ℓ⊤
+W A(γ(y1) −γ(y0)) = 0
+(A.2)
+where A is the invertible matrix in (2.2). This means that ¯ℓ⊤
+W Aγ(y) is the same for all y ∈Y(w), and it is also the same for
+all y ̸∈Y(w).
+Furthermore, for any y1 ∈Y(w) and y0 ̸∈Y(w), (3.1) implies that
+logit P(Y = y1 | Y ∈{y0, y1}, ℓ+ ¯ℓW ) > logit P(Y = y1 | Y ∈{y0, y1}, ℓ)
+(A.3)
+⇐⇒¯ℓ⊤
+W (g(y1) −g(y0)) = ¯ℓ⊤
+W A(γ(y1) −γ(y0)) > 0.
+(A.4)
+Thus, by setting b0
+w = ¯ℓ⊤
+W Aγ(y) for any y ̸∈Y(w), and bw = ¯ℓ⊤
+W Aγ(y1) −¯ℓ⊤
+W Aγ(y0) > 0 for any y1 ∈Y(w) and
+y0 ̸∈Y(w), we get
+(¯ℓ⊤
+W Aγ(y) = b0
+w + bw
+if y ∈Y(w)
+¯ℓ⊤
+W Aγ(y) = b0
+w
+if y ̸∈Y(w).
+(A.5)
+Then, we can choose an origin as
+¯γw
+0 = b0
+wA−1¯ℓW
+(A.6)
+satisfying (4.1).
+On the other hand, if there exist ¯ℓW and ¯ℓZ for causally separable attributes w and z, then ¯ℓW and ¯ℓZ are orthogonal
+by the property of the causal inner product. If they are not orthogonal, adding ¯ℓZ can change the other concept W, and
+it is a contradiction. Now if there exist the linear representation for d binary features for causally separable attributes
+{w0, . . . , wd−1}, we can choose a canonical ¯γ0 in (2.2) as
+¯γ0 =
+X
+i
+¯γwi
+0 .
+(A.7)
+with (4.1) satisﬁed.
+A.2. Proof of Theorem 4.3
+Theorem 4.3 (Hierarchical Orthogonality). Suppose there exist the vector representations for all the following binary
+features. Then, we have that
+(a) ¯ℓw1 −¯ℓw0 is a linear representation ¯ℓw0⇒w1 deﬁned in Deﬁnition 3.2;
+(b) ¯ℓw ⊥¯ℓz −¯ℓw for z ≺w;
+11
+
+[p12]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+(c) ¯ℓw ⊥¯ℓz1 −¯ℓz0 for Z ∈R {z0, z1} subordinate to W ∈R {not w, is w};
+(d) ¯ℓw1 −¯ℓw0 ⊥¯ℓz1 −¯ℓz0 for Z ∈R {z0, z1} subordinate to W ∈R {w0, w1}; and
+(e) ¯ℓw1 −¯ℓw0 ⊥¯ℓw2 −¯ℓw1 for w2 ≺w1 ≺w0.
+Proof.
+(a) For ¯ℓw1 and ¯ℓw0, by Theorem 4.1, we have
+
+
+
+
+
+(¯ℓw1 −¯ℓw0)⊤g(y) = 0 −bw0 = −bw0
+if y ∈Y(w0)
+(¯ℓw1 −¯ℓw0)⊤g(y) = bw1 −0 = bw1
+if y ∈Y(w1)
+(¯ℓw1 −¯ℓw0)⊤g(y) = 0 −0 = 0
+if y ̸∈Y(w0) ∪Y(w1).
+(A.8)
+Since ¯ℓw1 −¯ℓw0 can change the target concept w0 ⇒w1 without changing any other concept subordinate or causally
+separable to the target concept, ¯ℓw1 −¯ℓw0 is the linear representation ¯ℓw0⇒w1.
+(b) For ¯ℓw and ¯ℓz where z ≺w, by Theorem 4.1, we have
+
+
+
+
+
+(¯ℓz −¯ℓw)⊤g(y) = bz −bw
+if y ∈Y(z)
+(¯ℓz −¯ℓw)⊤g(y) = 0 −bw = −bw
+if y ∈Y(w) \ Y(z)
+(¯ℓz −¯ℓw)⊤g(y) = 0 −0 = 0
+if y ̸∈Y(w).
+(A.9)
+When w \ z denotes an attribute deﬁned by Y(w) \ Y(z), ¯ℓz −¯ℓw can change the target concept w \ z ⇒z without
+changing any other concept subordinate or causally separable to the target concept. Thus, ¯ℓz −¯ℓw is the linear
+representation ¯ℓw\z⇒z. This concept means not z ⇒is z conditioned on w, and hence it is subordinate to w.
+Therefore, ¯ℓw is orthogonal to the linear representation ¯ℓw\z⇒z = ¯ℓz −¯ℓw by the property of the causal inner product.
+If they are not orthogonal, adding ¯ℓw can change the other concept w \ z ⇒z, and it is a contradiction.
+(c) By the above result (b), ¯ℓ⊤
+w(¯ℓz1 −¯ℓw) = ¯ℓ⊤
+w(¯ℓz0 −¯ℓw) = 0. Therefore, ¯ℓ⊤
+w(¯ℓz1 −¯ℓz0) = 0.
+(d) Let’s say that w1 is wZ deﬁned in Deﬁnition 3.1. The binary contrast z0 ⇒z1 is subordinate to the binary feature
+for the attribute w0. By the property of the causal inner product, ¯ℓw0 is orthogonal to the linear representation
+¯ℓz0⇒z1 = ¯ℓz1 −¯ℓz0 (by (a)). Then, with the above result (c), we have (¯ℓw1 −¯ℓw0)⊤(¯ℓz1 −¯ℓz0).
+(e) By the above result (b), we have
+
+
+
+
+
+∥¯ℓw1 −¯ℓw0∥2
+2 = ∥¯ℓw1∥2
+2 −∥¯ℓw0∥2
+2
+∥¯ℓw2 −¯ℓw1∥2
+2 = ∥¯ℓw2∥2
+2 −∥¯ℓw1∥2
+2
+∥¯ℓw2 −¯ℓw0∥2
+2 = ∥¯ℓw2∥2
+2 −∥¯ℓw0∥2
+2.
+(A.10)
+Then,
+∥¯ℓw1 −¯ℓw0∥2
+2 + ∥¯ℓw2 −¯ℓw1∥2
+2
+(A.11)
+= ∥¯ℓw1∥2
+2 −∥¯ℓw0∥2
+2 + ∥¯ℓw2∥2
+2 −∥¯ℓw1∥2
+2
+(A.12)
+= ∥¯ℓw2∥2
+2 −∥¯ℓw0∥2
+2
+(A.13)
+= ∥¯ℓw2 −¯ℓw0∥2
+2.
+(A.14)
+Therefore, ¯ℓw1 −¯ℓw0 is orthogonal to ¯ℓw2 −¯ℓw1.
+A.3. Proof of Theorem 4.5
+Theorem 4.5 (Categorical Concepts are Represented as Simplices). Suppose that {w0, . . . , wk−1} is a collection
+of k mutually exclusive attributes such that for every joint distribution Q(w0, . . . wk−1) there is some ℓi such that
+P(W = wi | ℓi) = Q(W = wi) for every i. Then, the vector representations ¯ℓw0, . . . , ¯ℓwk−1 form a (k−1)-simplex in the rep-
+resentation space. In this case, we take the simplex to be the representation of the categorical concept W = {w0, . . . , wk−1}.
+12
+
+[p13]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+w0
+w1
+w2
+w2
+w0
+w1
+Figure 6. Illustration of the case k = 3 in the proof of Theorem 4.5.
+Proof. If we can represent arbitrary joint distributions, this means, in particular, that we can change the probability of
+one attribute without changing the relative probability between a pair of other attributes. Consider the case where k = 3,
+as illustrated in Figure 6. If ¯ℓw0, ¯ℓw1, ¯ℓw2 are on a line, then there is no direction in that line (to change the value in
+the categorical concept) such that adding the direction can change the probability of w2 without changing the relative
+probabilities between w0 and w1. However, if ¯ℓw0, ¯ℓw1, ¯ℓw2 are not on a line, they form a triangle. Then, there exists a
+line that is toward ¯ℓw2 and perpendicular to the opposite side of the triangle. Now adding the direction ˜ℓcan manipulate
+the probability of w2 without changing the relative probabilities between w0 and w1. That is, for any α > 0 and context
+embedding ℓ,
+(
+P(W = w2 | ℓ+ α˜ℓ) > P(W = w2 | ℓ), and
+P(W =w1 | ℓ+α˜ℓ)
+P(W =w0 | ℓ+α˜ℓ) = P(W =w1 | ℓ)
+P(W =w0 | ℓ).
+(A.15)
+Therefore, the vectors ¯ℓw0, ¯ℓw1, ¯ℓw2 form a 2-simplex.
+This argument extends immediately to higher k by induction. For each i ∈{0, . . . , k −1}, there should exist a direction
+that is toward ¯ℓwi and orthogonal to the opposite hyperplane ((k −2)-simplex) formed by the other ¯ℓwi′ ’s. Then, the vectors
+¯ℓw0, . . . , ¯ℓwk−1 form a (k −1)-simplex.
+B. Experiment Details
+We employ the Gemma-2B version of the Gemma model (Mesnard et al., 2024), which is accessible online via the
+huggingface library. Its two billion parameters are pre-trained on three trillion tokens. This model utilizes 256K tokens
+and 2,048 dimensions for the representation space.
+We always use tokens that start with a space (‘\u2581’) in front of the word, as they are used for next-word generation with
+full meaning. Additionally, like WordNet data we use, we include plural forms, and both capital and lowercase versions of
+the words in Y(animal) and Y(plant) for visualization in Section 5.1.
+In the WordNet synset data, each content of the synset mammal.n.01 indicates that ”mammal” is a word, ”n” denotes
+”noun,” and ”01” signiﬁes the ﬁrst meaning of the word. In the WordNet hierarchy, if a parent has only one child, we
+combine the two features into one. Additionally, since the WordNet hierarchy is not a perfect tree, a child can have more
+than one parent. We use one of the parents when computing the ¯ℓw −¯ℓparent of w.
+Code is available at github.com/KihoPark/LLM Categorical Hierarchical Representations.
+13
+
+[p14]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+bird
+chordate
+young
+gallinaceous_bird
+ungulate
+mammal
+aquatic_vertebrate
+invertebrate
+even-toed_ungulate
+odd-toed_ungulate
+domestic_animal
+carnivore
+passerine
+animal
+reptile
+Figure 7. Subtree in WordNet noun hierarchy for descendants of animal.
+animal
+domestic_animal
+young
+chordate
+invertebrate
+aquatic_vertebrate
+bird
+reptile
+mammal
+passerine
+gallinaceous_bird
+carnivore
+ungulate
+odd-toed_ungulate
+even-toed_ungulate
+Adjacency Matrix
+cos( W,
+Z)
+cos( W
+parent of W,
+Z
+parent of Z)
+1.00
+0.75
+0.50
+0.25
+0.00
+0.25
+0.50
+0.75
+1.00
+Figure 8. Zoomed-in Heatmaps of the subtree for animal in Figure 7.
+C. Additional Results
+C.1. Zooming in on a Subtree of Noun Hierarchy
+As it is difﬁcult to understand the entire WordNet hierarchy at once from the heatmaps in Figure 5, we present a zoomed-in
+heatmap for the subtree (Figure 7) for the feature animal in Figure 8. The left heatmap displays the adjacency matrix of
+the hierarchical relations between features, aligned with the subtree in Figure 7. The middle heatmap shows that the cosine
+similarities between the vector representations ¯ℓw correspond to the adjacency matrix. The ﬁnal heatmap demonstrates that
+the child-parent vector ¯ℓw −¯ℓparent of w and ¯ℓparent of w −¯ℓgrandparent of w are orthogonal, as predicted in Theorem 4.3.
+C.2. WordNet Verb Hierarchy
+In the same way as for the noun hierarchy, we estimate the vector representations for the WordNet verb hierarchy. To
+evaluate whether vector representations exist, we split Y(w) for each synset w into train words (80%) and test words (20%),
+ﬁt the LDA estimator to the train words, and examine the projection of the unembedding vectors for the test words onto
+the estimated vector representation. Figure 9 shows the mean and standard error of the test projections, divided by the
+magnitude of each estimated ¯ℓw. If a vector representation exists for an attribute, we would expect these values to be close
+to 1. This is indeed the case, providing evidence that vector representations do indeed exist for these features.
+Figure 10 displays the adjacency matrix of the WordNet verb hyponym inclusion graph (left), the cosine similarity between
+the vector representations ¯ℓw for each feature (middle), and the cosine similarity between child-parent vectors ¯ℓw −¯ℓparent of w
+14
+
+[p15]
+The Geometry of Categorical and Hierarchical Concepts in Large Language Models
+0
+50
+100
+150
+200
+250
+300
+350
+0.25
+0.00
+0.25
+0.50
+0.75
+1.00
+test
+random
+Figure 9. Linear representations exist for most binary features in the WordNet verb hierarchy. Comparison of projection of test and random
+words on estimated vector representations for each feature. The values are divided by the norm of the estimated vector representation. The
+x-axis indices denote all features in the verb hierarchy. The thick lines present the mean of the projections for each feature and the error
+bars indicate the 1.96 × standard error.
+0
+50
+100
+150
+200
+250
+300
+350
+0
+50
+100
+150
+200
+250
+300
+350
+Adjacency Matrix
+0
+50
+100
+150
+200
+250
+300
+350
+0
+50
+100
+150
+200
+250
+300
+350
+cos( W,
+Z)
+0
+50
+100
+150
+200
+0
+50
+100
+150
+200
+cos( W
+parent of W,
+Z
+parent of Z)
+1.00
+0.75
+0.50
+0.25
+0.00
+0.25
+0.50
+0.75
+1.00
+Figure 10. The adjacency matrix of the hierarchical relations between features in the WordNet verb hierarchy (left), the cosine similarity
+between the vector representations ¯ℓw for each feature (middle), and the cosine similarity between child-parent vectors ¯ℓw −¯ℓparent of w for
+each feature (right). The features are ordered by the hierarchy.
+for each feature (right). The cosine similarity clearly reﬂects the semantic hierarchy—the adjacency matrix is clearly
+visible in the middle heatmap. By contrast, as predicted by Theorem 4.3, the child-parent and parent-grandparent vectors
+are orthogonal. This straightforwardly implies all other theoretical connections between orthogonality and the semantic
+hierarchy.
+15
