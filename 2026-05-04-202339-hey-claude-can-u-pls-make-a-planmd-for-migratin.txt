@@ -1,0 +1,736 @@
+ ▐▛███▜▌   Claude Code v2.1.126
+▝▜█████▛▘  Sonnet 4.6 · Claude Max
+  ▘▘ ▝▝    ~/repos/foundry
+
+❯ hey claude! can u pls make a plan.md for migrating the api to modal?          
+  /mnt/nw/home/m.yu/repos/foundry/api. here is the full architecture:Final      
+  picture                                                                       
+  Browser                                                                       
+     │                                                                          
+     ├─ Auth ──────────────► Supabase Auth                                      
+     │                                                                          
+     ├─ POST /jobs ────────► Railway (FastAPI) ──► Modal.spawn()                
+     │                            │                   │                         
+     │                            ├─► Supabase (Postgres: job row)              
+     │                            └─► Redis (on Railway)                        
+     │                                                │                         
+     └─ GET /jobs/:id/logs ─► Railway (SSE) ◄── Redis pub/sub                   
+                                  ▲                   │                         
+                                  │                   ▼                         
+                                  └─── Modal worker ──┤                         
+                                         │            │                         
+                                         ├─► Redis (publish logs)               
+                                         ├─► Supabase Postgres (status updates) 
+                                         └─► Supabase Storage (PDB output)      
+  Three external services, one of them (Railway) hosting two things. You can    
+  sign up and have all three accounts provisioned in 10 minutes.The 3-service   
+  version                                                                       
+                                                                                
+  Railway — FastAPI + Redis (Redis as a Railway addon, one click)               
+  Modal — GPU workers                                                           
+  Supabase — Postgres + Auth + Blob storage. modal docs: Quickstart guide       
+  Welcome to Modal! Let's get you set up to run an app.                         
+                                                                                
+                                                                                
+  Download and configure the Python client                                      
+  Run this in order to install the Python library locally:                      
+                                                                                
+  pip install modal                                                             
+  python3 -m modal setup                                                        
+  Copy                                                                          
+  The first command will install the Modal client library on your computer,     
+  along with its dependencies.                                                  
+                                                                                
+  The second command creates an API token by authenticating through your web    
+  browser. It will open a new tab, but you can close it when you are done.      
+                                                                                
+                                                                                
+  Run some code                                                                 
+  You're ready to run some code! To get started, here is a minimal script that  
+  computes the square of 42:                                                    
+                                                                                
+  import modal                                                                  
+                                                                                
+  app = modal.App("example-get-started")                                        
+                                                                                
+                                                                                
+  @app.function()                                                               
+  def square(x):                                                                
+      print("This code is running on a remote worker!")                         
+      return x**2                                                               
+                                                                                
+                                                                                
+  @app.local_entrypoint()                                                       
+  def main():                                                                   
+      print("the square is", square.remote(42))                                 
+  Copy                                                                          
+  Save the code to a local file such as:                                        
+                                                                                
+  cat > get_started.py # At the prompt, paste the snippet and Ctrl-D to save    
+  it.                                                                           
+  Copy                                                                          
+  Now that the source code is saved locally, let's run it:                      
+                                                                                
+  modal run get_started.py                                                      
+  Copy                                                                          
+  Congratulations, you successfully executed a function on a remote worker!     
+  checkout more docs if you are unsure. I only need rfd3 support for now. so    
+  how foundry works is you download models with foundry install and then run w  
+  rfd3 design. i also wrote a sparse autoencoder and interpretability           
+  (steering) wrapper on top of it (saffron, /sae). that would also need weight  
+  loading.                                                                      
+
+● Let me explore the current API structure first.
+
+● Explore(Explore API structure)
+  ⎿  Done (51 tool uses · 70.2k tokens · 1m 46s)
+  (ctrl+o to expand)
+
+● Now I have everything I need. Let me write the plan.
+
+● Write(api/plan.md)
+  ⎿  Wrote 329 lines to api/plan.md
+       2 # Modal Migration Plan — Foundry API
+       3 ## Target Architecture
+       4 
+       5 ```
+       6 Browser
+       7    │
+       8    ├─ POST /jobs ────────► Railway FastAPI ──► modal_worker.run_
+         job.spawn()
+       9    │                            │                        │
+      10    │                            └─► Supabase Postgres    │
+     … +357 lines (ctrl+o to expand)
+
+● Plan written to api/plan.md. Here's the summary:
+
+  What changes:
+  - store.py dies → jobs live in Supabase Postgres
+  - runner.py shrinks to ~20 lines → fires modal_worker.run_job.spawn() instead
+  of a subprocess
+  - main.py SSE switches from polling an in-memory list to subscribing to a
+  Redis pub/sub channel
+  - Output download becomes a redirect to a Supabase Storage signed URL
+
+  New files: modal_worker.py (the GPU function), db.py (Supabase CRUD),
+  redis_client.py (pub/sub helpers), scripts/upload_weights.py (one-time weight
+  upload to Modal Volume)
+
+  Key design call: RFD3 weights go in a Modal Volume (persistent, fast cold
+  start) rather than downloading each invocation. The saffron steer call stays
+  the same inside the worker — it just runs programmatically instead of as a
+  subprocess.
+
+  Implementation order is in Phase 5 — start with infra provisioning (Supabase
+  table, Railway Redis, Modal secrets + volume) before touching any code.
+
+✻ Cogitated for 3m 8s
+
+❯ wait doesn't steering with sae also require a path to the sae weights? like   
+  /mnt/nw/home/m.yu/repos/foundry/outputs/sae/2026-04-26_15-38-55               
+
+● Good catch. Let me check how SAE paths flow through the steering config to
+  make sure the fix is right.
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+● Clear picture now. The SAE checkpoint and steering vectors are referenced two
+  ways: via ${oc.env:FOUNDRY_ROOT,...} interpolation (the good configs) and as
+  hardcoded absolute paths (the bad ones). Both need to land in the Modal
+  Volume, and the hardcoded paths need to be fixed.
+
+  Read 1 file (ctrl+o to expand)
+
+● Now I'll update the plan to cover both the SAE checkpoint and the
+  hardcoded-path problem in the steering YAMLs.
+
+● Update(api/plan.md)
+  ⎿  Added 44 lines, removed 16 lines
+      256  
+      257  ---
+      258  
+      259 -## Phase 4 — Weight Loading in Modal Image                    
+      259 +## Phase 4 — Weight Loading in Modal Volume                   
+      260  
+      261 -RFD3 weights must be available inside the Modal worker. Two op
+          -tions:                                                        
+      261 +Three artifact trees must live in the Modal Volume (mounted at
+          + `/weights`):                                                 
+      262  
+      263 -**Option A (recommended): Modal Volume**                      
+      264 -- Volume is persistent across invocations (fast cold start aft
+          -er first run)                                                 
+      265 -- Run `foundry install rfd3` inside the volume once via `modal
+          - run scripts/upload_weights.py`                               
+      266 -- Worker mounts volume at `/weights`, sets `RFD3_CKPT_PATH=/we
+          -ights/rfd3`                                                   
+      263 +| Artifact | Local path | Volume path |                       
+      264 +|---|---|---|                                                 
+      265 +| RFD3 model weights | `~/.cache/foundry/checkpoints/rfd3` | `
+          +/weights/checkpoints/rfd3` |                                  
+      266 +| SAE checkpoint | `outputs/sae/2026-04-26_15-38-55/` | `/weig
+          +hts/outputs/sae/2026-04-26_15-38-55/` |                       
+      267 +| Steering vectors | `outputs/steering/vectors/` | `/weights/o
+          +utputs/steering/vectors/` |                                   
+      268  
+      268 -**Option B: Download at cold start**                          
+      269 -- Worker runs `foundry install` on first invocation           
+      270 -- Slower (minutes) but zero setup                             
+      271 -- Use Modal `@app.function(container_idle_timeout=300)` to kee
+          -p warm                                                        
+      269 +The Modal worker sets `FOUNDRY_ROOT=/weights` so that OmegaCon
+          +f `${oc.env:FOUNDRY_ROOT}` interpolations in steering configs 
+          +resolve correctly.                                            
+      270  
+      273 -Start with Option A.                                          
+      271 +`scripts/upload_weights.py` uploads all three trees in one pas
+          +s:                                                            
+      272  
+      273 +```bash                                                       
+      274 +modal run api/scripts/upload_weights.py \                     
+      275 +  --rfd3-ckpt ~/.cache/foundry/checkpoints/rfd3 \             
+      276 +  --outputs-dir /mnt/nw/home/m.yu/repos/foundry/outputs       
+      277 +```                                                           
+      278 +                                                              
+      279 +The worker env var in `modal_worker.py`:                      
+      280 +```python                                                     
+      281 +@app.function(                                                
+      282 +    gpu="A10G",                                               
+      283 +    timeout=600,                                              
+      284 +    volumes={VOLUME_PATH: volume},                            
+      285 +    env={"FOUNDRY_ROOT": VOLUME_PATH},                        
+      286 +)                                                             
+      287 +```                                                           
+      288 +                                                              
+      289  ---
+      290  
+      291  ## Phase 5 — SAE / Steering in Modal Worker
+      292  
+      279 -Saffron's steering is Hydra-driven. Inside the Modal worker, `
+          -run_inference` is called the same way as the subprocess today 
+          -— the worker just invokes it programmatically instead:        
+      293 +Steering paths are referenced two ways in the codebase:       
+      294  
+      281 -```python                                                     
+      282 -from sae.cli import run_steer  # or subprocess the saffron CLI
+      283 -```                                                           
+      295 +**Good — `${oc.env:FOUNDRY_ROOT}` interpolation** (works once 
+          +`FOUNDRY_ROOT=/weights` is set):                              
+      296 +- `sae/configs/steering/sae_block12_f639.yaml`                
+      297 +- `sae/configs/steering/null_block12_f639.yaml`               
+      298 +- `sae/configs/steering/raw_diff_block12.yaml`                
+      299 +- `runner.py` YAML template                                   
+      300  
+      285 -The Modal image needs the full `foundry[rfd3,sae]` package. Th
+          -e steering YAML configs need to be available at the path Hydra
+          - expects — either bundle them in the image or generate them at
+          - runtime from the `job_config` dict (same logic as current `ru
+          -nner.py`'s YAML templating).                                  
+      301 +**Bad — hardcoded absolute paths** (will break in Modal, must 
+          +be fixed before deploying):                                   
+      302 +- `sae/configs/steering/ablate_block12_f639.yaml`             
+      303 +- `sae/configs/steering/ablate_block12_f639_alpha2.yaml`      
+      304 +- `sae/configs/steering/ablate_block12_f639_alpha4.yaml`      
+      305 +- `sae/configs/steering/ablate_block12_f639_alpha8.yaml`      
+      306 +- `sae/configs/steering/rawdiff_neg_block12_c1.yaml`          
+      307 +- `sae/configs/steering/rawdiff_neg_block12_c2.yaml`          
+      308 +- `sae/configs/steering/rawdiff_neg_block12_c4.yaml`          
+      309 +- `sae/configs/steering/rawdiff_neg_block12_c8.yaml`          
+      310  
+      311 +Fix: replace every hardcoded `/mnt/nw/home/m.yu/repos/foundry/
+          +` with `${oc.env:FOUNDRY_ROOT,/mnt/nw/home/m.yu/repos/foundry}
+          +/` in all eight files. This is a safe local fallback that keep
+          +s the configs working on your machine too.                    
+      312 +                                                              
+      313 +The Modal image needs `foundry[rfd3,sae]` installed so `saffro
+          +n steer` is available. The steering YAML configs ship inside t
+          +he installed package, so no extra copy step is needed — only t
+          +he weight files need the volume.                              
+      314 +                                                              
+      315  ---
+      316  
+      317  ## Implementation Order
+
+● Also update the implementation order and file diff to include the YAML fix:
+
+● Update(api/plan.md)
+  ⎿  Added 10 lines, removed 9 lines
+      318  
+      319  1. **Supabase:** create `jobs` table + `outputs` bucket
+      320  2. **Railway:** add Redis addon, verify `REDIS_URL`
+      321 -3. **`modal_worker.py`:** write Modal function, test with `mod
+          -al run api/modal_worker.py` locally                           
+      322 -4. **`scripts/upload_weights.py`:** populate volume with RFD3 
+          -weights                                                       
+      323 -5. **`db.py`:** Supabase CRUD (replaces `store.py`)           
+      324 -6. **`redis_client.py`:** pub/sub helpers                     
+      325 -7. **`runner.py`:** swap subprocess → `run_job.spawn`         
+      326 -8. **`main.py`:** wire Redis SSE, Supabase job lookup, signed 
+          -URL redirect                                                  
+      327 -9. **Delete `store.py`**                                      
+      328 -10. **Deploy Railway** with new env vars (`SUPABASE_*`, `REDIS
+          -_URL`)                                                        
+      329 -11. **Smoke test:** POST /jobs → watch SSE stream → GET /jobs/
+          -:id/output                                                    
+      321 +3. **Fix steering YAMLs:** replace hardcoded paths with `${oc.
+          +env:FOUNDRY_ROOT,...}` in all 8 files                         
+      322 +4. **`scripts/upload_weights.py`:** upload RFD3 weights + SAE 
+          +checkpoint + steering vectors to Modal Volume                 
+      323 +5. **`modal_worker.py`:** write Modal function with `FOUNDRY_R
+          +OOT=/weights`, test with `modal run`                          
+      324 +6. **`db.py`:** Supabase CRUD (replaces `store.py`)           
+      325 +7. **`redis_client.py`:** pub/sub helpers                     
+      326 +8. **`runner.py`:** swap subprocess → `run_job.spawn`         
+      327 +9. **`main.py`:** wire Redis SSE, Supabase job lookup, signed 
+          +URL redirect                                                  
+      328 +10. **Delete `store.py`**                                     
+      329 +11. **Deploy Railway** with new env vars (`SUPABASE_*`, `REDIS
+          +_URL`)                                                        
+      330 +12. **Smoke test:** POST /jobs → watch SSE stream → GET /jobs/
+          +:id/output                                                    
+      331  
+      332  ---
+      333  
+
+● Update(api/plan.md)
+  ⎿  Added 3 lines, removed 1 line
+      351  | `modal_worker.py` | **New** — Modal GPU function |
+      352  | `db.py` | **New** — Supabase job CRUD |
+      353  | `redis_client.py` | **New** — Redis pub/sub helpers |
+      354 -| `scripts/upload_weights.py` | **New** — one-time volume popu
+          -lation |                                                      
+      354 +| `scripts/upload_weights.py` | **New** — one-time volume popu
+          +lation (RFD3 + SAE + steering vectors) |                      
+      355  | `runner.py` | **Rewrite** — spawn Modal instead of subproces
+           s |
+      356  | `main.py` | **Modify** — Redis SSE, signed URL output |
+      357  | `models.py` | **Modify** — add output_url, remove logs list 
+           |
+      358  | `store.py` | **Delete** |
+      359 +| `sae/configs/steering/ablate_block12_f639*.yaml` (×4) | **Fi
+          +x** — replace hardcoded paths with `${oc.env:FOUNDRY_ROOT,...}
+          +` |                                                           
+      360 +| `sae/configs/steering/rawdiff_neg_block12_c*.yaml` (×4) | **
+          +Fix** — replace hardcoded paths with `${oc.env:FOUNDRY_ROOT,..
+          +.}` |                                                         
+
+● Good catch — there were two problems hiding in Phase 5:
+
+  1. The SAE checkpoint and steering vectors need to be in the Modal Volume
+  alongside the RFD3 weights. upload_weights.py needs to copy
+  outputs/sae/2026-04-26_15-38-55/ and outputs/steering/vectors/ into the
+  volume, not just the model checkpoint.
+  2. 8 steering YAML files have hardcoded /mnt/nw/home/m.yu/repos/foundry/ paths
+   that will silently fail inside Modal. They need to be changed to
+  ${oc.env:FOUNDRY_ROOT,/mnt/nw/home/m.yu/repos/foundry}/... before you deploy —
+   that pattern keeps them working on your local machine too.
+
+  The fix is step 3 in the updated implementation order — do it before touching
+  any Modal code so you can test steering locally with FOUNDRY_ROOT unset and
+  confirm the fallback still works.
+
+✻ Brewed for 1m 25s
+
+❯ is this updated in the plan.md yet?                                           
+  /mnt/nw/home/m.yu/repos/foundry/api/plan.md                                   
+
+  Read 1 file (ctrl+o to expand)
+
+● The SQL is there but the syntax is broken — line 47 is missing a comma after
+  now() and has a stray add user inline. Let me fix it:
+
+● Update(api/plan.md)
+  ⎿  Added 2 lines, removed 2 lines
+      43    status     text not null default 'pending',
+      44    error      text,
+      45    output_url text,
+      46 -  created_at timestamptz not null default now()                
+      47 -    created_by uuid, add user                                  
+      46 +  created_at timestamptz not null default now(),               
+      47 +  created_by uuid references auth.users(id)                    
+      48  );
+      49  ```
+      50  
+
+● Fixed — the created_by uuid column is now properly comma-separated and
+  references Supabase's auth.users table. You'll also want insert_job in db.py
+  to pass the authenticated user's ID when inserting a row, which the FastAPI
+  route can pull from the Supabase JWT.
+
+✻ Cooked for 16s
+
+❯ yep can you update the plan to work w supabase auth?                          
+  Read 1 file (ctrl+o to expand)
+
+● Now I'll rewrite the relevant sections to thread auth through properly.
+
+● Update(api/plan.md)
+  ⎿  Added 14 lines, removed 12 lines
+       5  ```
+       6  Browser
+       7     │
+       8 +   ├─ Auth ──────────────────────────────► Supabase Auth (JWT i
+         +ssued)                                                         
+       9 +   │                                                           
+      10     ├─ POST /jobs ────────► Railway FastAPI ──► modal_worker.run
+          _job.spawn()
+       9 -   │                            │                        │     
+      10 -   │                            └─► Supabase Postgres    │     
+      11 -   │                                (insert job row)     │     
+      12 -   │                                                     ▼     
+      13 -   └─ GET /jobs/:id/stream ─► Railway SSE ◄── Redis pub/sub    
+      14 -                                  ▲                      │     
+      15 -                                  │                      ▼     
+      16 -                                  └── Modal GPU worker ──┤     
+      17 -                                           │             │     
+      18 -                                           ├─► Redis (publish l
+         -og lines)                                                      
+      19 -                                           ├─► Supabase Postgre
+         -s (status updates)                                             
+      20 -                                           └─► Supabase Storage
+         - (output CIF)                                                  
+      11 +   │   Authorization:           │  verify JWT                  
+         +  │                                                            
+      12 +   │   Bearer <token>           ├─► Supabase Postgres          
+         +  │                                                            
+      13 +   │                            │   (insert job, created_by)   
+         +  │                                                            
+      14 +   │                            │                              
+         +  ▼                                                            
+      15 +   └─ GET /jobs/:id/stream ─► Railway SSE ◄──────── Redis pub/s
+         +ub                                                             
+      16 +       Authorization:              ▲  verify JWT        │      
+      17 +       Bearer <token>              │                    ▼      
+      18 +                                   └─── Modal GPU worker (servi
+         +ce-role key)                                                   
+      19 +                                              │                
+      20 +                                              ├─► Redis (publis
+         +h log lines)                                                   
+      21 +                                              ├─► Supabase Post
+         +gres (status updates)                                          
+      22 +                                              └─► Supabase Stor
+         +age (output CIF)                                               
+      23  ```
+      24  
+      25  ## Current State
+
+● Update(api/plan.md)
+  ⎿  Added 16 lines, removed 3 lines
+      37  
+      38  ### 1.1 Supabase
+      39  
+      40 -Create the `jobs` table:                                       
+      40 +Create the `jobs` table with RLS:                              
+      41  
+      42  ```sql
+      43  create table jobs (
+     ...
+      46    error      text,
+      47    output_url text,
+      48    created_at timestamptz not null default now(),
+      49 -  created_by uuid references auth.users(id)                    
+      49 +  created_by uuid not null references auth.users(id)           
+      50  );
+      51 +                                                               
+      52 +alter table jobs enable row level security;                    
+      53 +                                                               
+      54 +create policy "users see own jobs"                             
+      55 +  on jobs for select                                           
+      56 +  using (auth.uid() = created_by);                             
+      57 +                                                               
+      58 +create policy "users insert own jobs"                          
+      59 +  on jobs for insert                                           
+      60 +  with check (auth.uid() = created_by);                        
+      61  ```
+      62  
+      63 +RLS is defense-in-depth. The Railway API uses the **service-rol
+         +e key** (bypasses RLS) and filters `created_by = user_id` expli
+         +citly in every query.                                          
+      64 +                                                               
+      65  Create a storage bucket named `outputs` (private, signed URLs f
+          or download).
+      66  
+      67  Environment variables needed:
+      68  - `SUPABASE_URL`
+      57 -- `SUPABASE_KEY` (service-role key, never anon key — workers wr
+         -ite to storage)                                                
+      69 +- `SUPABASE_KEY` (service-role key — bypasses RLS, used by Rail
+         +way API and Modal worker)                                      
+      70 +- `SUPABASE_JWT_SECRET` (from Supabase Project Settings → API →
+         + JWT Secret, used by Railway API to verify tokens locally)     
+      71  
+      72  ### 1.2 Redis on Railway
+      73  
+
+● Now add the new auth.py file section after redis_client.py:
+
+● Update(api/plan.md)
+  ⎿  Added 29 lines, removed 1 line
+      209      return ps
+      210  ```
+      211  
+      212 -### 2.4 `scripts/upload_weights.py` — one-time weight upload  
+      212 +### 2.4 `auth.py` — JWT verification dependency               
+      213  
+      214 +Verifies the Supabase JWT on every protected route and returns
+          + the user ID. Uses `python-jose` for local verification — no n
+          +etwork round-trip.                                            
+      215 +                                                              
+      216 +```python                                                     
+      217 +# api/auth.py                                                 
+      218 +import os                                                     
+      219 +from fastapi import HTTPException, Security                   
+      220 +from fastapi.security import HTTPAuthorizationCredentials, HTT
+          +PBearer                                                       
+      221 +from jose import JWTError, jwt                                
+      222 +                                                              
+      223 +_bearer = HTTPBearer()                                        
+      224 +                                                              
+      225 +def get_user_id(credentials: HTTPAuthorizationCredentials = Se
+          +curity(_bearer)) -> str:                                      
+      226 +    try:                                                      
+      227 +        payload = jwt.decode(                                 
+      228 +            credentials.credentials,                          
+      229 +            os.environ["SUPABASE_JWT_SECRET"],                
+      230 +            algorithms=["HS256"],                             
+      231 +            audience="authenticated",                         
+      232 +        )                                                     
+      233 +        return payload["sub"]                                 
+      234 +    except JWTError:                                          
+      235 +        raise HTTPException(status_code=401, detail="invalid t
+          +oken")                                                        
+      236 +```                                                           
+      237 +                                                              
+      238 +Add `python-jose[cryptography]` to `api` extras in `pyproject.
+          +toml`.                                                        
+      239 +                                                              
+      240 +### 2.5 `scripts/upload_weights.py` — one-time weight upload  
+      241 +                                                              
+      242  Run locally once to populate the Modal volume with RFD3 weight
+           s.
+      243  
+      244  ```bash
+
+● Now update db.py to accept user_id, and runner.py + main.py to thread it
+  through:
+
+● Update(api/plan.md)
+  ⎿  Added 11 lines, removed 4 lines
+      183      return create_client(url, key)
+      184  
+      185  
+      186 -def insert_job(db: Client, job_id: str) -> None:              
+      187 -    db.table("jobs").insert({"id": job_id, "status": "pending"
+          -}).execute()                                                  
+      186 +def insert_job(db: Client, job_id: str, user_id: str) -> None:
+      187 +    db.table("jobs").insert({"id": job_id, "status": "pending"
+          +, "created_by": user_id}).execute()                           
+      188  
+      189  
+      190 -def get_job(db: Client, job_id: str) -> Job | None:           
+      191 -    row = db.table("jobs").select("*").eq("id", job_id).maybe_
+          -single().execute()                                            
+      190 +def get_job(db: Client, job_id: str, user_id: str) -> Job | No
+          +ne:                                                           
+      191 +    row = (                                                   
+      192 +        db.table("jobs")                                      
+      193 +        .select("*")                                          
+      194 +        .eq("id", job_id)                                     
+      195 +        .eq("created_by", user_id)                            
+      196 +        .maybe_single()                                       
+      197 +        .execute()                                            
+      198 +    )                                                         
+      199      if row.data is None:
+      200          return None
+      201      return Job(**row.data)
+
+● Update(api/plan.md)
+  ⎿  Added 2 lines, removed 2 lines
+      270  from .db import insert_job
+      271  from .modal_worker import run_job
+      272  
+      273 -def submit_job(db, alpha: float, partial_t: float, motif_bytes
+          -: bytes | None) -> str:                                       
+      273 +def submit_job(db, user_id: str, alpha: float, partial_t: floa
+          +t, motif_bytes: bytes | None) -> str:                         
+      274      job_id = str(uuid.uuid4())
+      275      job_config = build_job_config(alpha, partial_t, motif_byte
+           s)
+      276 -    insert_job(db, job_id)                                    
+      276 +    insert_job(db, job_id, user_id)                           
+      277      run_job.spawn(job_id, job_config)
+      278      return job_id
+      279  ```
+
+● Update(api/plan.md)
+  ⎿  Added 10 lines, removed 6 lines
+      278      return job_id
+      279  ```
+      280  
+      281 -### 3.2 `main.py` — wire Redis SSE + Supabase store           
+      281 +### 3.2 `main.py` — wire auth, Redis SSE, and Supabase store  
+      282  
+      283 -**`POST /jobs`**: call `runner.submit_job(db, ...)`.          
+      283 +All routes except health-check get `user_id: str = Depends(get
+          +_user_id)`.                                                   
+      284  
+      285 -**`GET /jobs/{job_id}`**: call `db.get_job(db_client, job_id)`
+          -.                                                             
+      285 +**`POST /jobs`**: call `runner.submit_job(db, user_id, ...)`. 
+      286  
+      287 -**`GET /jobs/{job_id}/stream`** (SSE): subscribe to Redis chan
+          -nel instead of polling in-memory list.                        
+      287 +**`GET /jobs/{job_id}`**: call `db.get_job(db_client, job_id, 
+          +user_id)` — returns 404 if the job doesn't belong to this user
+          +.                                                             
+      288  
+      289 +**`GET /jobs/{job_id}/stream`** (SSE): verify ownership via `g
+          +et_job` first, then subscribe to Redis channel.               
+      290 +                                                              
+      291  ```python
+      290 -async def stream_logs(job_id: str):                           
+      292 +async def stream_logs(job_id: str, user_id: str = Depends(get_
+          +user_id)):                                                    
+      293 +    if not get_job(db_client, job_id, user_id):               
+      294 +        raise HTTPException(status_code=404)                  
+      295      ps = subscribe_logs(redis_client, job_id)
+      296      async for message in _iter_pubsub(ps):
+      297          if message["data"] == "__done__":
+     ...
+      299          yield f"data: {message['data']}\n\n"
+      300  ```
+      301  
+      298 -**`GET /jobs/{job_id}/output`**: redirect to `job.output_url` 
+          -(Supabase signed URL, 1-hour TTL).                            
+      302 +**`GET /jobs/{job_id}/output`**: redirect to `job.output_url` 
+          +(Supabase signed URL, 1-hour TTL). Returns 404 if job not owne
+          +d by user or not yet done.                                    
+      303  
+      304  ### 3.3 `models.py` — add `output_url` field
+      305  
+
+● Now update the env vars table and file diff summary:
+
+● Update(api/plan.md)
+  ⎿  Added 7 lines, removed 4 lines
+      390  
+      391  | Service | Variable | Where used |
+      392  |---|---|---|
+      393 -| Railway | `SUPABASE_URL` | FastAPI + db.py |                
+      394 -| Railway | `SUPABASE_KEY` | FastAPI + db.py |                
+      395 -| Railway | `REDIS_URL` | FastAPI + redis_client.py |         
+      393 +| Railway | `SUPABASE_URL` | db.py |                          
+      394 +| Railway | `SUPABASE_KEY` | db.py (service-role) |           
+      395 +| Railway | `SUPABASE_JWT_SECRET` | auth.py (local JWT verify)
+          + |                                                            
+      396 +| Railway | `REDIS_URL` | redis_client.py |                   
+      397  | Modal Secret | `SUPABASE_URL` | modal_worker.py |
+      397 -| Modal Secret | `SUPABASE_KEY` | modal_worker.py |           
+      398 +| Modal Secret | `SUPABASE_KEY` | modal_worker.py (service-rol
+          +e) |                                                          
+      399  | Modal Secret | `REDIS_URL` | modal_worker.py |
+      400  
+      401 +`SUPABASE_JWT_SECRET` is in **Supabase → Project Settings → AP
+          +I → JWT Secret**. It never leaves Railway — used only for loca
+          +l token verification, never sent to Modal.                    
+      402 +                                                              
+      403  ---
+      404  
+      405  ## File Diff Summary
+
+● Update(api/plan.md)
+  ⎿  Added 2 lines, removed 1 line
+      407  | File | Action |
+      408  |---|---|
+      409  | `modal_worker.py` | **New** — Modal GPU function |
+      410 -| `db.py` | **New** — Supabase job CRUD |                     
+      410 +| `auth.py` | **New** — FastAPI JWT dependency (`get_user_id`)
+          + |                                                            
+      411 +| `db.py` | **New** — Supabase job CRUD (all queries filter by
+          + `user_id`) |                                                 
+      412  | `redis_client.py` | **New** — Redis pub/sub helpers |
+      413  | `scripts/upload_weights.py` | **New** — one-time volume popu
+           lation (RFD3 + SAE + steering vectors) |
+      414  | `runner.py` | **Rewrite** — spawn Modal instead of subproces
+           s |
+
+● Done. Here's what changed in the plan:
+
+  - RLS on the jobs table — two policies (select + insert) scoped to auth.uid() 
+  = created_by, as a DB-level backstop
+  - New auth.py — single get_user_id FastAPI dependency that verifies the
+  Supabase JWT locally using SUPABASE_JWT_SECRET (fast, no network call)
+  - All four routes now take Depends(get_user_id) and pass user_id into every DB
+   query
+  - db.py — insert_job takes user_id and writes created_by; get_job filters
+  .eq("created_by", user_id) so a user can never read another user's job
+  - SUPABASE_JWT_SECRET added to Railway env vars — the Modal worker never needs
+   it since it only writes with the service-role key
+
+✻ Cooked for 1m 41s
+
+❯ is the sae weights also in modal volume and hooked up properly?               
+
+  Read 1 file (ctrl+o to expand)
+
+● The plan covers it across Phases 4 and 5, but the Phase 2 modal_worker.py
+  sketch is missing env={"FOUNDRY_ROOT": VOLUME_PATH}, and there's no explicit
+  note that the steering YAML generation logic has to move from runner.py into
+  the modal worker (since runner.py won't be writing temp files anymore). Let me
+   fix both.
+
+● Update(api/plan.md)
+  ⎿  Added 6 lines, removed 1 line
+      130  app = modal.App("foundry", image=image, secrets=[modal.Secret.
+           from_name("foundry-secrets")])
+      131  
+      132  
+      133 -@app.function(gpu="A10G", timeout=600, volumes={VOLUME_PATH: v
+          -olume})                                                       
+      133 +@app.function(                                                
+      134 +    gpu="A10G",                                               
+      135 +    timeout=600,                                              
+      136 +    volumes={VOLUME_PATH: volume},                            
+      137 +    env={"FOUNDRY_ROOT": VOLUME_PATH},  # resolves ${oc.env:FO
+          +UNDRY_ROOT} in steering YAMLs                                 
+      138 +)                                                             
+      139  def run_job(job_id: str, job_config: dict) -> None:
+      140      r = redis.from_url(os.environ["REDIS_URL"])
+      141      db = create_client(os.environ["SUPABASE_URL"], os.environ[
+           "SUPABASE_KEY"])
+
+● Update(api/plan.md)
+  ⎿  Added 2 lines
+      372  
+      373  The Modal image needs `foundry[rfd3,sae]` installed so `saffro
+           n steer` is available. The steering YAML configs ship inside t
+           he installed package, so no extra copy step is needed — only t
+           he weight files need the volume.
+      374  
+      375 +**YAML generation must move into the modal worker.** Currently
+          + `runner.py` writes the temp steering YAML before launching th
+          +e subprocess. In the new architecture `runner.py` only builds 
+          +a plain `job_config` dict and spawns — it never touches the fi
+          +lesystem. The modal worker is responsible for writing `inputs.
+          +json` and generating the steering YAML (if `alpha != 0`) befor
+          +e calling `saffron steer`. The generated YAML uses `${oc.env:F
+          +OUNDRY_ROOT,...}` for `sae_path`, which resolves to `/weights/
+          +outputs/sae/2026-04-26_15-38-55/train/block12/final.pt` inside
+          + the worker because `FOUNDRY_ROOT=/weights` is set.           
+      376 +                                                              
+      377  ---
+      378  
+      379  ## Implementation Order
+
+● Yes, the SAE weights were already in the plan — Phase 4 lists them in the
+  volume table and the upload_weights.py command covers them via --outputs-dir.
+  The two gaps I just fixed:
+
+  1. Phase 2 modal_worker.py sketch was missing env={"FOUNDRY_ROOT": 
+  VOLUME_PATH} — added it with a comment explaining why
+  2. No explicit note that steering YAML generation moves into the worker — the
+  old runner.py wrote temp files before spawning the subprocess; in the new
+  architecture that logic has to live inside run_job, otherwise the
+  ${oc.env:FOUNDRY_ROOT} interpolation never runs in the right environment
+
+✻ Worked for 49s
