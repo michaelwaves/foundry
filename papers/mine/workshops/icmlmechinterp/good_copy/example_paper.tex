@@ -28,6 +28,8 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
+\newcommand{\matt}[1]{\textcolor{red}{\small [#1] - matt}}
+\newcommand{\michael}[1]{\textcolor{blue}{\small [#1] -michael}}
 \icmltitlerunning{Sparse Autoencoders Find Virulence Features in RFdiffusion3}
 
 \begin{document}
@@ -54,17 +56,23 @@
 \printAffiliationsAndNotice{}
 
 \begin{abstract}
-All-atom protein diffusion models can be repurposed to design hazardous proteins, but the activations that drive a hazardous denoising trajectory are opaque. We train Matryoshka BatchTopK sparse autoencoders (SAEs) on the diffusion-transformer residual stream of RFdiffusion3 and on the corresponding folding model RoseTTAFold3, using a length-matched corpus of 275 virulent (SafeProtein) and benign (UniProt) sequences. Logistic regression probes on SAE features classify hazardous from benign designs at AUROC $0.817 \pm 0.10$ from RFdiffusion3 block 12 under homology-clustered splits, beating the matched raw-activation probe by $+0.054$ AUROC. Univariate scoring with Benjamini--Hochberg correction recovers individual SAE features that fire on hazardous designs at up to AUROC $0.84$ ($q < 10^{-13}$), and feature quality grows with depth in the diffusion stack. To our knowledge this is the first SAE trained on an all-atom diffusion model and the first feature-level virulence audit of a protein design model.
+Generative models have shown remarkable progress in a variety of domains such as protein design, but such power enables the opaque generation of hazardous proteins. In this work, we set out to illuminate the black box of RoseTTAFold3 and RFDiffusion3, popular open weight models for protein folding and synthesis, via a mechanistic lens through training Sparse Autoencoders (SAEs) on their diffusion-transformer activations.
+
+We find that for certain blocks, linear probes detect hazardous designs significantly better when fit in the SAE latent space over the original model's representations: improving interpretability without sacrificing model performance.
+
+Furthermore, we identify monosemantic features from the SAE that fire only on hazardous designs at up to AUROC $0.84$ ($q < 10^{-13}$).
+
+To our knowledge this is the first SAE trained on an all-atom diffusion model and the first feature-level virulence audit of a protein design model, paving the way towards safe and interpretable protein design.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-Generative protein design has reached the point where atom-resolved diffusion models can produce binders, enzymes, and oligomers that fold and bind in the wet lab \cite{watson2023rfdiffusion,krishna2024rfaa,butcher2025rfdiffusion3}. The same models can in principle be conditioned on the active sites of toxins, viral surface proteins, or other hazardous templates. Existing biosecurity screens lean on sequence homology or sequence-level deep classifiers \cite{garg2008virulentpred,singh2024vfpred,sun2024dtvf,chen2025virulenthunter}. They flag a sequence but say nothing about \textit{why} the model is producing it, and they cannot intervene during sampling.
+Generative protein design has a long history in machine learning \cite{woolfson2021brief} and reached the point where all-atom diffusion models, models operating at the level of individual atoms instead of amino acids, can produce novel protein structures that bind to existing proteins and nucleic acids, significantly speed up chemical reactions, and are experimentally validated to fold in a wet lab. \cite{watson2023rfdiffusion,krishna2024rfaa,butcher2025rfdiffusion3} One well known pernicious feature about protein designing generative models is that the same models can in principle be conditioned on the active sites of toxins, viral surface proteins, or other hazardous templates. Existing biosecurity screens lean on sequence homology or sequence-level deep classifiers \cite{garg2008virulentpred,singh2024vfpred,sun2024dtvf,chen2025virulenthunter}. They flag a sequence but say nothing about \textit{why} the model is producing it, and they cannot intervene during sampling.
 
-Mechanistic interpretability offers an alternative path: read the residual stream during generation and ask which directions correspond to hazardous structural features. Sparse autoencoders (SAEs) \cite{bricken2023monosemanticity,cunningham2024sparse,templeton2024scaling} have become the workhorse for decomposing language-model activations into approximately monosemantic directions, and recent work has extended them to protein language models \cite{simon2025interplm,adams2025mechanistic,parsan2025interpretable}. Diffusion-based protein design models have not been similarly probed, with the partial exception of FoldSAE on the original RFdiffusion \cite{zarzecki2025foldsae}, which recovered mostly secondary-structure features in a token-level model.
+Mechanistic interpretability has shown great promise in the understanding of Large Language Models \cite{cunningham2024sparse,adams2025mechanistic,bricken2023monosemanticity} and vision models \cite{joseph2025prisma, simonyan2014deep, Ben_Melech_Stan_2024_CVPR}, and offers an alternative path for understanding in modern protein models: read the intermediate latent features during generation and ask what latent attributes correspond to hazardous structural features. Sparse autoencoders (SAEs) \cite{bricken2023monosemanticity,cunningham2024sparse,templeton2024scaling} have become the workhorse for decomposing language-model activations into approximately monosemantic attributes (that is linear directions in the latent space that only activate on a single semantic concept). And while recent work has extended them to protein language models \cite{simon2025interplm,adams2025mechanistic,parsan2025interpretable}, all-atom diffusion-based protein design models have not been similarly probed. 
 
-We train SAEs on RFdiffusion3 (RFD3) \cite{butcher2025rfdiffusion3}, an all-atom diffusion model whose internal representations operate on per-residue and per-atom tokens, and on its folding counterpart RoseTTAFold3 (RF3) \cite{krishna2024rfaa}. We then ask whether the resulting feature dictionary supports a meaningful biosecurity readout. Concretely:
+We train SAEs on RFdiffusion3 (RFD3) \cite{butcher2025rfdiffusion3}, an all-atom diffusion model whose internal representations operate on per-residue (amino acid) and per-atom tokens \matt{idk what this means} \michael{should we do a brief explainer on protein models and terminology?}, and on its folding counterpart RoseTTAFold3 (RF3) \cite{krishna2024rfaa}. We then ask whether the resulting feature dictionary supports a meaningful biosecurity readout with the following research questions:
 
 \begin{itemize}
     \item \textbf{Do SAE features support virulence classification?} We train logistic regression probes on per-design pooled feature vectors for both RFD3 and RF3.
@@ -72,15 +80,21 @@ We train SAEs on RFdiffusion3 (RFD3) \cite{butcher2025rfdiffusion3}, an all-atom
     \item \textbf{Are individual features hazard-aligned?} We score every SAE feature against the virulent/benign label with univariate AUROC and Benjamini--Hochberg-corrected $q$-values.
     \item \textbf{Does feature quality depend on depth?} We compare SAEs trained on early, middle, and late blocks of the diffusion stack.
 \end{itemize}
+\matt{I dislike this whole RQ stack because it's clear we did it post hoc. We didn't have these as questions first and then run experiments. I'd rather just breifly summarize the goals of the work, not have 4 items}
 
-The best probe trained on RFD3 block-12 SAE features reaches AUROC $0.817 \pm 0.10$ under homology-clustered splits (n=55 held-out designs) and $0.877 \pm 0.025$ under random splits, beating the corresponding raw-activation probe by $+0.054$ AUROC under clustering. Both are below the published bacterial-VF SOTA DTVF \cite{sun2024dtvf} at AUROC $0.92$. Our contribution is not a new classifier; it is a feature-level account of why the diffusion model is acting hazardously, accessible inside the generation loop. We release a suite of SAEs at three depths in RFD3 and two in RF3, plus a small catalogue of significantly hazard-aligned features.
+The best probe trained on RFD3 block-12 SAE features reaches AUROC $0.817 \pm 0.10$ \matt{auroc is highly specific to mech int people. I dont really know what its measuring, just precision v.s. recall right? Can we just call it Precision-Recall ROC? People will know that much better.} \michael{so i think AUROC is receiver operating characteristic, which is True positive rate on y and true negative rate on x. AUPRC is different, True positive rate on x and recall on y} under homology-clustered splits (n=55 held-out designs) and $0.877 \pm 0.025$ under random splits, beating the corresponding raw-activation probe by $+0.054$ AUROC under clustering. 
+\matt{dont even mention the following stuff yet, I think the contribution of SAE features improve interpretability over regular feautres is strong enough (for a workshop)}
+Both are below the published bacterial-VF SOTA DTVF \cite{sun2024dtvf} at AUROC $0.92$. 
+Our contribution is not a new classifier; it is a feature-level account of why the diffusion model is acting hazardously, accessible inside the generation loop. 
+
+We will release a suite of SAEs at three depths in RFD3 and two in RF3, plus a small catalogue of significantly hazard-aligned features.
 
 \section{Related Work}
 \label{sec:related}
 
 \paragraph{SAEs for language models.} Sparse dictionary learning over residual streams has produced large catalogues of approximately monosemantic features in transformers, from \citet{bricken2023monosemanticity,cunningham2024sparse} on small models to \citet{templeton2024scaling} on Claude 3 Sonnet. Architectural variants include Gated SAEs \cite{rajamanoharan2024gated}, JumpReLU \cite{rajamanoharan2024jumprelu}, TopK \cite{makhzani2014ksparse,gao2025scaling}, and BatchTopK \cite{bussmann2024batchtopk}, which sets the per-batch active count exactly. We train Matryoshka BatchTopK SAEs \cite{bussmann2025matryoshka}, which combine BatchTopK with nested decoders so that small prefixes carry general features and longer suffixes carry specialized ones. This nested structure maps naturally onto protein hierarchy (fold class, then secondary structure, then local motif) and reduces feature absorption.
 
-\paragraph{SAEs for protein models.} \citet{simon2025interplm} train SAEs on ESM-2 \cite{lin2023evolutionaryscale} and recover thousands of features aligning with Swiss-Prot biological concepts. \citet{adams2025mechanistic} link SAE features on ESM-2 to GO terms and use them as inputs for thermostability and localization probes. \citet{parsan2025interpretable} train Matryoshka and TopK SAEs on ESM2-3B and demonstrate causal steering of ESMFold's predicted SASA. Closest in spirit is FoldSAE \cite{zarzecki2025foldsae}, which trains SAEs on the predecessor RFdiffusion \cite{watson2023rfdiffusion} and identifies mostly secondary-structure features at the token level. RFD3 shares no code with RFdiffusion: it operates on a mixed token-and-atom representation derived from RFAA \cite{krishna2024rfaa,abramson2024alphafold3}, motivating a fresh feature dictionary at the atomic level.
+\paragraph{SAEs for protein models.} \citet{simon2025interplm} train SAEs on ESM-2 \cite{lin2023evolutionaryscale} and recover thousands of features aligning with Swiss-Prot biological concepts. \citet{adams2025mechanistic} link SAE features on ESM-2 to GO terms and use them as inputs for thermostability and localization probes. \citet{parsan2025interpretable} train Matryoshka and TopK SAEs on ESM2-3B and demonstrate causal steering of ESMFold's predicted SASA. Closest in spirit is FoldSAE \cite{zarzecki2025foldsae}, which trains SAEs on the predecessor RFdiffusion \cite{watson2023rfdiffusion} and identifies mostly secondary-structure features at the token level. RFD3 shares no code with RFdiffusion: it operates on a mixed token-and-atom representation derived from RFAA \cite{krishna2024rfaa,abramson2024alphafold3}, motivating a fresh feature dictionary at the atomic level. FoldSAE trained SAEs on the original RFdiffusion \cite{zarzecki2025foldsae}, which recovered mostly secondary-structure features in a token-level model.
 
 \paragraph{Virulence prediction.} Bacterial virulence-factor classifiers have evolved from compositional SVMs \cite{garg2008virulentpred} to alignment-aware ensembles \cite{singh2024vfpred} to PLM fine-tunes \cite{sun2024dtvf,chen2025virulenthunter}. The reported sequence-only SOTA on the standard 576/576 benchmark is DTVF \cite{sun2024dtvf} at AUROC $0.92$. These methods predict from sequence alone and offer no per-residue rationale.
 
@@ -142,18 +156,19 @@ We report mean and standard deviation of held-out AUROC across folds. As a sanit
 
 \subsection{Univariate feature scoring}
 
-For each non-constant SAE feature $j$ we compute the AUROC of $\bar{z}_j$ against the binary label, then a Mann--Whitney U test \cite{mann1947whitney}. With $m = 12{,}288$ features per SAE the multiple-comparison burden is large, so we apply Benjamini--Hochberg FDR correction \cite{benjamini1995controlling} across all features and report features with $q < 0.05$ as discoveries. Top-$10$ features per (model, block) are visualized in PyMOL by colouring residues by feature activation on the held-out designs.
+For each non-constant SAE feature $j$ we compute the AUROC of $\bar{z}_j$ against the binary label, then a Mann--Whitney U test \cite{mann1947whitney}. With $m = 12{,}288$ features per SAE the multiple-comparison burden is large, so we apply Benjamini--Hochberg FDR correction \cite{benjamini1995controlling} across all features and report features with $q < 0.05$ as discoveries. Top-$10$ features per (model, block) are visualized in PyMOL by colouring residues by feature activation on the held-out designs. \matt{idk what all this even means, dont just throw a bunch of stats at me. Why are we doing U tests? What is the goal here?}
 
 \section{Results}
 \label{sec:results}
 
 \subsection{SAEs reconstruct activations and stay alive}
-
+\matt{this paragraph is not interesting} \michael{delete or rewrite?}
 Across all five SAEs the trained dictionaries explain $96.9\%$ of activation variance on held-out designs ($\mathrm{cossim} = 0.983$, $L_2$ ratio $0.988$), with average $L_0 = 79.9$ and $100\%$ of features alive. These reconstruction numbers are in the range reported for residual-stream SAEs on language models at comparable expansion factors \cite{gao2025scaling,bussmann2025matryoshka}.
 
 \subsection{Virulence probes on SAE features}
 
 \Cref{fig:random_vs_cluster} reports held-out AUROC for every (model, block, encoding, split) combination, and \cref{tab:probes} lists the underlying numbers. Two patterns hold consistently. First, RFD3 outperforms RF3 on the SafeProtein corpus, with the best probe at RFD3 block-12 SAE features reaching $0.877 \pm 0.025$ random and $0.817 \pm 0.10$ clustered. Second, AUROC rises with depth in RFD3: block 6 sits near chance under homology clustering ($0.59 \pm 0.10$), block 8 lands in the middle ($0.70 \pm 0.14$), and block 12 carries the signal. RF3 shows a flatter depth profile.
+
 
 \begin{table}[t]
   \caption{Held-out AUROC mean $\pm$ std over $5$ folds for logistic-regression probes on raw activations (\textit{identity}) and SAE features (\textit{sae}). \textit{Cluster} = homology-clustered splits. Bold is best per dataset and split.}
@@ -190,11 +205,10 @@ Across all five SAEs the trained dictionaries explain $96.9\%$ of activation var
     \end{tabular}
   \end{small}
 \end{table}
-
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\linewidth]{figures/01_random_vs_cluster.png}
-\caption{Held-out probe AUROC by (model, block, encoding) under random vs.\ homology-clustered splits. RFD3 block 12 SAE features lead in both regimes; RFD3's earlier blocks lose much more under clustering than RF3, consistent with family memorization in early atomistic representations.}
+\caption{Held-out probe AUROC by (model, block, encoding) under random vs.\ homology-clustered splits. RFD3 block 12 SAE features lead in both regimes; RFD3's earlier blocks lose much more under clustering than RF3, consistent with family memorization in early atomistic representations. \matt{all 3 of these figures could probably just be tables.}} \michael{ye i guess all this info is already in Table 1, but it's easier to highlight certain trends and diffs visually this way? perhaps we just keep figure 2}
 \label{fig:random_vs_cluster}
 \end{figure*}
 
@@ -227,7 +241,7 @@ After Benjamini--Hochberg correction at $q < 0.05$ over all $12{,}288$ features 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\linewidth]{figures/04_top_hazard_features.png}
-\caption{Top-$10$ hazard-firing SAE features per (model, block) ranked by univariate AUROC. Each bar is annotated with the BH-corrected $q$-value. RFD3 block 12 carries individual features at AUROC $\geq 0.80$ with $q \leq 10^{-7}$.}
+\caption{Top-$10$ hazard-firing SAE features per (model, block) ranked by univariate AUROC. Each bar is annotated with the BH-corrected $q$-value. RFD3 block 12 carries individual features at AUROC $\geq 0.80$ with $q \leq 10^{-7}$. \matt{do you have a qualitative example(s) of a risky looking protein that fires only on 1 or some of these?}}
 \label{fig:top_features}
 \end{figure*}
 
@@ -238,7 +252,7 @@ After Benjamini--Hochberg correction at $q < 0.05$ over all $12{,}288$ features 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/05_sota_comparison.png}
-\caption{Eval AUROC for our best probe alongside published bacterial-VF classifiers. VirulentHunter \cite{chen2025virulenthunter} reports relative AUC gains over MP4/DeepVF but no absolute AUROC and is omitted.}
+\caption{Eval AUROC for our best probe alongside published bacterial-VF classifiers. VirulentHunter \cite{chen2025virulenthunter} reports relative AUC gains over MP4/DeepVF but no absolute AUROC and is omitted. \matt{this doesnt need to be a chart. It can be in text and talk about comparison to SOTA, and explain its not a fair comparison because we arent training for this task, just building explanation models}}
 \label{fig:sota}
 \end{figure}
 
