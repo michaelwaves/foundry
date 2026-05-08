@@ -9,7 +9,7 @@ pooling: last_step
 aggregation: mean
 classifier: logistic
 classifier_kwargs:
-  epochs: 75
+  epochs: 300
   lr: 0.05
-  weight_decay: 0.01
+  weight_decay: 0.0001
 select_top_k: 50
