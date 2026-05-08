@@ -1,4 +1,4 @@
-\begin{thebibliography}{31}
+\begin{thebibliography}{35}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -91,6 +91,15 @@ Cunningham, H., Ewart, A., Riggs, L., Huben, R., and Sharkey, L.
   models.
 \newblock In \emph{International Conference on Learning Representations}, 2024.
 
+\bibitem[Elhage et~al.(2022)Elhage, Hume, Olsson, Schiefer, Henighan, Kravec,
+  Hatfield-Dodds, Lasenby, Drain, Chen, Grosse, McCandlish, Kaplan, Amodei,
+  Wattenberg, and Olah]{elhage2022superposition}
+Elhage, N., Hume, T., Olsson, C., Schiefer, N., Henighan, T., Kravec, S.,
+  Hatfield-Dodds, Z., Lasenby, R., Drain, D., Chen, C., Grosse, R., McCandlish,
+  S., Kaplan, J., Amodei, D., Wattenberg, M., and Olah, C.
+\newblock Toy models of superposition.
+\newblock \emph{Transformer Circuits Thread}, 2022.
+
 \bibitem[Fan et~al.(2025)Fan, Zhou, Zhang, Jin, Cong, and
   Wang]{fan2025safeprotein}
 Fan, J., Zhou, Z., Zhang, Z., Jin, R., Cong, L., and Wang, M.
@@ -110,6 +119,13 @@ Garg, A. and Gupta, D.
 \newblock {V}irulent{P}red: a {SVM} based prediction method for virulent
   proteins in bacterial pathogens.
 \newblock \emph{BMC Bioinformatics}, 9:\penalty0 62, 2008.
+
+\bibitem[Joseph et~al.(2025)]{joseph2025prisma}
+Joseph, S. et~al.
+\newblock Prisma: An open source toolkit for mechanistic interpretability in
+  vision and video.
+\newblock In \emph{CVPR Workshop on Mechanistic Interpretability in Vision},
+  2025.
 
 \bibitem[Krishna et~al.(2024)Krishna, Wang, Ahern, Sturmfels, Venkatesh,
   Kalvet, Lee, Morey-Burrows, Anishchenko, Humphreys, McHugh, Vafeados, Li,
@@ -152,12 +168,6 @@ Mann, H.~B. and Whitney, D.~R.
 \newblock \emph{Annals of Mathematical Statistics}, 18\penalty0 (1):\penalty0
   50--60, 1947.
 
-\bibitem[Marks et~al.(2024)Marks, Karvonen, and
-  Mueller]{marks2024dictionarylearning}
-Marks, S., Karvonen, A., and Mueller, A.
-\newblock dictionary{\_}learning.
-\newblock \url{https://github.com/saprmarks/dictionary_learning}, 2024.
-
 \bibitem[Parsan et~al.(2025)Parsan, Yang, and Yang]{parsan2025interpretable}
 Parsan, N., Yang, D.~J., and Yang, J.~J.
 \newblock Towards interpretable protein structure prediction with sparse
@@ -196,11 +206,24 @@ Simon, E. and Zou, J.
 \newblock \emph{Nature Methods}, 22:\penalty0 2107--2117, 2025.
 \newblock \doi{10.1038/s41592-025-02836-7}.
 
+\bibitem[Simonyan et~al.(2014)Simonyan, Vedaldi, and
+  Zisserman]{simonyan2014deep}
+Simonyan, K., Vedaldi, A., and Zisserman, A.
+\newblock Deep inside convolutional networks: Visualising image classification
+  models and saliency maps.
+\newblock In \emph{ICLR Workshop}, 2014.
+
 \bibitem[Singh et~al.(2024)Singh, Le, and Wang]{singh2024vfpred}
 Singh, S., Le, N. Q.~K., and Wang, C.
 \newblock {VF-P}red: predicting virulence factor using sequence alignment
   percentage and ensemble learning models.
 \newblock \emph{Computers in Biology and Medicine}, 168:\penalty0 107662, 2024.
+
+\bibitem[Stan et~al.(2024)]{Ben_Melech_Stan_2024_CVPR}
+Stan, G. B.-M. et~al.
+\newblock {LVLM-I}nterpret: An interpretability tool for large vision-language
+  models.
+\newblock In \emph{CVPR Workshops}, 2024.
 
 \bibitem[Steinegger \& S\"{o}ding(2017)Steinegger and
   S\"{o}ding]{steinegger2017mmseqs2}
@@ -254,6 +277,14 @@ Watson, J.~L., Juergens, D., Bennett, N.~R., Trippe, B.~L., Yim, J., Eisenach,
   Baek, M., and Baker, D.
 \newblock De novo design of protein structure and function with {RF}diffusion.
 \newblock \emph{Nature}, 620\penalty0 (7976):\penalty0 1089--1100, 2023.
+
+\bibitem[Woolfson(2021)]{woolfson2021brief}
+Woolfson, D.~N.
+\newblock A brief history of de novo protein design: Minimal, rational, and
+  computational.
+\newblock \emph{Journal of Molecular Biology}, 433\penalty0 (20):\penalty0
+  167160, 2021.
+\newblock \doi{10.1016/j.jmb.2021.167160}.
 
 \bibitem[Zarzecki et~al.(2025)Zarzecki, Szymczak, Szczurek, and
   Deja]{zarzecki2025foldsae}

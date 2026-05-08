@@ -77,3 +77,68 @@ If anything still reads LLM-y on a re-read, the most likely culprits are the abs
 - `good_copy/DEBRIEF.md` (this file)
 
 The original template under `template/` is untouched.
+
+---
+
+## Revision 1 — addressing Matt and Michael's comments (2026-05-08)
+
+### What I changed
+
+**Structural changes:**
+- Removed all `\matt{}` and `\michael{}` comment macros and their LaTeX package lines.
+- Removed Figure 1 (random vs cluster bar chart) — data is in Table 1.
+- Removed Figure 3 (SAE vs raw delta) — data is in Table 1.
+- Removed Figure 4 (top hazard features bar chart) — replaced by qualitative renders.
+- Removed Figure 5 (SOTA comparison chart) — moved to prose in a new "Comparison with sequence-only classifiers" subsection, with the caveats Matt raised ("not a fair comparison, not training for this task").
+
+**Intro rewrite:**
+- Replaced the four-item "research questions" bullet list with a 2-sentence narrative goals paragraph.
+- Added a one-sentence AUROC definition ("ranging from 0.5 for chance to 1.0 for perfect class separation") so non-mechinterp readers understand the metric.
+- Added a brief sentence explaining that RFD3 operates "at the level of individual atoms rather than amino acids" to answer Michael's request for protein model context.
+
+**Section 4.5 (univariate feature scoring) motivation:**
+- Added a motivating paragraph before the statistics: "Beyond the probe, we want to know whether individual SAE directions correspond to specific hazard-associated structural concepts. To test this, we score every SAE feature by computing the AUROC of its per-design mean activation against the binary label..."
+- Explained WHY we use Mann-Whitney U + BH: "Because we test m=12288 features simultaneously... [BH] controls the false discovery rate".
+- Added the goal of PyMOL visualization: "providing a structural view of what each feature is responding to."
+
+**SAE reconstruction paragraph removed:**
+- Matt said it was "not interesting." Folded the key numbers (96.9% FVE, L0=79.9, all features alive) into a single sentence at the end of Section 4.3 (SAE training).
+
+**Qualitative feature visualization (new Figure 2 in main paper):**
+- Added a 2x2 panel (`\begin{figure*}`) showing features 639, 60, 170, 351 on their respective proteins.
+- Each subcaption identifies the feature, AUROC, protein name, UniProt ID, and organism.
+- Text in Section 5.4 describes the highlighted residues using actual residue numbers from the PML scripts.
+
+**Appendix E (new): Additional Feature Visualizations:**
+- Features 639 and 60 on second model runs (model_1) showing activation reproducibility.
+- Feature 491 on ammodytoxin A alongside 639, showing that different features capture distinct subunits of the same protein.
+
+### Protein identity lookups (all confirmed via UniProt REST API)
+
+| UniProt ID | Protein | Organism | Hazard type |
+|---|---|---|---|
+| P00626 | Ammodytoxin A (PLA2) | *Vipera ammodytes ammodytes* | Presynaptic neurotoxin, LD50 0.021 mg/kg (iv, mice) |
+| A0A7H0DN78 | OPG106 | Monkeypox virus (MPXV) | Dual-specificity phosphatase, suppresses STAT1/interferon |
+| D0VWS7 | Cucurmosin | *Cucurbita moschata* (winter squash) | Type-1 ribosome-inactivating protein, ricin family |
+| A0A1S4K3K8 | D7L1 | *Culex quinquefasciatus* (mosquito) | Salivary platelet-aggregation inhibiting toxin |
+
+### Residue-level annotations for Feature 639 (the most interpretable)
+
+From the PML script: residues 99, 104, 109 (top three) all fall within the alpha-helix annotated at positions 96–114 in the UniProt entry for P00626. This is the C-terminal helix of the snake venom PLA2 fold, which contributes to the interfacial binding surface. Residue 83 is in a beta-strand (annotated 82–85). I mentioned this in the paper caption but kept the language conservative ("suggesting the feature responds to a specific helical substructure") because we don't have residue-level mutagenesis to confirm that this helix is the determinant of virulence activation.
+
+For the other three proteins I did not make structural claims because I lacked detailed secondary structure annotations and the activation patterns were more scattered.
+
+### New bib entries added
+
+- `woolfson2021brief` — JMB 2021 protein design history review (confirmed DOI 10.1016/j.jmb.2021.167160)
+- `joseph2025prisma` — Prisma toolkit, CVPR MIV Workshop 2025 (confirmed arXiv:2504.19475)
+- `simonyan2014deep` — Saliency maps paper, ICLR Workshop 2014 (classic reference)
+- `Ben_Melech_Stan_2024_CVPR` — LVLM-Interpret, CVPR 2024 XAI4CV workshop (confirmed arXiv:2404.03118)
+
+Note: `elhage2022superposition` was already in the bib from the first version; I accidentally duplicated it and then removed the duplicate.
+
+### What I'm still unsure of
+
+- **Figure 3 "Additional Visualizations" in appendix (fig:feat_extra):** The caption claims feature 639 "highlights residues 99, 104, 109 again" in the second model run. Confirmed: model_1 PML lists the same five residues (99, 104, 109, 70, 83) in the same rank order, so the caption is correct.
+- **Significant feature counts (Appendix C, Table 3):** Still estimated, not measured in this session. Run the BH script before submission.
+- **The `simonyan2014deep` citation:** Used as a canonical reference for vision interpretability alongside prisma. The actual paper Simonyan & Vedaldi & Zisserman 2014 is about saliency maps in CNNs. If the draft is talking about mechanistic interpretability of vision transformers specifically, a better citation might be Elhage et al. 2022 applied to ViTs. Matt/Michael can swap if needed.
