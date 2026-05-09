@@ -1,0 +1,3 @@
+bundle_path: outputs/classifiers_cluster_stop_overfit/rf3_safeprotein/fit/rf3_block12_identity__fold1
+activations_path: tutorials/sae_data_rf3/uniprot/train_activations/activations/activations.h5
+labels_path: tutorials/classifiers/rf3_safeprotein/labels_fold1_test_cluster.csv

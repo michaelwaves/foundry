@@ -1,0 +1,3 @@
+bundle_path: outputs/classifiers/rf3_toxinpred3/fit/rf3_block12_identity__fold0
+activations_path: tutorials/sae_data_rf3/test_activations/activations/activations.h5
+labels_path: tutorials/classifiers/rf3_toxinpred3/labels_fold0_test.csv

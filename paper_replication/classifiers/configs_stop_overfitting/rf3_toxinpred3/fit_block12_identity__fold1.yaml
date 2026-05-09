@@ -1,0 +1,13 @@
+activations_path: tutorials/sae_data_rf3/train_activations/activations/activations.h5
+labels_path: tutorials/classifiers/rf3_toxinpred3/labels_fold1_train.csv
+hook_name: block12
+extractor:
+  kind: identity
+  feature_dim: 768
+pooling: last_step
+aggregation: mean
+classifier: logistic
+classifier_kwargs:
+  epochs: 300
+  lr: 0.05
+  weight_decay: 0.0001

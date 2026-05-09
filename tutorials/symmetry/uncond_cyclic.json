@@ -1,9 +1,0 @@
-{
-    "uncond_C5": {
-        "length": 100,
-        "is_non_loopy": true,
-        "symmetry": {
-            "id": "C5"
-        }
-    }
-}

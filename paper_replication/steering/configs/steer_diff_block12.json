@@ -1,0 +1,10 @@
+{
+  "benign_O00287": {
+    "input": "data_pipelines/uniprot_pdb_benigns/pdbs/2kw3.pdb",
+    "partial_t": 5.0
+  },
+  "benign_A6NI73": {
+    "input": "data_pipelines/uniprot_pdb_benigns/pdbs/2d3v.pdb",
+    "partial_t": 5.0
+  }
+}

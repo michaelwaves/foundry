@@ -93,6 +93,12 @@ For an interactive Google Colab notebook walking through a basic design pipeline
 
 > *See [models/mpnn/README.md](models/mpnn/README.md) for complete documentation.*
 
+### Research: SAE interpretability and virulence probing
+
+For instructions on replicating the mechanistic interpretability experiments (SAE training, virulence probes, feature scoring):
+
+> *See [paper_replication/README.md](paper_replication/README.md).*
+
 ---
 
 ## Development

@@ -1,9 +1,0 @@
-{
-    "uncond_D4": {
-        "length": 50,
-        "is_non_loopy": true,
-        "symmetry": {
-            "id": "D4"
-        }
-    }
-}

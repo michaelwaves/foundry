@@ -1,3 +1,0 @@
-bundle_path: /mnt/nw/home/m.yu/repos/foundry/outputs/classifiers_cluster_stop_overfit/rf3_toxinpred3/fit/rf3_block16_identity__fold2
-activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rf3/train_activations/activations/activations.h5
-labels_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/classifiers/rf3_toxinpred3/labels_fold2_test_cluster.csv

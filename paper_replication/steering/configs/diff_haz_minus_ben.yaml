@@ -1,0 +1,7 @@
+activations_h5: tutorials/sae_data_rfd3_partial/train_activations/activations/activations.h5
+labels_csv: tutorials/classifiers/rfd3_safeprotein/labels.csv
+positive_label: 1
+negative_label: 0
+hooks: [block6, block8, block12]
+normalize: unit
+out_dir: outputs/steering/vectors/haz_minus_ben

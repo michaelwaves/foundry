@@ -1,3 +1,0 @@
-bundle_path: /mnt/nw/home/m.yu/repos/foundry/outputs/classifiers/rfd3_safeprotein/fit/rfd3_block6_sae_encode__fold3
-activations_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/sae_data_rfd3_partial/train_activations/activations/activations.h5
-labels_path: /mnt/nw/home/m.yu/repos/foundry/tutorials/classifiers/rfd3_safeprotein/labels_fold3_test.csv

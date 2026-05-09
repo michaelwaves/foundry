@@ -1,0 +1,3 @@
+bundle_path: outputs/classifiers_stop_overfitting/rfd3_safeprotein/fit/rfd3_block6_identity__fold3
+activations_path: tutorials/sae_data_rfd3_partial/train_activations/activations/activations.h5
+labels_path: tutorials/classifiers/rfd3_safeprotein/labels_fold3_test.csv

@@ -1,0 +1,6 @@
+
+positives:                                                                               
+  - data_pipelines/toxinpred3/test_pos.csv
+negatives:                                                                               
+  - data_pipelines/toxinpred3/test_neg.csv
+activations_path: tutorials/sae_data_rf3/test_activations/activations/activations.h5                                                                     
