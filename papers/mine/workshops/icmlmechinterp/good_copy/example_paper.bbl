@@ -1,4 +1,4 @@
-\begin{thebibliography}{32}
+\begin{thebibliography}{30}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -159,23 +159,6 @@ Parsan, N., Yang, D.~J., and Yang, J.~J.
   autoencoders.
 \newblock In \emph{ICLR Workshop on Generative and Experimental Perspectives
   for Biomolecular Design}, 2025.
-
-\bibitem[Rajamanoharan et~al.(2024{\natexlab{a}})Rajamanoharan, Conmy, Smith,
-  Lieberum, Varma, Kram\'{a}r, Shah, and Nanda]{rajamanoharan2024gated}
-Rajamanoharan, S., Conmy, A., Smith, L., Lieberum, T., Varma, V., Kram\'{a}r,
-  J., Shah, R., and Nanda, N.
-\newblock Improving sparse decomposition of language model activations with
-  gated sparse autoencoders.
-\newblock In \emph{Advances in Neural Information Processing Systems},
-  2024{\natexlab{a}}.
-
-\bibitem[Rajamanoharan et~al.(2024{\natexlab{b}})Rajamanoharan, Lieberum,
-  Sonnerat, Conmy, Varma, Kram\'{a}r, and Nanda]{rajamanoharan2024jumprelu}
-Rajamanoharan, S., Lieberum, T., Sonnerat, N., Conmy, A., Varma, V.,
-  Kram\'{a}r, J., and Nanda, N.
-\newblock Jumping ahead: Improving reconstruction fidelity with {J}ump{R}e{LU}
-  sparse autoencoders.
-\newblock \emph{arXiv preprint arXiv:2407.14435}, 2024{\natexlab{b}}.
 
 \bibitem[Rathore et~al.(2024)Rathore, Choudhury, Arora, Tijare, and
   Raghava]{rathore2024toxinpred}
