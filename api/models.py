@@ -44,4 +44,4 @@ class Job:
     id: str
     status: JobStatus
     error: str | None = None
-    output_url: str | None = None
+    output_path: str | None = None

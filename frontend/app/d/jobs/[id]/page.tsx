@@ -63,12 +63,19 @@ export default async function JobDetailPage({
       {(job.status === 'running' || job.status === 'pending') && <LiveLogs jobId={id} />}
 
       {job.status === 'done' && (
-        <Button asChild variant="outline" size="lg" className="w-fit">
-          <a href={`/api/jobs/${id}/output`}>
-            <Download />
-            Download .cif.gz
-          </a>
-        </Button>
+        <>
+          <iframe
+            src={`/molstar?url=${encodeURIComponent(`/api/jobs/${id}/cif`)}`}
+            className="w-full h-[500px] border-0 rounded-lg"
+            title="Protein structure viewer"
+          />
+          <Button asChild variant="outline" size="lg" className="w-fit">
+            <a href={`/api/jobs/${id}/output`}>
+              <Download />
+              Download .cif.gz
+            </a>
+          </Button>
+        </>
       )}
     </div>
   )

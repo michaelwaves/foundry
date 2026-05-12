@@ -79,12 +79,19 @@ export default function GeneratePage() {
           <h2 className="font-heading text-xl text-foreground">Output</h2>
           <JobStatusCard jobId={jobId} status={stream.status} error={stream.error} logs={stream.logs} />
           {stream.status === 'done' && jobId && (
-            <Button asChild variant="outline" size="lg" className="w-fit">
-              <a href={`/api/jobs/${jobId}/output`}>
-                <Download />
-                Download .cif.gz
-              </a>
-            </Button>
+            <>
+              <iframe
+                src={`/molstar?url=${encodeURIComponent(`/api/jobs/${jobId}/cif`)}`}
+                className="w-full h-[500px] border-0 rounded-lg"
+                title="Protein structure viewer"
+              />
+              <Button asChild variant="outline" size="lg" className="w-fit">
+                <a href={`/api/jobs/${jobId}/output`}>
+                  <Download />
+                  Download .cif.gz
+                </a>
+              </Button>
+            </>
           )}
         </div>
       </div>

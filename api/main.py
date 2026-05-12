@@ -9,6 +9,7 @@ from fastapi.responses import RedirectResponse, StreamingResponse
 
 from auth import get_user_id
 from db import get_job, make_client
+from worker_output import make_fresh_signed_url
 from models import JobConfig, JobStatus
 from redis_client import channel_for, make_redis
 from runner import submit_job
@@ -51,7 +52,7 @@ def read_job(job_id: str, user_id: str = Depends(get_user_id)) -> dict:
     job = get_job(_db, job_id, user_id)
     if not job:
         raise HTTPException(status_code=404, detail="job not found")
-    return {"status": job.status.value, "error": job.error, "output_url": job.output_url}
+    return {"status": job.status.value, "error": job.error}
 
 
 @app.get("/jobs/{job_id}/stream")
@@ -70,10 +71,10 @@ def read_output(job_id: str, user_id: str = Depends(get_user_id)) -> RedirectRes
     job = get_job(_db, job_id, user_id)
     if not job:
         raise HTTPException(status_code=404, detail="job not found")
-    if job.status != JobStatus.done or not job.output_url:
+    if job.status != JobStatus.done or not job.output_path:
         raise HTTPException(
             status_code=400, detail=f"job not done (status: {job.status.value})")
-    return RedirectResponse(job.output_url, status_code=307)
+    return RedirectResponse(make_fresh_signed_url(_db, job.output_path), status_code=307)
 
 
 async def _job_event_stream(job_id: str, user_id: str) -> AsyncGenerator[str, None]:

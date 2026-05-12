@@ -91,8 +91,8 @@ def run_job(job_id: str, user_id: str, config: dict[str, Any]) -> None:
             output_path = _run_saffron(
                 inputs_path, steering_yaml, work_dir, config["diffusion_steps"],
                 bool(config.get("symmetry")), bool(config.get("disable_zeus")), logger)
-            output_url = upload_output(db, user_id, job_id, output_path)
-        db.table("jobs").update({"status": "done", "output_url": output_url}).eq(
+            storage_path = upload_output(db, user_id, job_id, output_path)
+        db.table("jobs").update({"status": "done", "output_url": storage_path}).eq(
             "id", job_id).execute()
         logger.publish_status("done")
     except Exception as exc:

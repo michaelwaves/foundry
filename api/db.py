@@ -37,7 +37,7 @@ def get_job(db: Client, job_id: str, user_id: str) -> Job | None:
         id=row["id"],
         status=JobStatus(row["status"]),
         error=row["error"],
-        output_url=row["output_url"],
+        output_path=row["output_url"],
     )
 
 
